@@ -1,9 +1,20 @@
 Package: sentinel2
-Title: What the Package Does (one line, title case)
+Title: Tools to access Sentinel-2 data pre-processed by IVFL, BOKU Vienna
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.2.2)
-License: What license is it under?
+Authors@R: person("Sebastian", "Boeck", email = "sebastian.boeck@boku.ac.at", role = c("aut", "cre"))
+Description: Tools to conveniently query and access pre-processed Sentinel-2
+    data. Registration to 'https://s2.boku.eodc.eu' is required for most operations.
+    Please consult the 'https://s2.boku.eodc.eu' (, i.e. the 'FAQ' and 'wiki'
+    pages), if you are unclear on how to use this package.
+Depends:
+    R (>= 3.2.2)
+Imports:
+    curl,
+    httr,
+    jsonlite,
+    raster,
+    sp
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 5.0.1
