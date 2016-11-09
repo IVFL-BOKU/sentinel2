@@ -16,7 +16,7 @@ spat_to_jgeom <- function(spat, round = Inf){
 
     poi_xy <- raster::geom(spat[i, ])[, c("x", "y"), drop = FALSE]
 
-    if (nrow(poi_xy) == 1 && "SpatialPoints" %in% is(spat)){
+    if (nrow(poi_xy) == 1 && "SpatialPoints" %in% methods::is(spat)){
 
       poi_xy <- data.frame(round(poi_xy, round))
       g_type <- "Point"

@@ -20,7 +20,7 @@ roi_to_jgeom <- function(roi, round = Inf){
                     })
   }
 
-  if ("Spatial" %in% is(roi)){
+  if ("Spatial" %in% methods::is(roi)){
     if (!raster::isLonLat(roi)){
       roi <- sp::spTransform(roi, CRSobj = raster::crs(raster::raster()))
     }

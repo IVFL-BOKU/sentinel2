@@ -81,8 +81,8 @@ S2_generate_RGB <- function(granuleId,
   user     <- getOption("S2user")
   password <- getOption("S2password")
   rtrn     <- httr::modify_url('https://s2.boku.eodc.eu',
-                               username = URLencode(user, reserved = TRUE),
-                               password = URLencode(password, reserved = TRUE),
+                               username = utils::URLencode(user, reserved = TRUE),
+                               password = utils::URLencode(password, reserved = TRUE),
                                path     = "rgb",
                                query    = query)
 

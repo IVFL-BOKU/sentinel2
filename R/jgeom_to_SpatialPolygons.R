@@ -18,7 +18,7 @@ jgeom_to_SpatialPolygons <- function(x){
     y    <- strsplit(y, split = ",")
     y    <- do.call(rbind, y)
     y    <- apply(y, 2, as.numeric)
-    hull <- chull(y)
+    hull <- grDevices::chull(y)
     y    <- y[c(hull, hull[1]), ]
     y    <- sp::Polygon(y)
     y    <- sp::Polygons(list(y), ID=1)

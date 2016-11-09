@@ -14,7 +14,7 @@
 #' @param password character password for 'https://s2.boku.eodc.eu'
 #' @export
 
-S2_initialize_user <- function(user = "default@foo.bar", password = "default"){
+S2_initialize_user <- function(user = "test@s2.boku.eodc.eu", password = "test"){
   options("S2user" = user)
   options("S2password" = password)
 }

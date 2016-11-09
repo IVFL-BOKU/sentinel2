@@ -19,7 +19,7 @@ S2_download <- function(url, destfile, zip = TRUE){
 
   curl::curl_download(url = url, destfile = destfile, quiet = TRUE)
 
-  if (isTRUE(zip)) unzip(zipfile = destfile, exdir = dirname(destfile))
+  if (isTRUE(zip)) utils::unzip(zipfile = destfile, exdir = dirname(destfile))
 
   return(invisible(NULL))
 }

@@ -5,7 +5,7 @@
 \title{Function used to set 'user' and 'password' login credentials for the current
   R session}
 \usage{
-S2_initialize_user(user = "default@foo.bar", password = "default")
+S2_initialize_user(user = "test@s2.boku.eodc.eu", password = "test")
 }
 \arguments{
 \item{user}{character user login you have registered with at
