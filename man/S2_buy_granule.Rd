@@ -4,10 +4,14 @@
 \alias{S2_buy_granule}
 \title{Buy a granule at 'https://s2.boku.eodc.eu'}
 \usage{
-S2_buy_granule(granuleId)
+S2_buy_granule(granuleId, mode = c("ask", "always"))
 }
 \arguments{
-\item{granuleId}{character the granuleId}
+\item{granuleId}{character vector of one or more granuleId's to buy}
+
+\item{mode}{one of "ask" and "always". If "ask", the user is prompted for
+confirmation before spending coins ( - in interactive sessions only!).
+If "always", granules are bought anyway.}
 }
 \description{
 Buy granule using granuleId

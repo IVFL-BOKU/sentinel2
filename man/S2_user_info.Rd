@@ -2,7 +2,7 @@
 % Please edit documentation in R/S2_user_info.R
 \name{S2_user_info}
 \alias{S2_user_info}
-\title{User Info}
+\title{S2_user_info}
 \usage{
 S2_user_info()
 }
@@ -13,6 +13,6 @@ list where 'userId' is the Id of the current user, 'coins' is the
   database products
 }
 \description{
-Return information on a users coins budget
+Returns information on a users coins budget
 }
 

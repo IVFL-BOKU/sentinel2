@@ -2,8 +2,7 @@
 % Please edit documentation in R/S2_initialize_user.R
 \name{S2_initialize_user}
 \alias{S2_initialize_user}
-\title{Function used to set 'user' and 'password' login credentials for the current
-  R session}
+\title{Set login credentials for 's2.boku.eodc.eu'}
 \usage{
 S2_initialize_user(user = "test@s2.boku.eodc.eu", password = "test")
 }
@@ -14,11 +13,15 @@ S2_initialize_user(user = "test@s2.boku.eodc.eu", password = "test")
 \item{password}{character password for 'https://s2.boku.eodc.eu'}
 }
 \description{
-S2_initialize_user stores 'user' and 'password' usign \code{options()}.
- Functions in package 'S2boku' (that require authentication) will retrieve
- the credentials using 'getOption()'. This will avoid passing login
- credentials multiple times in a single session and allows the user
- for permanent configuration in '.Rprofile'.
+Set 'user' and 'password' login credentials for the current
+  R session
+}
+\details{
+\code{S2_initialize_user} store 'user' and 'password' in \code{options}.
+ If needed, functions in package 'sentinel2' will retrieve the credentials
+ using 'getOption()'. This will avoid passing login credentials multiple
+ times in a single session and allows users to permanentely configure their
+ login in a '.Rprofile' file.
 }
 \note{
 Requires a valid registration to 'https://s2.boku.eodc.eu' to gain
