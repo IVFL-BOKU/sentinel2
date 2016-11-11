@@ -8,6 +8,6 @@
 
 format_date <- function(x){
   x <- strptime(x = x, format = "%Y-%m-%d %T")
-  x <- format(x, format = "%Y%m%d")
+  x <- format(x, format = "%Y-%m-%d")
   return(as.character(x))
 }
