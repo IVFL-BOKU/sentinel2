@@ -19,10 +19,17 @@ S2_buy_granule <- function(granuleId, mode=c("ask", "always")){
 
   # Check if number of granules to buy exceeds coin budget ---------------------
   if (user_coins < sum(to_buy)){
+
     cat(sprintf("You try to buy %s granules, but you seem to have only %s coins left.\n",
                 sum(to_buy), user_coins))
     cat("Please check coin budget or reduce number of granules to buy.")
     stop("Not enough coins to buy granules!")
+
+  } else if (sum(to_buy) == 0){
+
+    cat("Nothing to buy.")
+    return(invisible(NULL))
+
   }
 
   # Promt user for confirmation ------------------------------------------------
@@ -31,13 +38,17 @@ S2_buy_granule <- function(granuleId, mode=c("ask", "always")){
   if (buy_mode == "ask"){
 
     if (!interactive()){
-      stop("'buy_mode = 'ask'' can only be used in interactive mode!")
-    } else {
-      cat(sprintf("You are about to buy %s granules.", sum(to_buy)))
-      quest <- "This action will cost you coins! Proceed? YES or NO:\t"
 
-      buy_all <- readline(prompt = quest) == "YES"
+      stop("'mode = 'ask'' can only be run in interactive mode!")
+
+    } else {
+
+      cat(sprintf("You are about to buy %s granules.", sum(to_buy)))
+      quest   <- "This action will cost you coins! Type 'YES' to proceed:\t"
+      buy_all <- readline(prompt = quest) %in%  c("YES", "'YES'")
+
     }
+
   } else if (buy_mode == "always"){
     buy_all <- TRUE
   }
@@ -45,24 +56,21 @@ S2_buy_granule <- function(granuleId, mode=c("ask", "always")){
   # Finally buy granule's if buy_all is TRUE -----------------------------------
 
   if (isTRUE(buy_all)){
-    if (sum(to_buy) > 0){
-      user      <- getOption("S2user")
-      password  <- getOption("S2password")
 
-      for (i in seq_along(granuleId)){
+    user      <- getOption("S2user")
+    password  <- getOption("S2password")
 
-        httr::PUT('https://s2.boku.eodc.eu',
-                  config = httr::authenticate(user, password),
-                  path   = list('granule', granuleId[i]))
-
-      }
-    } else {
-      cat("Nothing to buy.")
-      return(invisible(NULL))
+    for (i in seq_along(granuleId)){
+      httr::PUT('https://s2.boku.eodc.eu',
+                config = httr::authenticate(user, password),
+                path   = list('granule', granuleId[i]))
     }
+
   } else {
+
     cat("Action canceled.")
     return(invisible(NULL))
+
   }
 }
 
