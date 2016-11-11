@@ -1,6 +1,6 @@
-#' User Info
+#' S2_user_info
 #'
-#' Return information on a users coins budget
+#' Returns information on a users coins budget
 #'
 #' @return list where 'userId' is the Id of the current user, 'coins' is the
 #'   total number of coins acquired by the user, 'coinsUsed' the number of coins
@@ -20,6 +20,4 @@ S2_user_info <- function(){
 
   return(srvrsp)
 }
-
-# S2_user_info()
 
