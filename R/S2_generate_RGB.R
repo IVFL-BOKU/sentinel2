@@ -97,8 +97,8 @@ S2_generate_RGB <- function(granuleId,
                         destfile, granuleId, r, g, b, atmCorr)
   }
 
-  if (file.exists(destfile) & !isTRUE(overwrite)){
-    warning(destfile, " already exists! Use 'overwrite=TRUE'")
+  if (file.exists(destfile) && !isTRUE(overwrite)){
+    warning(destfile, " already exists! Use 'overwrite = TRUE' to overwrite")
     return(invisible(NULL))
   }
 

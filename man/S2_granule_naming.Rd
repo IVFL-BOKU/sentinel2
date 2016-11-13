@@ -19,15 +19,15 @@ will be truncated to avoid spaces and colons in the filename.)}
 
 \item{prefix}{character 'GRANULE' by default}
 
-\item{suffix}{character by default turns to 'L1C', if 'atmCorr = 0.0'. If
-'atmCorr != 0.0' in x, 'suffix' will become 'L2A'.}
+\item{suffix}{character by default turns to 'L1C', if '\code{atmCorr = 0.0}'.
+If '\code{atmCorr != 0.0}' in x, 'suffix' will become 'L2A'.}
 }
 \value{
 character name
 }
 \description{
-Creates filename to store granule, based on query response for a single
-  'granuleId'
+Creates a filename to store a downloaded 'granule', based on query response
+for a single 'granuleId'
 }
 \details{
 This function allows to alter the automatic naming behavior for
