@@ -15,6 +15,8 @@ spat_to_jgeom <- function(spat, round = Inf){
     g_type <- "MultiPolygon"
   } else if (any(grepl("SpatialPoints", class(spat)))){
     g_type <- "MultiPoint"
+  } else {
+    stop("Spatial object supplied as 'geometry' is not of class 'SpatialPoints' or 'SpatialPolygons'")
   }
 
   for (i in seq_along(spat)){
