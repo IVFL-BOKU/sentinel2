@@ -13,8 +13,7 @@ xy_to_jgeom(xy, round = Inf)
 \item{round}{number of digits to round coordinates to}
 }
 \value{
-a json geometry string of type 'Point', if only one xy pair is
- supplied, of type 'Polygon' otherwise
+a json geometry string of type 'MultiPoint'
 }
 \description{
 Turn a xy coordinates vector (1 point) or matrix (multiple points) into a
