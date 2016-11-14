@@ -1,0 +1,6 @@
+## ------------------------------------------------------------------------
+library(sentinel2)
+S2_initialize_user()
+granules = S2_query_granule(utm = '33UXP', dateMin = '2016-06-01', dateMax = '2016-06-30')
+granules
+

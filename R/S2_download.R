@@ -8,18 +8,30 @@
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
 #' @return logical vector indicating which downloads where successful
-#' @example
+#' @examples
 #' \dontrun{
 #'   # find, download and unzip a full granule
-#'   granules <- S2_query_granule(utm = '33UXP', dateMin = '2016-06-01', dateMax = '2016-06-30')
+#'   granules <- S2_query_granule(
+#'     utm = '33UXP',
+#'     dateMin = '2016-06-01',
+#'     dateMax = '2016-06-30'
+#'   )
 #'   S2_download(granules$url, granules$date)
 #'
 #'   # find and download a bunch of images
-#'   images <- S2_query_image(utm = '33UXP', dateMin = '2016-06-01', dateMax = '2016-06-30', band = 'B03')
+#'   images <- S2_query_image(
+#'     utm = '33UXP',
+#'     dateMin = '2016-06-01',
+#'     dateMax = '2016-06-30',
+#'     band = 'B03'
+#'   )
 #'   S2_download(images$url, paste0(images$date, '.', images$format))
 #'
 #'   # download particulat URL
-#'   S2_download('https://test%40s2%2Eboku%2Eeodc%2Eeu:test@s2.boku.eodc.eu/image/33148479', 'test.jp2')
+#'   S2_download(
+#'     'https://test%40s2%2Eboku%2Eeodc%2Eeu:test@s2.boku.eodc.eu/image/33148479',
+#'     'test.jp2'
+#'   )
 #' }
 
 S2_download <- function(url, destfile, zip = TRUE){
