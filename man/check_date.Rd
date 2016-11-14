@@ -10,7 +10,8 @@ check_date(x)
 \item{x}{a character string expected to have format 'YYYY-MM-DD'}
 }
 \value{
-NULL if x has a valid date of format 'YYYY-MM-DD'
+object of class 'Date', if x has a valid date of format 'YYYY-MM-DD',
+  otherwise an error is thrown
 }
 \description{
 Will check if date string is well formated and throw and error if not

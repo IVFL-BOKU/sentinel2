@@ -27,6 +27,10 @@ S2_put_ROI <- function(geometry,
     stop("Please supply 'dateMin' and 'dateMax' in format 'YYYY-MM-DD")
   }
 
+  if(check_date(dateMin) > check_date(dateMax)){
+    stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
+  }
+
   if (is.null(regionId)){
     stop("'regionId' not specified!",
          "\n-> If you want to update an existing 'roi', please supply valid 'regionId'",

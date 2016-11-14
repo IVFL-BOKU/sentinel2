@@ -10,9 +10,10 @@ format_date(x)
 \item{x}{a character string representing date/time as 'YYYY-MM-DD HH:MM:SS'}
 }
 \value{
-character of format 'YYYYMMDD'
+character of format 'YYYY-MM-DD'
 }
 \description{
-Simplifies the 'date' from 'YYYY-MM-DD HH:MM:SS' to 'YYYYMMDD' for filenaming
+Simplifies the 'date' from 'YYYY-MM-DD HH:MM:SS' to 'YYYY-MM-DD' for
+filenaming
 }
 

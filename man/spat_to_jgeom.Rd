@@ -12,8 +12,7 @@ spat_to_jgeom(spat, round = Inf)
 \item{round}{number of digits to round coordinates to}
 }
 \value{
-list of json geometries, where length of the list is the number of
- points or polygons in spat
+character string, a single json geometry
 }
 \description{
 Turn a SpatialPoints/PatialPolygons object into a json geometry string

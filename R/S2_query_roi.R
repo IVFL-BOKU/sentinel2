@@ -22,11 +22,17 @@ S2_query_roi <- function(dateMax      = Sys.Date(),
 
   # check inputs ---------------------------------------------------------------
   if (!is.null(dateSingle)){
+    check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
+  if(check_date(dateMin) > check_date(dateMax)){
+    stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
+  }
+
+  # prepare json geometry ------------------------------------------------------
   if (!is.null(geometry)) geometry <- roi_to_jgeom(geometry)
 
   # make named query list ------------------------------------------------------
