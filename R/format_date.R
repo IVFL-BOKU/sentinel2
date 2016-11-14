@@ -1,9 +1,10 @@
 #' Reformats date
 #'
-#' Simplifies the 'date' from 'YYYY-MM-DD HH:MM:SS' to 'YYYYMMDD' for filenaming
+#' Simplifies the 'date' from 'YYYY-MM-DD HH:MM:SS' to 'YYYY-MM-DD' for
+#' filenaming
 #'
 #' @param x a character string representing date/time as 'YYYY-MM-DD HH:MM:SS'
-#' @return character of format 'YYYYMMDD'
+#' @return character of format 'YYYY-MM-DD'
 
 
 format_date <- function(x){
