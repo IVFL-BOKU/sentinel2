@@ -11,7 +11,7 @@
 jgeom_to_SpatialPolygons <- function(x){
   rtrn <- vector(mode = "list", length = length(x))
   for (i in seq_along(x)){
-    ptrn <- "\\[[0-9]+[.]?[0-9]*,[0-9]+[.]?[0-9]*\\]"
+    ptrn <- "\\[-?[0-9]+[.]?[0-9]*,-?[0-9]+[.]?[0-9]*\\]"
     y    <- unlist(strsplit(x[i], split = '"coordinates":'))[2]
     y    <- unlist(regmatches(y, m = gregexpr(pattern = ptrn, text = y)))
     y    <- substr(y, start = 2, stop = nchar(y) - 1)
