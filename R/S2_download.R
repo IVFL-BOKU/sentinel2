@@ -1,27 +1,74 @@
 #' S2_download helper function
 #'
-#' Simple helper function to zip download and unzip i.e. a 'granule' in a single
-#'   step
+#' Simple helper function to download data (granules, images, QI data)
 #'
 #' @param url character (valid) url to download file from.
-#' @param destfile character download destination. If \code{zip = TRUE}, the
-#'   ending '.zip' will be attached to destfile (, if it is not already).
+#' @param destfile character download destination.
 #' @param zip logical if \code{TRUE}, the url will be downloaded as zip archive
 #'   and (automatically) unzipped in the parent directory of 'destfile'
-#' @return NULL
+#'   (plays any role only when downloading granules).
+#' @return logical vector indicating which downloads where successful
+#' @examples
+#' \dontrun{
+#'   # find, download and unzip a full granule
+#'   granules <- S2_query_granule(
+#'     utm = '33UXP',
+#'     dateMin = '2016-06-01',
+#'     dateMax = '2016-06-30'
+#'   )
+#'   S2_download(granules$url, granules$date)
+#'
+#'   # find and download a bunch of images
+#'   images <- S2_query_image(
+#'     utm = '33UXP',
+#'     dateMin = '2016-06-01',
+#'     dateMax = '2016-06-30',
+#'     band = 'B03'
+#'   )
+#'   S2_download(images$url, paste0(images$date, '.', images$format))
+#'
+#'   # download particulat URL
+#'   S2_download(
+#'     'https://test%40s2%2Eboku%2Eeodc%2Eeu:test@s2.boku.eodc.eu/image/33148479',
+#'     'test.jp2'
+#'   )
+#' }
 
 S2_download <- function(url, destfile, zip = TRUE){
+  url = as.character(url)
+  destfile = as.character(destfile)
+  stopifnot(
+    is.vector(url), length(url) > 0, is.vector(destfile),
+    is.vector(zip), is.logical(zip), length(zip) == 1, all(!is.na(zip)),
+    length(url) == length(destfile)
+  )
+  filter = !is.na(url)
+  url <- url[filter]
+  destfile <- destfile[filter]
+  stopifnot(all(!is.na(destfile)))
 
-  if (isTRUE(zip)){
+  if (zip) {
     url <- paste0(url, "?format=application/zip")
-    if (!grepl("[.]zip$", destfile)) destfile <- paste0(destfile, ".zip")
   }
 
-  curl::curl_download(url = url, destfile = destfile, quiet = TRUE)
+  success <- rep(FALSE, length(url))
+  for (i in seq_along(url)) {
+    try({
+      curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
 
-  if (isTRUE(zip)) utils::unzip(zipfile = destfile, exdir = dirname(destfile))
+      signature = readBin(destfile[i], 'raw', 4)
+      if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
+        destfile[i] = sub('[.]zip$', '', destfile[i])
+        zipfile = paste0(destfile[i], '.zip')
+        file.rename(destfile[i], zipfile)
+        utils::unzip(zipfile = zipfile, exdir = destfile[i])
+      }
 
-  return(invisible(NULL))
+      success[i] = TRUE
+    })
+  }
+
+  return(invisible(success))
 }
 
 

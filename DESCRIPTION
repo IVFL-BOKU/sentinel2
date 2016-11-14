@@ -17,8 +17,11 @@ Imports:
     sp
 Suggests:
     testthat,
-    covr
+    covr,
+    knitr,
+    rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
 RoxygenNote: 5.0.1

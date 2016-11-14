@@ -9,14 +9,42 @@ S2_download(url, destfile, zip = TRUE)
 \arguments{
 \item{url}{character (valid) url to download file from.}
 
-\item{destfile}{character download destination. If \code{zip = TRUE}, the
-ending '.zip' will be attached to destfile (, if it is not already).}
+\item{destfile}{character download destination.}
 
 \item{zip}{logical if \code{TRUE}, the url will be downloaded as zip archive
-and (automatically) unzipped in the parent directory of 'destfile'}
+and (automatically) unzipped in the parent directory of 'destfile'
+(plays any role only when downloading granules).}
+}
+\value{
+logical vector indicating which downloads where successful
 }
 \description{
-Simple helper function to zip download and unzip i.e. a 'granule' in a single
-  step
+Simple helper function to download data (granules, images, QI data)
+}
+\examples{
+\dontrun{
+  # find, download and unzip a full granule
+  granules <- S2_query_granule(
+    utm = '33UXP',
+    dateMin = '2016-06-01',
+    dateMax = '2016-06-30'
+  )
+  S2_download(granules$url, granules$date)
+
+  # find and download a bunch of images
+  images <- S2_query_image(
+    utm = '33UXP',
+    dateMin = '2016-06-01',
+    dateMax = '2016-06-30',
+    band = 'B03'
+  )
+  S2_download(images$url, paste0(images$date, '.', images$format))
+
+  # download particulat URL
+  S2_download(
+    'https://test\%40s2\%2Eboku\%2Eeodc\%2Eeu:test@s2.boku.eodc.eu/image/33148479',
+    'test.jp2'
+  )
+}
 }
 
