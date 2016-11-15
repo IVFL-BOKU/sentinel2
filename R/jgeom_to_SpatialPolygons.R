@@ -8,6 +8,7 @@
 #'   'retGeometry = 1'
 #' @return SpatialPolygons object of the geometry supplied via x
 
+
 jgeom_to_SpatialPolygons <- function(x){
   rtrn <- vector(mode = "list", length = length(x))
   for (i in seq_along(x)){
