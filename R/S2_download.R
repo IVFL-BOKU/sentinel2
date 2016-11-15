@@ -4,10 +4,12 @@
 #'
 #' @param url character (valid) url to download file from.
 #' @param destfile character download destination.
+#' @param skipExisting logical skip if file already exists.
 #' @param zip logical if \code{TRUE}, the url will be downloaded as zip archive
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
 #' @return logical vector indicating which downloads where successful
+#' @export
 #' @examples
 #' \dontrun{
 #'   # find, download and unzip a full granule
@@ -34,13 +36,14 @@
 #'   )
 #' }
 
-S2_download <- function(url, destfile, zip = TRUE){
+
+S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
     is.vector(url), length(url) > 0, is.vector(destfile),
-    is.vector(zip), is.logical(zip), length(zip) == 1, all(!is.na(zip)),
-    length(url) == length(destfile)
+    is.logical(skipExisting), is.vector(zip), is.logical(zip), length(zip) == 1,
+    all(!is.na(zip)), length(url) == length(destfile)
   )
   filter = !is.na(url)
   url <- url[filter]
@@ -53,6 +56,9 @@ S2_download <- function(url, destfile, zip = TRUE){
 
   success <- rep(FALSE, length(url))
   for (i in seq_along(url)) {
+
+    if (isTRUE(skipExisting) && file.exists(destfile[i])) next
+
     try({
       curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
 

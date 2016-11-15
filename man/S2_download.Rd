@@ -4,7 +4,7 @@
 \alias{S2_download}
 \title{S2_download helper function}
 \usage{
-S2_download(url, destfile, zip = TRUE)
+S2_download(url, destfile, zip = TRUE, skipExisting = TRUE)
 }
 \arguments{
 \item{url}{character (valid) url to download file from.}
@@ -14,6 +14,8 @@ S2_download(url, destfile, zip = TRUE)
 \item{zip}{logical if \code{TRUE}, the url will be downloaded as zip archive
 and (automatically) unzipped in the parent directory of 'destfile'
 (plays any role only when downloading granules).}
+
+\item{skipExisting}{logical skip if file already exists.}
 }
 \value{
 logical vector indicating which downloads where successful
