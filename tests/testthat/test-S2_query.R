@@ -1,5 +1,6 @@
 context('S2_query')
 S2_initialize_user()
+apiUrl = 'https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/'
 
 test_that('S2_query_image() works', {
   data = S2_query_image(
@@ -33,7 +34,31 @@ test_that('S2 downloads images', {
   })
 
   data = S2_query_image(imageId = 29392766)
-  S2_download(data$url, 'test.jp2', FALSE)
+  S2_download(data$url, 'test.jp2')
   expect_true(file.exists('test.jp2'))
-  expect_true(file.info('test.jp2')$size == 3190469)
+  expect_equal(file.info('test.jp2')$size, 3190469)
+})
+
+test_that('S2 downloads granules', {
+  if (file.exists('testDir.zip')) {
+    unlink('testDir.zip')
+  }
+  if (dir.exists('testDir')) {
+    system('rm -fR testDir')
+  }
+  on.exit({
+    if (file.exists('testDir.zip')) {
+      unlink('testDir.zip')
+    }
+    if (dir.exists('testDir')) {
+      system('rm -fR testDir')
+    }
+  })
+
+  S2_download(paste0(apiUrl, 'granule/1437243'), 'testDir')
+  expect_true(file.exists('testDir.zip'))
+  expect_equal(file.info('testDir.zip')$size, 6399441)
+  expect_true(dir.exists('testDir'))
+  dirSize = as.numeric(sub('[^0-9]*$', '', system('du -s testDir', intern = TRUE)))
+  expect_equal(dirSize, 9388)
 })
