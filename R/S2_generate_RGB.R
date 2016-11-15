@@ -40,14 +40,14 @@ S2_generate_RGB <- function(granuleId,
                             overwrite = FALSE){
 
   query <- S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
-  respo <- S2_do_query(query, path = "image")
+  # query <- S2_do_query(query, path = "image")
 
-  if (length(respo) == 0 && atmCorr == 0){
+  if (length(query) == 0 && atmCorr == 0){
 
     warning("Unable to process 'granuleId ", granuleId, "'. Not found in database!")
     return(invisible(NULL))
 
-  } else if (length(respo) == 0 && atmCorr == 1){
+  } else if (length(query) == 0 && atmCorr == 1){
 
     warning("Unable to process 'granuleId ", granuleId, "'. Maybe its not (yet) ",
          "atmospherically corrected!\n")
@@ -57,7 +57,8 @@ S2_generate_RGB <- function(granuleId,
 
   imageIds <- integer(3)
   for (i in seq_len(3)){
-    sel           <- respo[respo$band == c(r, g, b)[i] & respo$resolution >= resolution, , drop=FALSE]
+    # sel           <- query[query$band == c(r, g, b)[i] & query$resolution <= resolution, , drop=FALSE]
+    sel           <- query[query$band == c(r, g, b)[i], , drop=FALSE]
     sel           <- sel[order(sel$resolution)[1], , drop=FALSE]
 
     if (is.na(sel$url)){
