@@ -13,7 +13,7 @@ S2_do_query <- function(query, path){
   user     <- getOption("S2user")
   password <- getOption("S2password")
 
-  filter <- sapply(query, is.logical)
+  filter        <- sapply(query, is.logical)
   query[filter] <- as.numeric(query[filter])
 
   rtrn     <- httr::GET('https://s2.boku.eodc.eu',
@@ -24,6 +24,3 @@ S2_do_query <- function(query, path){
   return(rtrn)
 }
 
-
-# query <- S2_query_granule(utm = "33UWP", atmCorr = 1)
-# S2_do_query(query, path='granule')

@@ -2,7 +2,9 @@
 
 export(S2_buy_granule)
 export(S2_check_access)
+export(S2_download)
 export(S2_generate_RGB)
+export(S2_generate_names)
 export(S2_initialize_user)
 export(S2_put_ROI)
 export(S2_query_angle)
