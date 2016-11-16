@@ -2,53 +2,60 @@
 % Please edit documentation in R/S2_query_qiData.R
 \name{S2_query_qiData}
 \alias{S2_query_qiData}
-\title{Prepare a list to query database for 'qiData'}
+\title{Query database for 'qiData'}
 \usage{
-S2_query_qiData(atmCorr = NULL, band = NULL, broken = 0,
+S2_query_qiData(atmCorr = NULL, band = NULL, broken = FALSE,
   cloudCovMin = 0, cloudCovMax = 100, dateMax = Sys.Date(),
   dateMin = as.Date(dateMax) - 365, geometry = NULL, granule = NULL,
   granuleId = NULL, orbitNo = NULL, product = NULL, productId = NULL,
-  retGeometry = 0, utm = NULL, dateSingle = NULL, ...)
+  retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
-\item{atmCorr}{see wiki}
+\item{atmCorr}{logical if TRUE only results for atmospherically corrected
+data are returned.}
 
-\item{band}{see wiki}
+\item{band}{chracter spectral band: B01/B02/B03/B04/B05/B06/B07/B08/B8A/B09/
+B10/B11/B12/all/SCL/LAI/albedo - see sentinel2 documentation.}
 
-\item{broken}{see wiki}
+\item{broken}{logical, TRUE if the granule is marked as broken
+(almost for sure you want to use FALSE, the default).}
 
-\item{cloudCovMin}{see wiki}
+\item{cloudCovMin}{integer minimum cloud coverage from 0 to 100.}
 
-\item{cloudCovMax}{see wiki}
+\item{cloudCovMax}{integer maximum cloud coverage from 0 to 100.}
 
-\item{dateMax}{see wiki}
+\item{dateMax}{character end date of format "YYYY-MM-DD".}
 
-\item{dateMin}{see wiki}
+\item{dateMin}{character start date of format "YYYY-MM-DD".}
 
-\item{geometry}{see wiki}
+\item{geometry}{geometry which should intersect with granules. Can be a
+geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+the path to a Point/Polygon shapefile, a SpatialPoints object or a
+SpatialPolygons object.}
 
-\item{granule}{see wiki}
+\item{granule}{character ESA granule id.}
 
-\item{granuleId}{see wiki}
+\item{granuleId}{integer internal metadata database granule id.}
 
-\item{orbitNo}{see wiki}
+\item{orbitNo}{integer from 1 to 143.}
 
-\item{product}{see wiki}
+\item{product}{chracter ESA product id.}
 
-\item{productId}{see wiki}
+\item{productId}{integer internal metadata database product id.}
 
-\item{retGeometry}{see wiki}
+\item{retGeometry}{logical should product geometry be included in the response?}
 
-\item{utm}{see wiki}
+\item{utm}{character UTM zone, e.g. 33U, 01C.}
 
-\item{dateSingle}{see wiki}
+\item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
+date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{...}{further arguments, none implemented}
+\item{...}{further arguments, none implemented.}
 }
 \value{
-list of query arguments
+data.frame return of the database.
 }
 \description{
-Implements the query options for qiData found in the wiki
+Implements the query options for qiData described in the wiki.
 }
 

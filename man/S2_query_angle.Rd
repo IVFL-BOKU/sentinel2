@@ -4,10 +4,11 @@
 \alias{S2_query_angle}
 \title{Prepare a list to query database for 'angle'}
 \usage{
-S2_query_angle(angleType = NULL, band = NULL, broken = 0,
+S2_query_angle(angleType = NULL, band = NULL, broken = FALSE,
   dateMax = Sys.Date(), dateMin = as.Date(dateMax) - 365, geometry = NULL,
   granule = NULL, granuleId = NULL, orbitNo = NULL, product = NULL,
-  productId = NULL, retGeometry = 0, utm = NULL, dateSingle = NULL, ...)
+  productId = NULL, retGeometry = FALSE, utm = NULL, dateSingle = NULL,
+  ...)
 }
 \arguments{
 \item{angleType}{see wiki}
@@ -32,11 +33,12 @@ S2_query_angle(angleType = NULL, band = NULL, broken = 0,
 
 \item{productId}{see wiki}
 
-\item{retGeometry}{see wiki}
+\item{retGeometry}{logical should product geometry be included in the response?}
 
 \item{utm}{see wiki}
 
-\item{dateSingle}{see wiki}
+\item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
+date and will override \code{dateMin} and \code{dateMax}.}
 
 \item{...}{further arguments, none implemented}
 }

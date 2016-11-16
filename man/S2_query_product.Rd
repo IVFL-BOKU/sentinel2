@@ -2,40 +2,45 @@
 % Please edit documentation in R/S2_query_product.R
 \name{S2_query_product}
 \alias{S2_query_product}
-\title{Prepare a list to query database for 'product'}
+\title{Query database for 'product'}
 \usage{
 S2_query_product(atmCorr = NULL, dateMax = Sys.Date(),
   dateMin = as.Date(dateMax) - 365, geometry = NULL, orbitDir = NULL,
-  orbitNo = NULL, product = NULL, productId = NULL, retGeometry = 0,
+  orbitNo = NULL, product = NULL, productId = NULL, retGeometry = FALSE,
   dateSingle = NULL, ...)
 }
 \arguments{
-\item{atmCorr}{see wiki}
+\item{atmCorr}{logical if TRUE only results for atmospherically corrected
+data are returned.}
 
-\item{dateMax}{see wiki}
+\item{dateMax}{character end date of format "YYYY-MM-DD".}
 
-\item{dateMin}{see wiki}
+\item{dateMin}{character start date of format "YYYY-MM-DD".}
 
-\item{geometry}{see wiki}
+\item{geometry}{geometry which should intersect with granules. Can be a
+geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+the path to a Point/Polygon shapefile, a SpatialPoints object or a
+SpatialPolygons object.}
 
-\item{orbitDir}{see wiki}
+\item{orbitDir}{character NULL or one of c("DESCENDING", "ASCENDING").}
 
-\item{orbitNo}{see wiki}
+\item{orbitNo}{integer from 1 to 143.}
 
-\item{product}{see wiki}
+\item{product}{charactrer ESA product id.}
 
-\item{productId}{see wiki}
+\item{productId}{internal metadata database product id.}
 
-\item{retGeometry}{see wiki}
+\item{retGeometry}{logical should product geometry be included in the response?}
 
-\item{dateSingle}{see wiki}
+\item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
+date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{...}{further arguments, none implemented}
+\item{...}{further arguments, none implemented.}
 }
 \value{
-list of query arguments
+data.frame return of the database.
 }
 \description{
-Implements the query options for 'product' found in the wiki
+Implements the query options for 'product' described in the wiki.
 }
 

@@ -1,32 +1,40 @@
 #' Prepare a list to query database for 'image'
 #'
-#' Implements the query options for 'images' found in the wiki
+#' Implements the query options for 'images' described in the wiki.
 #'
-#' @param atmCorr see wiki
-#' @param broken see wiki
-#' @param band see wiki
-#' @param cloudCovMin see wiki
-#' @param cloudCovMax see wiki
-#' @param dateMax see wiki
-#' @param dateMin see wiki
-#' @param geometry see wiki
-#' @param granule see wiki
-#' @param granuleId see wiki
-#' @param imageId see wiki
-#' @param orbitNo see wiki
-#' @param product see wiki
-#' @param productId see wiki
-#' @param resolution see wiki
-#' @param retGeometry see wiki
-#' @param utm see wiki
-#' @param dateSingle see wiki
-#' @param ... further arguments, none implemented
-#' @return list of query arguments
+#' @param atmCorr  logical if TRUE only results for atmospherically corrected
+#'   data are returned.
+#' @param broken logical, TRUE if the granule is marked as broken
+#'   (almost for sure you want to use FALSE, the default).
+#' @param band chracter spectral band: B01/B02/B03/B04/B05/B06/B07/B08/B8A/B09/
+#'   B10/B11/B12/all/SCL/LAI/albedo - see sentinel2 documentation.
+#' @param cloudCovMin integer minimum cloud coverage from 0 to 100.
+#' @param cloudCovMax integer maximum cloud coverage from 0 to 100.
+#' @param dateMax character end date of format "YYYY-MM-DD".
+#' @param dateMin character start date of format "YYYY-MM-DD".
+#' @param geometry geometry which should intersect with granules. Can be a
+#'   geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+#'   the path to a Point/Polygon shapefile, a SpatialPoints object or a
+#'   SpatialPolygons object.
+#' @param granule character ESA granule id.
+#' @param granuleId integer internal metadata database granule id.
+#' @param imageId integer internal metadata database image id.
+#' @param orbitNo integer from 1 to 143.
+#' @param product chracter ESA product id.
+#' @param productId integer internal metadata database product id.
+#' @param resolution integer spatial resolution [m]: 60/20/10
+#'   (resolution depends on the spectral band).
+#' @param retGeometry logical should product geometry be included in the response?
+#' @param utm character UTM zone, e.g. 33U, 01C.
+#' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
+#'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param ... further arguments, none implemented.
+#' @return data.frame return of the database.
 #' @export
 
 S2_query_image <- function(atmCorr      = NULL,
                            band         = NULL,
-                           broken       = 0,
+                           broken       = FALSE,
                            cloudCovMin  = 0,
                            cloudCovMax  = 100,
                            dateMax      = Sys.Date(),
@@ -39,7 +47,7 @@ S2_query_image <- function(atmCorr      = NULL,
                            product      = NULL,
                            productId    = NULL,
                            resolution   = NULL,
-                           retGeometry  = 0,
+                           retGeometry  = FALSE,
                            utm          = NULL,
                            dateSingle   = NULL,
                            ...){

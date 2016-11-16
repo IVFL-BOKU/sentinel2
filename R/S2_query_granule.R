@@ -1,27 +1,33 @@
-#' Prepare a list to query database for 'granule'
+#' Query database for 'granule'
 #'
-#' Implements the query options for granule found in the wiki
-#' @param atmCorr see wiki
-#' @param broken see wiki
-#' @param cloudCovMin see wiki
-#' @param cloudCovMax see wiki
-#' @param dateMax see wiki
-#' @param dateMin see wiki
-#' @param geometry see wiki
-#' @param granule see wiki
-#' @param granuleId see wiki
-#' @param orbitNo see wiki
-#' @param product see wiki
-#' @param productId see wiki
-#' @param retGeometry see wiki
-#' @param utm see wiki
-#' @param dateSingle see wiki
-#' @param ... further arguments, none implemented
-#' @return list of query arguments
+#' Implements the query options for granule described in the wiki.
+#' @param atmCorr  logical if TRUE only results for atmospherically corrected
+#'   data are returned.
+#' @param broken logical, TRUE if the granule is marked as broken
+#'   (almost for sure you want to use FALSE, the default).
+#' @param cloudCovMin integer minimum cloud coverage from 0 to 100.
+#' @param cloudCovMax integer maximum cloud coverage from 0 to 100.
+#' @param dateMax character end date of format "YYYY-MM-DD".
+#' @param dateMin character start date of format "YYYY-MM-DD".
+#' @param geometry geometry which should intersect with granules. Can be a
+#'   geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+#'   the path to a Point/Polygon shapefile, a SpatialPoints object or a
+#'   SpatialPolygons object.
+#' @param granule character ESA granule id.
+#' @param granuleId integer internal metadata database granule id.
+#' @param orbitNo integer from 1 to 143.
+#' @param product chracter ESA product id.
+#' @param productId integer internal metadata database product id.
+#' @param retGeometry logical should product geometry be included in the response?
+#' @param utm character UTM zone, e.g. 33U, 01C.
+#' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
+#'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param ... further arguments, none implemented.
+#' @return data.frame return of the database.
 #' @export
 
 S2_query_granule <- function(atmCorr      = NULL,
-                             broken       = 0,
+                             broken       = FALSE,
                              cloudCovMin  = 0,
                              cloudCovMax  = 100,
                              dateMax      = Sys.Date(),
@@ -32,7 +38,7 @@ S2_query_granule <- function(atmCorr      = NULL,
                              orbitNo      = NULL,
                              product      = NULL,
                              productId    = NULL,
-                             retGeometry  = 0,
+                             retGeometry  = FALSE,
                              utm          = NULL,
                              dateSingle   = NULL,
                              ...){

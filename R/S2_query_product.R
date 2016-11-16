@@ -1,18 +1,23 @@
-#' Prepare a list to query database for 'product'
+#' Query database for 'product'
 #'
-#' Implements the query options for 'product' found in the wiki
-#' @param atmCorr see wiki
-#' @param dateMax see wiki
-#' @param dateMin see wiki
-#' @param geometry see wiki
-#' @param orbitDir see wiki
-#' @param orbitNo see wiki
-#' @param product see wiki
-#' @param productId see wiki
-#' @param retGeometry see wiki
-#' @param dateSingle see wiki
-#' @param ... further arguments, none implemented
-#' @return list of query arguments
+#' Implements the query options for 'product' described in the wiki.
+#' @param atmCorr logical if TRUE only results for atmospherically corrected
+#'   data are returned.
+#' @param dateMax character end date of format "YYYY-MM-DD".
+#' @param dateMin character start date of format "YYYY-MM-DD".
+#' @param geometry geometry which should intersect with granules. Can be a
+#'   geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+#'   the path to a Point/Polygon shapefile, a SpatialPoints object or a
+#'   SpatialPolygons object.
+#' @param orbitDir character NULL or one of c("DESCENDING", "ASCENDING").
+#' @param orbitNo integer from 1 to 143.
+#' @param product charactrer ESA product id.
+#' @param productId internal metadata database product id.
+#' @param retGeometry logical should product geometry be included in the response?
+#' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
+#'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param ... further arguments, none implemented.
+#' @return data.frame return of the database.
 #' @export
 
 S2_query_product <- function(atmCorr      = NULL,
@@ -23,11 +28,14 @@ S2_query_product <- function(atmCorr      = NULL,
                              orbitNo      = NULL,
                              product      = NULL,
                              productId    = NULL,
-                             retGeometry  = 0,
+                             retGeometry  = FALSE,
                              dateSingle   = NULL,
                              ...){
 
+
   # check inputs ---------------------------------------------------------------
+  if (!is.null(orbitDir)) orbitDir <- match.arg(orbitDir)
+
   if (!is.null(dateSingle)){
     check_date(dateSingle)
     dateMin    <- dateSingle

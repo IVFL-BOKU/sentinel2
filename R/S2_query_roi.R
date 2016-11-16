@@ -1,15 +1,19 @@
-#' Prepare a list to query database for 'roi'
+#' Query database for 'roi'
 #'
-#' Implements the query options for roi found in the wiki
+#' Implements the query options for roi described in the wiki.
 #'
-#' @param dateMax see wiki
-#' @param dateMin see wiki
-#' @param geometry see wiki
-#' @param regionId see wiki
-#' @param utm see wiki
-#' @param dateSingle see wiki
-#' @param ... further arguments, none implemented
-#' @return list of query arguments
+#' @param dateMax character end date of format "YYYY-MM-DD".
+#' @param dateMin character start date of format "YYYY-MM-DD".
+#' @param geometry geometry which should intersect with granules. Can be a
+#'   geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+#'   the path to a Point/Polygon shapefile, a SpatialPoints object or a
+#'   SpatialPolygons object.
+#' @param regionId chracter name of the 'roi'
+#' @param utm character UTM zone, e.g. 33U, 01C.
+#' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
+#'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param ... further arguments, none implemented.
+#' @return data.frame return of the database.
 #' @export
 
 S2_query_roi <- function(dateMax      = Sys.Date(),

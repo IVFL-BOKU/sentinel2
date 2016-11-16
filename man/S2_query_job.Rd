@@ -2,46 +2,50 @@
 % Please edit documentation in R/S2_query_job.R
 \name{S2_query_job}
 \alias{S2_query_job}
-\title{Prepare a list to query database for 'job'}
+\title{Query database for 'job'}
 \usage{
 S2_query_job(dateMax = Sys.Date(), dateMin = as.Date(dateMax) - 365,
-  ended = 1, failed = 0, geometry = NULL, jobId = NULL,
-  granule = NULL, granuleId = NULL, product = NULL, productId = NULL,
-  retGeometry = 0, started = NULL, dateSingle = NULL, ...)
+  started = NULL, ended = NULL, failed = NULL, geometry = NULL,
+  jobId = NULL, granule = NULL, granuleId = NULL, product = NULL,
+  productId = NULL, retGeometry = FALSE, dateSingle = NULL, ...)
 }
 \arguments{
-\item{dateMax}{see wiki}
+\item{dateMax}{character end date of format "YYYY-MM-DD".}
 
-\item{dateMin}{see wiki}
+\item{dateMin}{character start date of format "YYYY-MM-DD".}
 
-\item{ended}{see wiki}
+\item{started}{logical, TRUE if job has started.}
 
-\item{failed}{see wiki}
+\item{ended}{logical, TRUE if job has ended.}
 
-\item{geometry}{see wiki}
+\item{failed}{logical, TRUE if job has failed.}
 
-\item{jobId}{see wiki}
+\item{geometry}{geometry which should intersect with granules. Can be a
+geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+the path to a Point/Polygon shapefile, a SpatialPoints object or a
+SpatialPolygons object.}
 
-\item{granule}{see wiki}
+\item{jobId}{character internal metadata database job id.}
 
-\item{granuleId}{see wiki}
+\item{granule}{character ESA granule id.}
 
-\item{product}{see wiki}
+\item{granuleId}{integer internal metadata database granule id.}
 
-\item{productId}{see wiki}
+\item{product}{chracter ESA product id.}
 
-\item{retGeometry}{see wiki}
+\item{productId}{integer internal metadata database product id.}
 
-\item{started}{see wiki}
+\item{retGeometry}{logical should product geometry be included in the response?}
 
-\item{dateSingle}{see wiki}
+\item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
+date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{...}{further arguments, none implemented}
+\item{...}{further arguments, none implemented.}
 }
 \value{
-list of query arguments
+data.frame return of the database.
 }
 \description{
-Implements the query options for 'job' found in the wiki
+Implements the query options for 'job' described in the wiki.
 }
 

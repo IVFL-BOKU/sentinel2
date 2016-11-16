@@ -12,16 +12,17 @@
 #' @param orbitNo see wiki
 #' @param product see wiki
 #' @param productId see wiki
-#' @param retGeometry see wiki
+#' @param retGeometry logical should product geometry be included in the response?
 #' @param utm see wiki
-#' @param dateSingle see wiki
+#' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
+#'   date and will override \code{dateMin} and \code{dateMax}.
 #' @param ... further arguments, none implemented
 #' @return list of query arguments
 #' @export
 
 S2_query_angle <- function(angleType    = NULL,
                            band         = NULL,
-                           broken       = 0,
+                           broken       = FALSE,
                            dateMax      = Sys.Date(),
                            dateMin      = as.Date(dateMax) - 365,
                            geometry     = NULL,
@@ -30,7 +31,7 @@ S2_query_angle <- function(angleType    = NULL,
                            orbitNo      = NULL,
                            product      = NULL,
                            productId    = NULL,
-                           retGeometry  = 0,
+                           retGeometry  = FALSE,
                            utm          = NULL,
                            dateSingle   = NULL,
                            ...){

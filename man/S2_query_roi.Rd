@@ -2,30 +2,34 @@
 % Please edit documentation in R/S2_query_roi.R
 \name{S2_query_roi}
 \alias{S2_query_roi}
-\title{Prepare a list to query database for 'roi'}
+\title{Query database for 'roi'}
 \usage{
 S2_query_roi(dateMax = Sys.Date(), dateMin = as.Date(dateMax) - 365,
   geometry = NULL, regionId = NULL, utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
-\item{dateMax}{see wiki}
+\item{dateMax}{character end date of format "YYYY-MM-DD".}
 
-\item{dateMin}{see wiki}
+\item{dateMin}{character start date of format "YYYY-MM-DD".}
 
-\item{geometry}{see wiki}
+\item{geometry}{geometry which should intersect with granules. Can be a
+geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
+the path to a Point/Polygon shapefile, a SpatialPoints object or a
+SpatialPolygons object.}
 
-\item{regionId}{see wiki}
+\item{regionId}{chracter name of the 'roi'}
 
-\item{utm}{see wiki}
+\item{utm}{character UTM zone, e.g. 33U, 01C.}
 
-\item{dateSingle}{see wiki}
+\item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
+date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{...}{further arguments, none implemented}
+\item{...}{further arguments, none implemented.}
 }
 \value{
-list of query arguments
+data.frame return of the database.
 }
 \description{
-Implements the query options for roi found in the wiki
+Implements the query options for roi described in the wiki.
 }
 
