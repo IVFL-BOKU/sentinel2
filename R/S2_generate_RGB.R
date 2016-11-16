@@ -6,9 +6,14 @@
 #' @param granuleId integer the granuleId for which to create the RGB composite
 #' @param destfile character path to the output file. If destfile is a path to
 #'   an existing directory, a filename will be automatically generated. If NULL,
-#'   the file will be saved to the current working directory. If a filename is
-#'   supplied, it will have to have a '.tif' extension.
-#' @param resolution integer desired (minimum) resolution, typically 10, 20 or 60.
+#'   the file will be saved to the current working directory using an
+#'   automatically generated name. If a filename is supplied, it will be
+#'   recognized by its '.tiff' extension.
+#' @param resolution character one of \code{c("highest", "lowest")}. Images may
+#'   exist for several resolutions (10m, 20m, 60m), for some Sentinel-2 bands.
+#'   Using "highest" will use the highest available spatial resolution for each
+#'   band, "lowest"  will use the lowest available spatial resolution for each
+#'   band.
 #' @param atmCorr 0 (default) or 1, if atmospherically corrected bands should be
 #'   used
 #' @param r character red band, e.g. "B08"
@@ -26,8 +31,8 @@
 
 S2_generate_RGB <- function(granuleId,
                             destfile = NULL,
-                            resolution = 10,
-                            atmCorr = 0,
+                            resolution = c("highest", "lowest"),
+                            atmCorr = TRUE,
                             r = "B08",
                             g = "B04",
                             b = "B03",
@@ -39,15 +44,17 @@ S2_generate_RGB <- function(granuleId,
                             bb = 20,
                             overwrite = FALSE){
 
-  query <- S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
-  # query <- S2_do_query(query, path = "image")
+  resolution <- match.arg(resolution)
+  resolution <- switch(resolution, "highest" = FALSE, "lowest" = TRUE)
 
-  if (length(query) == 0 && atmCorr == 0){
+  query      <- S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
+
+  if (length(query) == 0 && !isTRUE(atmCorr)){
 
     warning("Unable to process 'granuleId ", granuleId, "'. Not found in database!")
     return(invisible(NULL))
 
-  } else if (length(query) == 0 && atmCorr == 1){
+  } else if (length(query) == 0 && isTRUE(atmCorr)){
 
     warning("Unable to process 'granuleId ", granuleId, "'. Maybe its not (yet) ",
          "atmospherically corrected!\n")
@@ -55,11 +62,13 @@ S2_generate_RGB <- function(granuleId,
 
   }
 
-  imageIds <- integer(3)
+  imageIds       <- integer(3)
+  min_resolution <- Inf
+
   for (i in seq_len(3)){
-    # sel           <- query[query$band == c(r, g, b)[i] & query$resolution <= resolution, , drop=FALSE]
-    sel           <- query[query$band == c(r, g, b)[i], , drop=FALSE]
-    sel           <- sel[order(sel$resolution)[1], , drop=FALSE]
+    sel            <- query[query$band == c(r, g, b)[i], , drop=FALSE]
+    sel            <- sel[order(sel$resolution, decreasing = resolution)[1], , drop=FALSE]
+    min_resolution <- min(c(min_resolution, sel$resolution))
 
     if (is.na(sel$url)){
       warning("Access to image denied. You seem to lack permission to download file!")
@@ -68,6 +77,14 @@ S2_generate_RGB <- function(granuleId,
 
     imageIds[i]   <- sel[, "imageId"]
   }
+  # Generate filename ----------------------------------------------------------
+  autoname <- sprintf("RGB_%s_%s_%s_%sm_%s_%s_%s_Id%s_%s.tif",
+                      r, g, b, min_resolution,
+                      unique(format_date(query$date)),
+                      unique(query$utm),
+                      unique(query$orbit),
+                      granuleId, ifelse(atmCorr, "L2A", "L1C"))
+
 
   query <- list(r = imageIds[1],
                 g = imageIds[2],
@@ -89,14 +106,13 @@ S2_generate_RGB <- function(granuleId,
 
 
   if (is.null(destfile)){
-    destfile <- sprintf("granuleId_%s_r_%s_g_%s_b_%s_atmCorr_%s.tif",
-                        granuleId, r, g, b, atmCorr)
+    destfile <- autoname
   }
 
   if (dir.exists(destfile)){
-    destfile <- sprintf("%s/granuleId_%s_r_%s_g_%s_b_%s_atmCorr_%s.tif",
-                        destfile, granuleId, r, g, b, atmCorr)
+    destfile <- sprintf("%s/%s", destfile, autoname)
   }
+
 
   if (file.exists(destfile) && !isTRUE(overwrite)){
     warning(destfile, " already exists! Use 'overwrite = TRUE' to overwrite")

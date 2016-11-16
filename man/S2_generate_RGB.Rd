@@ -4,19 +4,24 @@
 \alias{S2_generate_RGB}
 \title{Generate RGB image and download}
 \usage{
-S2_generate_RGB(granuleId, destfile = NULL, resolution = 10, atmCorr = 0,
-  r = "B08", g = "B04", b = "B03", ra = 20, ga = 20, ba = 20,
-  rb = 20, gb = 20, bb = 20, overwrite = FALSE)
+S2_generate_RGB(granuleId, destfile = NULL, resolution = c("highest",
+  "lowest"), atmCorr = TRUE, r = "B08", g = "B04", b = "B03", ra = 20,
+  ga = 20, ba = 20, rb = 20, gb = 20, bb = 20, overwrite = FALSE)
 }
 \arguments{
 \item{granuleId}{integer the granuleId for which to create the RGB composite}
 
 \item{destfile}{character path to the output file. If destfile is a path to
 an existing directory, a filename will be automatically generated. If NULL,
-the file will be saved to the current working directory. If a filename is
-supplied, it will have to have a '.tif' extension.}
+the file will be saved to the current working directory using an
+automatically generated name. If a filename is supplied, it will be
+recognized by its '.tiff' extension.}
 
-\item{resolution}{integer desired (minimum) resolution, typically 10, 20 or 60.}
+\item{resolution}{character one of \code{c("highest", "lowest")}. Images may
+exist for several resolutions (10m, 20m, 60m), for some Sentinel-2 bands.
+Using "highest" will use the highest available spatial resolution for each
+band, "lowest"  will use the lowest available spatial resolution for each
+band.}
 
 \item{atmCorr}{0 (default) or 1, if atmospherically corrected bands should be
 used}
