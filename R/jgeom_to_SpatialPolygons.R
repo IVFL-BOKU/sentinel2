@@ -28,7 +28,7 @@ jgeom_to_SpatialPolygons <- function(x){
     rtrn[[i]] <- y
   }
   if (length(rtrn) == 1){
-    rtrn <- unlist(rtrn)
+    rtrn <- rtrn[[1]]
   } else {
     rtrn <- do.call(raster::bind, rtrn)
   }
