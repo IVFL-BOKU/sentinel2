@@ -60,5 +60,5 @@ test_that('S2 downloads granules', {
   expect_equal(file.info('testDir.zip')$size, 6399441)
   expect_true(dir.exists('testDir'))
   dirSize = as.numeric(sub('[^0-9]*$', '', system('du -s testDir', intern = TRUE)))
-  expect_lt(abs(dirSize - 9388), 32)
+  expect_lt(abs(dirSize - 9388), 200)
 })
