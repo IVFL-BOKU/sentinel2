@@ -13,7 +13,7 @@
 
 
 S2_vrt_L2Agranule <- function(granule, verbose = FALSE){
-  if (nchar(Sys.which("gdalbuildvrt")) != 0){
+  if (nchar(Sys.which("gdalbuildvrt")) == 0){
 
     if (isTRUE(verbose)){
       warning("Unable to find 'gdalbuildvrt' -> virtual raster creation skipped!")
