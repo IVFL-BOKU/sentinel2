@@ -20,6 +20,7 @@
 #' @param granuleId integer internal metadata database granule id.
 #' @param imageId integer internal metadata database image id.
 #' @param orbitNo integer from 1 to 143.
+#' @param owned logical when TRUE only already bought granules will be returned.
 #' @param product chracter ESA product id.
 #' @param productId integer internal metadata database product id.
 #' @param resolution integer spatial resolution [m]: 60/20/10
@@ -44,6 +45,7 @@ S2_query_image <- function(atmCorr      = NULL,
                            granuleId    = NULL,
                            imageId      = NULL,
                            orbitNo      = NULL,
+                           owned        = FALSE,
                            product      = NULL,
                            productId    = NULL,
                            resolution   = NULL,

@@ -7,9 +7,9 @@
 S2_query_image(atmCorr = NULL, band = NULL, broken = FALSE,
   cloudCovMin = 0, cloudCovMax = 100, dateMax = Sys.Date(),
   dateMin = as.Date(dateMax) - 365, geometry = NULL, granule = NULL,
-  granuleId = NULL, imageId = NULL, orbitNo = NULL, product = NULL,
-  productId = NULL, resolution = NULL, retGeometry = FALSE, utm = NULL,
-  dateSingle = NULL, ...)
+  granuleId = NULL, imageId = NULL, orbitNo = NULL, owned = FALSE,
+  product = NULL, productId = NULL, resolution = NULL,
+  retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -41,6 +41,8 @@ SpatialPolygons object.}
 \item{imageId}{integer internal metadata database image id.}
 
 \item{orbitNo}{integer from 1 to 143.}
+
+\item{owned}{logical when TRUE only already bought granules will be returned.}
 
 \item{product}{chracter ESA product id.}
 

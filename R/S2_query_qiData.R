@@ -18,6 +18,7 @@
 #' @param granule character ESA granule id.
 #' @param granuleId integer internal metadata database granule id.
 #' @param orbitNo integer from 1 to 143.
+#' @param owned logical when TRUE only already bought granules will be returned.
 #' @param product chracter ESA product id.
 #' @param productId integer internal metadata database product id.
 #' @param retGeometry logical should product geometry be included in the response?
@@ -39,6 +40,7 @@ S2_query_qiData <- function(atmCorr      = NULL,
                             granule      = NULL,
                             granuleId    = NULL,
                             orbitNo      = NULL,
+                            owned        = FALSE,
                             product      = NULL,
                             productId    = NULL,
                             retGeometry  = FALSE,

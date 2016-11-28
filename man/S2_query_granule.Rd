@@ -7,8 +7,8 @@
 S2_query_granule(atmCorr = NULL, broken = FALSE, cloudCovMin = 0,
   cloudCovMax = 100, dateMax = Sys.Date(), dateMin = as.Date(dateMax) -
   365, geometry = NULL, granule = NULL, granuleId = NULL,
-  orbitNo = NULL, product = NULL, productId = NULL, retGeometry = FALSE,
-  utm = NULL, dateSingle = NULL, ...)
+  orbitNo = NULL, owned = FALSE, product = NULL, productId = NULL,
+  retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -35,6 +35,8 @@ SpatialPolygons object.}
 \item{granuleId}{integer internal metadata database granule id.}
 
 \item{orbitNo}{integer from 1 to 143.}
+
+\item{owned}{logical when TRUE only already bought granules will be returned.}
 
 \item{product}{chracter ESA product id.}
 
