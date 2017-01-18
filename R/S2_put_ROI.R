@@ -51,8 +51,8 @@ S2_put_ROI <- function(geometry,
   user     <- getOption("S2user")
   password <- getOption("S2password")
   url      <- httr::modify_url('https://s2.boku.eodc.eu',
-                               username = URLencode(user, reserved = TRUE),
-                               password = URLencode(password, reserved = TRUE),
+                               username = utils::URLencode(user, reserved = TRUE),
+                               password = utils::URLencode(password, reserved = TRUE),
                                path   = list("roi", regionId))
   rtrn     <- httr::PUT(url = url, body = body_l, encode = "form",
                         httr::content_type('application/x-www-form-urlencoded'))
