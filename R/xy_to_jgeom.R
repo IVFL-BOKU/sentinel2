@@ -15,6 +15,8 @@ xy_to_jgeom <- function(xy, round = Inf){
 
   stopifnot(all(c("x", "y") %in% colnames(poi_xy)))
 
+  poi_xy <- round(poi_xy[, c("x", "y"), drop = FALSE], digits = round)
+
   # if (nrow(poi_xy) == 1){
   #
   #   poi_xy <- data.frame(round(poi_xy, round))
@@ -33,7 +35,7 @@ xy_to_jgeom <- function(xy, round = Inf){
 
   g_type <- "MultiPoint"
 
-  poi_xy <- data.frame(apply(round(poi_xy, round), 2, as.character))
+  # poi_xy <- data.frame(apply(round(poi_xy, round), 2, as.character))
   poi_xy <- with(poi_xy, paste(sprintf("[%s,%s]", x, y), collapse=","))
   # poi_xy <- sprintf("[%s]", poi_xy)
 
