@@ -8,12 +8,14 @@
 #'   acquision date.
 #'
 #' @param x is the returned data \code{S2_query_granule} or \code{S2_query_image}
+#' @param destdir character destination to save downloaded files to. Will be
+#'     created (recursivcely), if it does not exist.
 #' @param ... arguments passed to S2_naming()
 #' @return character names
 #' @export
 
 
-S2_generate_names <- function(x, ...){
+S2_generate_names <- function(x, destdir = NULL, ...){
 
   g_cols  <- c("granuleId", "productId", "product", "granule", "date", "processDate",
                "utm", "orbit", "cloudCov", "atmCorr", "broken", "url")
@@ -28,7 +30,6 @@ S2_generate_names <- function(x, ...){
                        prefix = "GRANULE",
                        order  = list("date", "utm", "orbit", Id="granuleId"),
                        ...)
-    return(rtrn)
 
   } else if (all(colnames(x) %in% i_cols)){
 
@@ -37,9 +38,14 @@ S2_generate_names <- function(x, ...){
                        order  = list("date", "utm", "orbit", "band", "resolution", Id="imageId"),
                        extension = paste0(".", x$format),
                        ...)
-    return(rtrn)
 
   }
 
+  if (!is.null(destdir)){
+    if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
+    rtrn <- file.path(destdir, rtrn)
+  }
+
+  return(rtrn)
 }
 

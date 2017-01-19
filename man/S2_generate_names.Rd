@@ -4,10 +4,13 @@
 \alias{S2_generate_names}
 \title{S2_granule_naming}
 \usage{
-S2_generate_names(x, ...)
+S2_generate_names(x, destdir = NULL, ...)
 }
 \arguments{
 \item{x}{is the returned data \code{S2_query_granule} or \code{S2_query_image}}
+
+\item{destdir}{character destination to save downloaded files to. Will be
+created (recursivcely), if it does not exist.}
 
 \item{...}{arguments passed to S2_naming()}
 }
