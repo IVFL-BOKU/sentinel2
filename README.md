@@ -12,5 +12,5 @@ Accessing https://s2.boku.eodc.eu Sentinel-2 API made easy.
 
 ## First Steps
 
-* Take a look at the [vignette](https://github.com/IVFL-BOKU/sentinel2/blob/master/vignettes/introduction.Rmd) for a quick introduction to the package.
-* You can access the vignette within R by typing `vignette('introduction', package='sentinel2')`.
+* Take a look at the [introduction](https://github.com/IVFL-BOKU/sentinel2/blob/master/vignettes/introduction.Rmd) vignette of the package to get started.
+* You can also access the vignette within R by typing `vignette('introduction', package='sentinel2')`.
