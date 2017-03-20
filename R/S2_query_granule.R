@@ -23,8 +23,11 @@
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param spatial logical, if TRUE an object of class SpatialPolygonsDataFrame
+#'   is returned.
 #' @param ... further arguments, none implemented.
-#' @return data.frame return of the database.
+#' @return data.frame return of the database. If \code{spatial = TRUE} an object
+#'   of class SpatialPolygonsDataFrame is returned.
 #' @export
 
 S2_query_granule <- function(atmCorr      = NULL,
@@ -43,9 +46,12 @@ S2_query_granule <- function(atmCorr      = NULL,
                              retGeometry  = FALSE,
                              utm          = NULL,
                              dateSingle   = NULL,
+                             spatial      = FALSE,
                              ...){
 
   # check inputs ---------------------------------------------------------------
+  if(isTRUE(spatial)) retGeometry <- TRUE
+
   if (!is.null(dateSingle)){
     check_date(dateSingle)
     dateMin    <- dateSingle
@@ -66,6 +72,13 @@ S2_query_granule <- function(atmCorr      = NULL,
 
   # return query list ----------------------------------------------------------
   rtrn  <- S2_do_query(query = query, path = 'granule')
+
+  if (isTRUE(spatial)){
+    polys <- jgeom_to_SpatialPolygons(rtrn$geometry)
+    rtrn  <- sp::SpatialPolygonsDataFrame(Sr = polys,
+                                          data = rtrn[, colnames(rtrn) != "geometry"])
+  }
+
   return(rtrn)
 }
 

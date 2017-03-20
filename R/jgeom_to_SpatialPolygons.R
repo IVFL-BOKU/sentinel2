@@ -22,16 +22,11 @@ jgeom_to_SpatialPolygons <- function(x){
     hull <- grDevices::chull(y)
     y    <- y[c(hull, hull[1]), ]
     y    <- sp::Polygon(y)
-    y    <- sp::Polygons(list(y), ID=1)
-    y    <- sp::SpatialPolygons(list(y), proj4string = raster::crs(raster::raster()))
+    y    <- sp::Polygons(list(y), ID=i)
 
     rtrn[[i]] <- y
   }
-  if (length(rtrn) == 1){
-    rtrn <- rtrn[[1]]
-  } else {
-    rtrn <- do.call(raster::bind, rtrn)
-  }
+  rtrn    <- sp::SpatialPolygons(rtrn, proj4string = raster::crs(raster::raster()))
 
   return(rtrn)
 }

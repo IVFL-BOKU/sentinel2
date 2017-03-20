@@ -8,7 +8,8 @@ S2_query_granule(atmCorr = NULL, broken = FALSE, cloudCovMin = 0,
   cloudCovMax = 100, dateMax = Sys.Date(), dateMin = as.Date(dateMax) -
   365, geometry = NULL, granule = NULL, granuleId = NULL,
   orbitNo = NULL, owned = FALSE, product = NULL, productId = NULL,
-  retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)
+  retGeometry = FALSE, utm = NULL, dateSingle = NULL, spatial = FALSE,
+  ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -49,10 +50,14 @@ SpatialPolygons object.}
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
 date and will override \code{dateMin} and \code{dateMax}.}
 
+\item{spatial}{logical, if TRUE an object of class SpatialPolygonsDataFrame
+is returned.}
+
 \item{...}{further arguments, none implemented.}
 }
 \value{
-data.frame return of the database.
+data.frame return of the database. If \code{spatial = TRUE} an object
+  of class SpatialPolygonsDataFrame is returned.
 }
 \description{
 Implements the query options for granule described in the wiki.
