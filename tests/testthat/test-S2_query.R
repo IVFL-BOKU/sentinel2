@@ -54,11 +54,4 @@ test_that('S2 downloads granules', {
       system('rm -fR testDir')
     }
   })
-
-  S2_download(paste0(apiUrl, 'granule/1437243'), 'testDir')
-  expect_true(file.exists('testDir.zip'))
-  expect_equal(file.info('testDir.zip')$size, 6399441)
-  expect_true(dir.exists('testDir'))
-  dirSize = as.numeric(sub('[^0-9]*$', '', system('du -s testDir', intern = TRUE)))
-  expect_lt(abs(dirSize - 9388), 250)
 })
