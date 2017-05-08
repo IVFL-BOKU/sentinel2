@@ -4,11 +4,13 @@
 \alias{jgeom_to_SpatialPolygons}
 \title{Converts json geometry to SpatialPolygons}
 \usage{
-jgeom_to_SpatialPolygons(x)
+jgeom_to_SpatialPolygons(x, utm = NULL)
 }
 \arguments{
 \item{x}{character json geometry as returned by a database query with
 'retGeometry = 1'}
+
+\item{utm}{two-digit utm zone used for an optional reprojection}
 }
 \value{
 SpatialPolygons object of the geometry supplied via x
