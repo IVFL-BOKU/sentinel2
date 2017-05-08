@@ -17,7 +17,7 @@
 #' @export
 
 S2_query_roi <- function(dateMax      = Sys.Date(),
-                         dateMin      = as.Date(dateMax) - 365,
+                         dateMin      = '2000-01-01',
                          geometry     = NULL,
                          regionId     = NULL,
                          utm          = NULL,

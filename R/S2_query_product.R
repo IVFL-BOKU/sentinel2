@@ -22,7 +22,7 @@
 
 S2_query_product <- function(atmCorr      = NULL,
                              dateMax      = Sys.Date(),
-                             dateMin      = as.Date(dateMax) - 365,
+                             dateMin      = '2000-01-01',
                              geometry     = NULL,
                              orbitDir     = NULL,
                              orbitNo      = NULL,

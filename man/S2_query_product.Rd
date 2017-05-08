@@ -5,7 +5,7 @@
 \title{Query database for 'product'}
 \usage{
 S2_query_product(atmCorr = NULL, dateMax = Sys.Date(),
-  dateMin = as.Date(dateMax) - 365, geometry = NULL, orbitDir = NULL,
+  dateMin = "2000-01-01", geometry = NULL, orbitDir = NULL,
   orbitNo = NULL, product = NULL, productId = NULL, retGeometry = FALSE,
   dateSingle = NULL, ...)
 }

@@ -6,7 +6,7 @@
 \usage{
 S2_query_image(atmCorr = NULL, band = NULL, broken = FALSE,
   cloudCovMin = 0, cloudCovMax = 100, dateMax = Sys.Date(),
-  dateMin = as.Date(dateMax) - 365, geometry = NULL, granule = NULL,
+  dateMin = "2000-01-01", geometry = NULL, granule = NULL,
   granuleId = NULL, imageId = NULL, orbitNo = NULL, owned = FALSE,
   product = NULL, productId = NULL, resolution = NULL,
   retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)

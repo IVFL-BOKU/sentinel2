@@ -4,10 +4,10 @@
 \alias{S2_query_job}
 \title{Query database for 'job'}
 \usage{
-S2_query_job(dateMax = Sys.Date(), dateMin = as.Date(dateMax) - 365,
-  started = NULL, ended = NULL, failed = NULL, geometry = NULL,
-  jobId = NULL, granule = NULL, granuleId = NULL, product = NULL,
-  productId = NULL, retGeometry = FALSE, dateSingle = NULL, ...)
+S2_query_job(dateMax = Sys.Date(), dateMin = "2000-01-01", started = NULL,
+  ended = NULL, failed = NULL, geometry = NULL, jobId = NULL,
+  granule = NULL, granuleId = NULL, product = NULL, productId = NULL,
+  retGeometry = FALSE, dateSingle = NULL, ...)
 }
 \arguments{
 \item{dateMax}{character end date of format "YYYY-MM-DD".}

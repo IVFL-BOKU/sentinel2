@@ -5,11 +5,10 @@
 \title{Query database for 'granule'}
 \usage{
 S2_query_granule(atmCorr = NULL, broken = FALSE, cloudCovMin = 0,
-  cloudCovMax = 100, dateMax = Sys.Date(), dateMin = as.Date(dateMax) -
-  365, geometry = NULL, granule = NULL, granuleId = NULL,
-  orbitNo = NULL, owned = FALSE, product = NULL, productId = NULL,
-  retGeometry = FALSE, utm = NULL, dateSingle = NULL, spatial = FALSE,
-  ...)
+  cloudCovMax = 100, dateMax = Sys.Date(), dateMin = "2000-01-01",
+  geometry = NULL, granule = NULL, granuleId = NULL, orbitNo = NULL,
+  owned = FALSE, product = NULL, productId = NULL, retGeometry = FALSE,
+  utm = NULL, dateSingle = NULL, spatial = FALSE, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected

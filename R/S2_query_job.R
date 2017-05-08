@@ -23,7 +23,7 @@
 #' @export
 
 S2_query_job <- function(dateMax      = Sys.Date(),
-                         dateMin      = as.Date(dateMax) - 365,
+                         dateMin      = '2000-01-01',
                          started      = NULL,
                          ended        = NULL,
                          failed       = NULL,

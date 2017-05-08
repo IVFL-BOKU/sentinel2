@@ -4,7 +4,7 @@
 \alias{S2_query_roi}
 \title{Query database for 'roi'}
 \usage{
-S2_query_roi(dateMax = Sys.Date(), dateMin = as.Date(dateMax) - 365,
+S2_query_roi(dateMax = Sys.Date(), dateMin = "2000-01-01",
   geometry = NULL, regionId = NULL, utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
