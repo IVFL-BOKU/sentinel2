@@ -16,4 +16,3 @@ logical of the same length as granuleId, where \code{TRUE} means a
 \description{
 Checks, if granule's are already available or need to be bought
 }
-

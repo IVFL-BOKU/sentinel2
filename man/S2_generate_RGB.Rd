@@ -50,4 +50,3 @@ used}
 Generates 8-bit/channel composite image (see 'https://s2.boku.eodc.eu/wiki/'
   for details)
 }
-

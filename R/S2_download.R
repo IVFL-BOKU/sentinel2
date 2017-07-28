@@ -8,6 +8,9 @@
 #' @param zip logical if \code{TRUE}, the url will be downloaded as zip archive
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
+#' @param ... further arguments not implemented directly - see
+#'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}
+#'   and the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}}{image API doc}.
 #' @return logical vector indicating which downloads where successful
 #' @export
 #' @examples
@@ -29,15 +32,17 @@
 #'   )
 #'   S2_download(images$url, paste0(images$date, '.', images$format))
 #'
-#'   # download particulat URL
+#'   # reproject downloaded images by passing additional API parameter
+#'   S2_download(images$url, paste0(images$date, '.', images$format), srid = 4326)
+#'
+#'   # download particular URL
 #'   S2_download(
 #'     'https://test%40s2%2Eboku%2Eeodc%2Eeu:test@s2.boku.eodc.eu/image/33148479',
 #'     'test.jp2'
 #'   )
 #' }
 
-
-S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE){
+S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, ...){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
@@ -50,14 +55,27 @@ S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE){
   destfile <- destfile[filter]
   stopifnot(all(!is.na(destfile)))
 
+  addParam = list(...)
   if (zip) {
-    url <- paste0(url, "?format=application/zip")
+    addParam[['format']] <- "application/zip"
+  }
+  if (length(addParam) > 0) {
+    stopifnot(
+      all(names(addParam) != ''),
+      length(unique(names(addParam))) == length(addParam)
+    )
+    addParamNames <- sapply(names(addParam), utils::URLencode)
+    addParamValues <- sapply(as.character(addParam), utils::URLencode)
+    addParam <- paste0(addParamNames, '=', addParamValues, collapse = '&')
+    url <- paste0(url, '?', addParam)
   }
 
   success <- rep(FALSE, length(url))
   for (i in seq_along(url)) {
 
-    if (isTRUE(skipExisting) && file.exists(destfile[i])) next
+    if (isTRUE(skipExisting) && file.exists(destfile[i])) {
+      next
+    }
 
     try({
       curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)

@@ -22,4 +22,3 @@ Turn a json geometry as returned by a database query using 'retGeometry = 1'
 \note{
 The geometry is first replaced by its convex hull for simplification!
 }
-

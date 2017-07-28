@@ -17,4 +17,3 @@ output. One of "product", "granule", "image", "qiData", "angle", "roi",
 \description{
 Query database and return response as data.frame
 }
-

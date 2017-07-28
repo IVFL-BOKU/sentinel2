@@ -25,4 +25,3 @@ Requires a valid 'GDAL' install (and properly configured '$PATH' variable).
   B08 (10m), B09 (60m), B11 (20m) and B12 (20m).
   For details, please consult the ESA Sentinel-2 product specifications documentation.
 }
-

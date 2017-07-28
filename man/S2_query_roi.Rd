@@ -32,4 +32,3 @@ data.frame return of the database.
 \description{
 Implements the query options for roi described in the wiki.
 }
-

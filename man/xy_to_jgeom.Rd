@@ -22,4 +22,3 @@ Turn a xy coordinates vector (1 point) or matrix (multiple points) into a
 \note{
 Elements of vector/columns of matrix must be named 'x' and 'y'
 }
-

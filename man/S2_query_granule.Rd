@@ -49,16 +49,17 @@ SpatialPolygons object.}
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
 date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{spatial}{logical, if TRUE an object of class SpatialPolygonsDataFrame
-is returned.}
+\item{spatial}{logical, if TRUE the geometry column will contain
+SpatialPolygonsDataFrame objects instead of GeoJSON strings.
+Be aware that such conversion may take quite some time for large number of
+returned granules.}
 
-\item{...}{further arguments, none implemented.}
+\item{...}{further arguments not implemented directly - see
+the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule}{API doc}.}
 }
 \value{
-data.frame return of the database. If \code{spatial = TRUE} an object
-  of class SpatialPolygonsDataFrame is returned.
+data.frame describing matching granules.
 }
 \description{
 Implements the query options for granule described in the wiki.
 }
-

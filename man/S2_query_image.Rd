@@ -9,7 +9,8 @@ S2_query_image(atmCorr = NULL, band = NULL, broken = FALSE,
   dateMin = "2000-01-01", geometry = NULL, granule = NULL,
   granuleId = NULL, imageId = NULL, orbitNo = NULL, owned = FALSE,
   product = NULL, productId = NULL, resolution = NULL,
-  retGeometry = FALSE, utm = NULL, dateSingle = NULL, ...)
+  retGeometry = FALSE, utm = NULL, dateSingle = NULL, spatial = FALSE,
+  ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -58,7 +59,13 @@ SpatialPolygons object.}
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
 date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{...}{further arguments, none implemented.}
+\item{spatial}{logical, if TRUE the geometry column will contain
+SpatialPolygonsDataFrame objects instead of GeoJSON strings.
+Be aware that such conversion may take quite some time for large number of
+returned granules.}
+
+\item{...}{further arguments not implemented directly - see
+the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image}{API doc}.}
 }
 \value{
 data.frame return of the database.
@@ -66,4 +73,3 @@ data.frame return of the database.
 \description{
 Implements the query options for 'images' described in the wiki.
 }
-

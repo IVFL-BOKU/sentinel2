@@ -1,7 +1,10 @@
 Package: sentinel2
 Title: Tools to access Sentinel-2 data pre-processed by IVFL, BOKU Vienna
-Version: 0.0.0.9000
-Authors@R: person("Sebastian", "Boeck", email = "sebastian.boeck@boku.ac.at", role = c("aut", "cre"))
+Version: 0.1.0
+Authors@R: c(
+    person("Sebastian", "Boeck",  email = "sebastian.boeck@boku.ac.at", role = c("aut", "cre")),
+    person("Mateusz",   "Zoltak", email = "mateusz.zoltak@boku.ac.at",  role = c("ctb"))
+  )
 Description: Tools to conveniently query and access pre-processed Sentinel-2
     data. Registration to 'https://s2.boku.eodc.eu' is required for most operations.
     Please consult the 'https://s2.boku.eodc.eu' (, i.e. the 'FAQ' and 'wiki'
@@ -14,6 +17,7 @@ Imports:
     jsonlite,
     methods,
     raster,
+    rgdal,
     sp
 Suggests:
     testthat,
@@ -24,4 +28,4 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

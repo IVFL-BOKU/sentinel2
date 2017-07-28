@@ -15,4 +15,3 @@ list where 'userId' is the Id of the current user, 'coins' is the
 \description{
 Returns information on a users coins budget
 }
-

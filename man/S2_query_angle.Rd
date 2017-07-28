@@ -48,4 +48,3 @@ list of query arguments
 \description{
 Implements the query options for 'angle' found in the wiki
 }
-

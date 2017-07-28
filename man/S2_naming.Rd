@@ -38,4 +38,3 @@ This function allows to alter the automatic naming behavior for
   suffix or make files be easier sortable by utm zone Id instead of
   acquision date.
 }
-

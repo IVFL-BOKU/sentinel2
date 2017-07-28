@@ -61,4 +61,3 @@ data.frame return of the database.
 \description{
 Implements the query options for qiData described in the wiki.
 }
-

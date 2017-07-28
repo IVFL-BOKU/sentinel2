@@ -27,4 +27,3 @@ Set 'user' and 'password' login credentials for the current
 Requires a valid registration to 'https://s2.boku.eodc.eu' to gain
    access to database functionality where authentication is mandatory.
 }
-

@@ -16,4 +16,3 @@ If "always", granules are bought anyway.}
 \description{
 Buy granule using granuleId
 }
-

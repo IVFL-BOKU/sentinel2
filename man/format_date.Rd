@@ -16,4 +16,3 @@ character of format 'YYYY-MM-DD'
 Simplifies the 'date' from 'YYYY-MM-DD HH:MM:SS' to 'YYYY-MM-DD' for
 filenaming
 }
-

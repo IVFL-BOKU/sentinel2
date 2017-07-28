@@ -48,5 +48,27 @@ save_names
 #  S2_download(url = granules_owned$url, destfile = save_names)
 
 ## ------------------------------------------------------------------------
-S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
+images = S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
+
+## ------------------------------------------------------------------------
+save_names = paste0(images$date, '.', images$format)
+
+## ----eval=FALSE----------------------------------------------------------
+#  S2_download(images$url, save_names)
+
+## ----eval=FALSE----------------------------------------------------------
+#  # find some images and prepare file names
+#  images = S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
+#  file_names = paste0(images$date, '.tif')
+#  
+#  # read the geometry from file
+#  geom = roi_to_jgeom('/my/path/my_geom_file.kml')
+#  
+#  # download them:
+#  # - reporojecting to WGS-84 (srid 4326)
+#  # - changing data format to Byte (0-255)
+#  # - dividing all values by 20 so they will better fit the Byte range
+#  #   (and setting max value to 254 so it will not overlap with the no data value)
+#  # - cutting to the given geometry
+#  S2_download(images$url, file_names, srid = 4326, dataType = 'Byte', range = 50, max = 254, geometry = geom)
 

@@ -17,4 +17,3 @@ logical \code{TRUE} if access to server was successfull and user
 Checks accessibility of server / database and does basic checking of
   user credentials
 }
-

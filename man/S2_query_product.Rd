@@ -43,4 +43,3 @@ data.frame return of the database.
 \description{
 Implements the query options for 'product' described in the wiki.
 }
-

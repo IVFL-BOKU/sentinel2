@@ -30,4 +30,3 @@ side effect of putting the roi supplied via 'geometry' to
 \description{
 Place/Update roi for processing Sentinel-2 data
 }
-

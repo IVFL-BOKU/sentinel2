@@ -29,7 +29,12 @@
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
-#' @param ... further arguments, none implemented.
+#' @param spatial logical, if TRUE the geometry column will contain
+#'   SpatialPolygonsDataFrame objects instead of GeoJSON strings.
+#'   Be aware that such conversion may take quite some time for large number of
+#'   returned granules.
+#' @param ... further arguments not implemented directly - see
+#'   the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image}{API doc}.
 #' @return data.frame return of the database.
 #' @export
 
@@ -52,22 +57,29 @@ S2_query_image <- function(atmCorr      = NULL,
                            retGeometry  = FALSE,
                            utm          = NULL,
                            dateSingle   = NULL,
+                           spatial      = FALSE,
                            ...){
 
   # check inputs ---------------------------------------------------------------
-  if (!is.null(dateSingle)){
+  if (isTRUE(spatial)) {
+    retGeometry <- TRUE
+  }
+
+  if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
-  if(check_date(dateMin) > check_date(dateMax)){
+  if (check_date(dateMin) > check_date(dateMax)) {
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 
   # prepare json geometry ------------------------------------------------------
-  if (!is.null(geometry)) geometry <- roi_to_jgeom(geometry)
+  if (!is.null(geometry)) {
+    geometry <- roi_to_jgeom(geometry)
+  }
 
   # make named query list ------------------------------------------------------
   query <- c(as.list(environment()), list(...))
@@ -75,6 +87,15 @@ S2_query_image <- function(atmCorr      = NULL,
 
   # return query list ----------------------------------------------------------
   rtrn  <- S2_do_query(query = query, path = 'image')
+
+  if (isTRUE(spatial)) {
+    geometryJson = rtrn$geometry
+    rtrn$geometry = vector('list', length(geometryJson))
+    for (i in seq_along(geometryJson)) {
+      rtrn$geometry[[i]] = rgdal::readOGR(geometryJson[i], 'OGRGeoJSON', verbose = FALSE)
+    }
+  }
+
   return(rtrn)
 }
 

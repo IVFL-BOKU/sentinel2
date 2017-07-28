@@ -17,4 +17,3 @@ character string, a single json geometry
 \description{
 Turn a SpatialPoints/PatialPolygons object into a json geometry string
 }
-

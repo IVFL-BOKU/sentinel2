@@ -23,11 +23,13 @@
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
-#' @param spatial logical, if TRUE an object of class SpatialPolygonsDataFrame
-#'   is returned.
-#' @param ... further arguments, none implemented.
-#' @return data.frame return of the database. If \code{spatial = TRUE} an object
-#'   of class SpatialPolygonsDataFrame is returned.
+#' @param spatial logical, if TRUE the geometry column will contain
+#'   SpatialPolygonsDataFrame objects instead of GeoJSON strings.
+#'   Be aware that such conversion may take quite some time for large number of
+#'   returned granules.
+#' @param ... further arguments not implemented directly - see
+#'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule}{API doc}.
+#' @return data.frame describing matching granules.
 #' @export
 
 S2_query_granule <- function(atmCorr      = NULL,
@@ -50,21 +52,25 @@ S2_query_granule <- function(atmCorr      = NULL,
                              ...){
 
   # check inputs ---------------------------------------------------------------
-  if(isTRUE(spatial)) retGeometry <- TRUE
+  if (isTRUE(spatial)) {
+    retGeometry <- TRUE
+  }
 
-  if (!is.null(dateSingle)){
+  if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
-  if(check_date(dateMin) > check_date(dateMax)){
+  if (check_date(dateMin) > check_date(dateMax)) {
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 
   # prepare json geometry ------------------------------------------------------
-  if (!is.null(geometry)) geometry <- roi_to_jgeom(geometry)
+  if (!is.null(geometry)) {
+    geometry <- roi_to_jgeom(geometry)
+  }
 
   # make named query list ------------------------------------------------------
   query <- c(as.list(environment()), list(...))
@@ -73,12 +79,13 @@ S2_query_granule <- function(atmCorr      = NULL,
   # return query list ----------------------------------------------------------
   rtrn  <- S2_do_query(query = query, path = 'granule')
 
-  if (isTRUE(spatial)){
-    polys <- jgeom_to_SpatialPolygons(rtrn$geometry)
-    rtrn  <- sp::SpatialPolygonsDataFrame(Sr = polys,
-                                          data = rtrn[, colnames(rtrn) != "geometry"])
+  if (isTRUE(spatial)) {
+    geometryJson = rtrn$geometry
+    rtrn$geometry = vector('list', length(geometryJson))
+    for (i in seq_along(geometryJson)) {
+      rtrn$geometry[[i]] = rgdal::readOGR(geometryJson[i], 'OGRGeoJSON', verbose = FALSE)
+    }
   }
 
   return(rtrn)
 }
-

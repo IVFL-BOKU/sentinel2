@@ -16,4 +16,3 @@ object of class 'POSIXlt POSIXt', if x has a valid date of format
 \description{
 Will check if date string is well formated and throw an error if not
 }
-

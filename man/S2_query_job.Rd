@@ -48,4 +48,3 @@ data.frame return of the database.
 \description{
 Implements the query options for 'job' described in the wiki.
 }
-

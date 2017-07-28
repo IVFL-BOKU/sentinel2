@@ -4,7 +4,7 @@
 \alias{S2_download}
 \title{S2_download helper function}
 \usage{
-S2_download(url, destfile, zip = TRUE, skipExisting = TRUE)
+S2_download(url, destfile, zip = TRUE, skipExisting = TRUE, ...)
 }
 \arguments{
 \item{url}{character (valid) url to download file from.}
@@ -16,6 +16,10 @@ and (automatically) unzipped in the parent directory of 'destfile'
 (plays any role only when downloading granules).}
 
 \item{skipExisting}{logical skip if file already exists.}
+
+\item{...}{further arguments not implemented directly - see
+the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}
+and the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}}{image API doc}.}
 }
 \value{
 logical vector indicating which downloads where successful
@@ -42,11 +46,13 @@ Simple helper function to download data (granules, images, QI data)
   )
   S2_download(images$url, paste0(images$date, '.', images$format))
 
-  # download particulat URL
+  # reproject downloaded images by passing additional API parameter
+  S2_download(images$url, paste0(images$date, '.', images$format), srid = 4326)
+
+  # download particular URL
   S2_download(
     'https://test\%40s2\%2Eboku\%2Eeodc\%2Eeu:test@s2.boku.eodc.eu/image/33148479',
     'test.jp2'
   )
 }
 }
-

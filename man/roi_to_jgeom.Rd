@@ -9,7 +9,7 @@ roi_to_jgeom(roi, round = Inf)
 \arguments{
 \item{roi}{a region of interest supplied as a vector/matrix of named ('x', 'y')
 coordinates or a SpatialPoints object or a SpatialPolygons object or a path
-to a shapefile on disk or a json geometry character string}
+to a file \code{\link[rgdal]{readOGR}} can open or a json geometry character string}
 
 \item{round}{number of digits to round coordinates to}
 }
@@ -23,4 +23,3 @@ Convert a region of interest to a json geometry
 Coordinates are assumed to be projected (WGS-84, 4326). Spatial objects
   will be reprojected as necessary
 }
-
