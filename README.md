@@ -3,12 +3,12 @@
 [![Build Status](https://travis-ci.org/IVFL-BOKU/sentinel2.svg?branch=master)](https://travis-ci.org/IVFL-BOKU/sentinel2)
 [![Coverage Status](https://coveralls.io/repos/github/IVFL-BOKU/sentinel2/badge.svg?branch=master)](https://coveralls.io/github/IVFL-BOKU/sentinel2?branch=master)
 
-Accessing https://s2.boku.eodc.eu Sentinel-2 API made easy.
+Accessing https://s2.boku.eodc.eu Sentinel-2 API from R made easy.
 
 ## Getting Started
 
-This document aims to provide basic guidance on the use of the `sentinel2` 
-package for R. The short introduction will cover the following steps:
+This document aims to provide basic guidance on the use of the `sentinel2` package for R.
+The following sections will cover the following steps:
 
    1. **Installation**
    2. **User login** to get **access** to the data portal
@@ -19,14 +19,13 @@ package for R. The short introduction will cover the following steps:
 
 ## Installation
 
-Using the `devtools` package allows to easily install `sentinel2` directly from GitHub, so make sure you have 
+The `devtools` package allows to easily install `sentinel2` directly from GitHub, so make sure you have 
 `devtools` installed.
 
 ```r
 # If you don't have it yet, install 'devtools':
 # install.packages('devtools')
-library(devtools)
-install_github('IVFL-BOKU/sentinel2')
+devtools::install_github('IVFL-BOKU/sentinel2')
 ```
 
 ## User Login
@@ -144,7 +143,7 @@ to pass the `url` found in the `data.frame` returned by `S2_query_granule()` or
 `S2_query_image()` to `S2_download()` and specify filenames / filepaths to save 
 the data to.
 
-### *Downloading granules*
+### Downloading granules
 
 Suppose you want to download granules you already own. We can find all granules 
 owned by a user via `S2_query_granule(owned = TRUE)`:
@@ -173,14 +172,56 @@ S2_download(url = granules_owned$url, destfile = save_names)
 ```
 
 
-### *Downloading images*
+### Downloading images
 
-Downloading individual images can be done similarly. First we have to find some 
+Downloading individual images can be done similarly. First we must find some 
 images we own. Let's assume we are only interested in Band 8 and restrict the 
 cloud coverage to be at most 85 percent:
 
 ```r
-S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
+images = S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
 ```
 
+Then we need to create file names for them.
+Lets do that by simply pasting acquisition date and file format.
 
+```r
+save_names = paste0(images$date, '.', images$format)
+```
+
+Finally we can download the images:
+
+```r
+S2_download(images$url, save_names)
+```
+
+#### Advanced image download
+
+The image API allows you to perform many transformations on the downloded image, e.g.:
+
+* reproject the image
+* change the resolution
+* change the data format (e.g. to float)
+* adjust values range (e.g. divide by 10 so they will fit in the Byte values range)
+* crop image to a given geometry
+
+All options are described in the (API doc)[https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}].
+
+To apply a transformation you need to pass a corresponding API parameter to the `S2_download()` function call - see example below.
+
+```r
+# find some images and prepare file names
+images = S2_query_image(owned = TRUE, band = 'B08', cloudCovMax = 85)
+file_names = paste0(images$date, '.tif')
+
+# read the geometry from file
+geom = roi_to_jgeom('/my/path/my_geom_file.kml')
+
+# download them:
+# - reporojecting to WGS-84 (srid 4326)
+# - changing data format to Byte (0-255)
+# - dividing all values by 20 so they will better fit the Byte range 
+#   (and setting max value to 254 so it will not overlap with the no data value)
+# - cutting to the given geometry
+S2_download(images$url, file_names, srid = 4326, dataType = 'Byte', range = 50, max = 254, geometry = geom)
+```
