@@ -12,7 +12,8 @@
 roi_to_jgeom <- function(roi, round = Inf){
 
   if (is.character(roi) && file.exists(roi)) {
-    roi <- normalizePath(roi)
+
+    roi <- gsub(pattern = '[\\]', replacement = '/', roi)
 
     if (grepl('.[.][sS][hH][pP]$', roi)) {
       dsn <- sub('/[^/]+$', '', roi)
