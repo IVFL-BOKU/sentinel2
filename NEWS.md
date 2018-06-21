@@ -1,3 +1,7 @@
+# 0.1.1 (2081-06-21)
+
+* `S2_put_ROI()` now also works for admin users.
+
 # 0.1.0 (2017-07-31)
 
 * `S2_download()` was extended with `...` allowing to pass any additional
