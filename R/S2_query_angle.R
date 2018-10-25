@@ -46,7 +46,7 @@ S2_query_angle <- function(angleType    = NULL,
     dateSingle <- NULL
   }
 
-  if (check_date(dateMin) > check_date(dateMax)) {
+  if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 
