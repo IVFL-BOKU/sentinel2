@@ -13,6 +13,8 @@
 #' @param orbitNo integer from 1 to 143.
 #' @param product charactrer ESA product id.
 #' @param productId internal metadata database product id.
+#' @param regionId region of interest id (overrides the \code{geometry} parameter,
+#'   if \code{dateMin} or \code{dateMax}} are not specified, they are taken from the region of interest settings)
 #' @param retGeometry logical should product geometry be included in the response?
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
@@ -21,8 +23,8 @@
 #' @export
 
 S2_query_product <- function(atmCorr      = NULL,
-                             dateMax      = Sys.Date(),
-                             dateMin      = '2000-01-01',
+                             dateMax      = NULL,
+                             dateMin      = NULL,
                              geometry     = NULL,
                              orbitDir     = NULL,
                              orbitNo      = NULL,
@@ -34,16 +36,18 @@ S2_query_product <- function(atmCorr      = NULL,
 
 
   # check inputs ---------------------------------------------------------------
-  if (!is.null(orbitDir)) orbitDir <- match.arg(orbitDir)
+  if (!is.null(orbitDir)) {
+    orbitDir <- match.arg(orbitDir)
+  }
 
-  if (!is.null(dateSingle)){
+  if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
-  if(check_date(dateMin) > check_date(dateMax)){
+  if (check_date(dateMin) > check_date(dateMax)){
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 

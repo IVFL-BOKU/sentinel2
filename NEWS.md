@@ -1,4 +1,15 @@
-# 0.1.1 (2081-06-21)
+# 0.2.0 (2018-10-25)
+
+* A `regionId` parameter added to all `S2_query_...()` functions for which it's valid.
+  While since 0.1.0 it was possible to use it using the `...` parameter, the explicit
+  form allows to document it nicely.
+* Default values for `dateMin`, `dateMax`, `cloudCovMin` and `cloudCovMax` parameters
+  dropped from all `S2_query_...()` functions. They were useless (simply followed 
+  default values assumed by the underlaing REST API) and they messed up proper `regionId`
+  parameter handling (they interfered with picking up default `dateMin`, `dateMax` and
+  `cloudCovMax` values from the region of interest settings)
+
+# 0.1.1 (2018-06-21)
 
 * `S2_put_ROI()` now also works for admin users.
 

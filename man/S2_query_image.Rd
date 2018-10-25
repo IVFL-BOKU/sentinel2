@@ -5,12 +5,12 @@
 \title{Prepare a list to query database for 'image'}
 \usage{
 S2_query_image(atmCorr = NULL, band = NULL, broken = FALSE,
-  cloudCovMin = 0, cloudCovMax = 100, dateMax = Sys.Date(),
-  dateMin = "2000-01-01", geometry = NULL, granule = NULL,
+  cloudCovMin = NULL, cloudCovMax = NULL, dateMax = NULL,
+  dateMin = NULL, geometry = NULL, granule = NULL,
   granuleId = NULL, imageId = NULL, orbitNo = NULL, owned = FALSE,
-  product = NULL, productId = NULL, resolution = NULL,
-  retGeometry = FALSE, utm = NULL, dateSingle = NULL, spatial = FALSE,
-  ...)
+  product = NULL, productId = NULL, regionId = NULL,
+  resolution = NULL, retGeometry = FALSE, utm = NULL,
+  dateSingle = NULL, spatial = FALSE, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -48,6 +48,10 @@ SpatialPolygons object.}
 \item{product}{chracter ESA product id.}
 
 \item{productId}{integer internal metadata database product id.}
+
+\item{regionId}{region of interest id (overrides the \code{geometry} parameter,
+if \code{dateMin}, \code{dateMax} or \code{cloudCovMax} are not specified,
+they are taken from the region of interest settings)}
 
 \item{resolution}{integer spatial resolution [m]: 60/20/10
 (resolution depends on the spectral band).}

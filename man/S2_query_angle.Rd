@@ -5,10 +5,10 @@
 \title{Prepare a list to query database for 'angle'}
 \usage{
 S2_query_angle(angleType = NULL, band = NULL, broken = FALSE,
-  dateMax = Sys.Date(), dateMin = "2000-01-01", geometry = NULL,
-  granule = NULL, granuleId = NULL, orbitNo = NULL, product = NULL,
-  productId = NULL, retGeometry = FALSE, utm = NULL, dateSingle = NULL,
-  ...)
+  dateMax = NULL, dateMin = NULL, geometry = NULL, granule = NULL,
+  granuleId = NULL, orbitNo = NULL, product = NULL,
+  productId = NULL, retGeometry = FALSE, utm = NULL,
+  dateSingle = NULL, ...)
 }
 \arguments{
 \item{angleType}{see wiki}

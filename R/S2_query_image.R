@@ -23,6 +23,9 @@
 #' @param owned logical when TRUE only already bought granules will be returned.
 #' @param product chracter ESA product id.
 #' @param productId integer internal metadata database product id.
+#' @param regionId region of interest id (overrides the \code{geometry} parameter,
+#'   if \code{dateMin}, \code{dateMax} or \code{cloudCovMax} are not specified,
+#'   they are taken from the region of interest settings)
 #' @param resolution integer spatial resolution [m]: 60/20/10
 #'   (resolution depends on the spectral band).
 #' @param retGeometry logical should product geometry be included in the response?
@@ -41,10 +44,10 @@
 S2_query_image <- function(atmCorr      = NULL,
                            band         = NULL,
                            broken       = FALSE,
-                           cloudCovMin  = 0,
-                           cloudCovMax  = 100,
-                           dateMax      = Sys.Date(),
-                           dateMin      = '2000-01-01',
+                           cloudCovMin  = NULL,
+                           cloudCovMax  = NULL,
+                           dateMax      = NULL,
+                           dateMin      = NULL,
                            geometry     = NULL,
                            granule      = NULL,
                            granuleId    = NULL,
@@ -53,6 +56,7 @@ S2_query_image <- function(atmCorr      = NULL,
                            owned        = FALSE,
                            product      = NULL,
                            productId    = NULL,
+                           regionId     = NULL,
                            resolution   = NULL,
                            retGeometry  = FALSE,
                            utm          = NULL,

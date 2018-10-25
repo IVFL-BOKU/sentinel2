@@ -21,6 +21,9 @@
 #' @param owned logical when TRUE only already bought granules will be returned.
 #' @param product chracter ESA product id.
 #' @param productId integer internal metadata database product id.
+#' @param regionId region of interest id (overrides the \code{geometry} parameter,
+#'   if \code{dateMin}, \code{dateMax} or \code{cloudCovMax} are not specified,
+#'   they are taken from the region of interest settings)
 #' @param retGeometry logical should product geometry be included in the response?
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
@@ -32,10 +35,10 @@
 S2_query_qiData <- function(atmCorr      = NULL,
                             band         = NULL,
                             broken       = FALSE,
-                            cloudCovMin  = 0,
-                            cloudCovMax  = 100,
-                            dateMax      = Sys.Date(),
-                            dateMin      = '2000-01-01',
+                            cloudCovMin  = NULL,
+                            cloudCovMax  = NULL,
+                            dateMax      = NULL,
+                            dateMin      = NULL,
                             geometry     = NULL,
                             granule      = NULL,
                             granuleId    = NULL,
@@ -43,20 +46,21 @@ S2_query_qiData <- function(atmCorr      = NULL,
                             owned        = FALSE,
                             product      = NULL,
                             productId    = NULL,
+                            regionId     = NULL,
                             retGeometry  = FALSE,
                             utm          = NULL,
                             dateSingle   = NULL,
                             ...){
 
   # check inputs ---------------------------------------------------------------
-  if (!is.null(dateSingle)){
+  if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
-  if(check_date(dateMin) > check_date(dateMax)){
+  if (check_date(dateMin) > check_date(dateMax)) {
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 

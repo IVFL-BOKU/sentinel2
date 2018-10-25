@@ -4,10 +4,9 @@
 \alias{S2_query_product}
 \title{Query database for 'product'}
 \usage{
-S2_query_product(atmCorr = NULL, dateMax = Sys.Date(),
-  dateMin = "2000-01-01", geometry = NULL, orbitDir = NULL,
-  orbitNo = NULL, product = NULL, productId = NULL, retGeometry = FALSE,
-  dateSingle = NULL, ...)
+S2_query_product(atmCorr = NULL, dateMax = NULL, dateMin = NULL,
+  geometry = NULL, orbitDir = NULL, orbitNo = NULL, product = NULL,
+  productId = NULL, retGeometry = FALSE, dateSingle = NULL, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected

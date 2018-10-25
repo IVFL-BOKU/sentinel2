@@ -4,8 +4,8 @@
 \alias{S2_put_ROI}
 \title{Creates new or update existing regions of interest}
 \usage{
-S2_put_ROI(geometry, regionId = NULL, cloudCovMax = 50, indicators = NULL,
-  dateMin = NULL, dateMax = NULL, srid = 4326)
+S2_put_ROI(geometry, regionId = NULL, cloudCovMax = 50,
+  indicators = NULL, dateMin = NULL, dateMax = NULL, srid = 4326)
 }
 \arguments{
 \item{geometry}{SpatialPoints, SpatialPolygons or path to a shapefile on disk}

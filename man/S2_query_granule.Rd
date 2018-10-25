@@ -4,11 +4,12 @@
 \alias{S2_query_granule}
 \title{Query database for 'granule'}
 \usage{
-S2_query_granule(atmCorr = NULL, broken = FALSE, cloudCovMin = 0,
-  cloudCovMax = 100, dateMax = Sys.Date(), dateMin = "2000-01-01",
-  geometry = NULL, granule = NULL, granuleId = NULL, orbitNo = NULL,
-  owned = FALSE, product = NULL, productId = NULL, retGeometry = FALSE,
-  utm = NULL, dateSingle = NULL, spatial = FALSE, ...)
+S2_query_granule(atmCorr = NULL, broken = FALSE, cloudCovMin = NULL,
+  cloudCovMax = NULL, dateMax = NULL, dateMin = NULL,
+  geometry = NULL, granule = NULL, granuleId = NULL,
+  orbitNo = NULL, owned = FALSE, product = NULL, productId = NULL,
+  regionId = NULL, retGeometry = FALSE, utm = NULL,
+  dateSingle = NULL, spatial = FALSE, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -41,6 +42,10 @@ SpatialPolygons object.}
 \item{product}{chracter ESA product id.}
 
 \item{productId}{integer internal metadata database product id.}
+
+\item{regionId}{region of interest id (overrides the \code{geometry} parameter,
+if \code{dateMin}, \code{dateMax} or \code{cloudCovMax} are not specified,
+they are taken from the region of interest settings)}
 
 \item{retGeometry}{logical should product geometry be included in the response?}
 

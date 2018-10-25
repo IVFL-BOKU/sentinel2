@@ -5,8 +5,8 @@
 \title{S2_granule_naming}
 \usage{
 S2_granule_naming(x, order = c("date", "utm", "orbit", Id = "granuleId"),
-  prefix = "GRANULE", suffix = ifelse(as.numeric(x$atmCorr) == 0, "L1C",
-  "L2A"))
+  prefix = "GRANULE", suffix = ifelse(as.numeric(x$atmCorr) == 0,
+  "L1C", "L2A"))
 }
 \arguments{
 \item{x}{is the returned data \code{S2_query_granule} for a single 'granuleId'}

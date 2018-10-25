@@ -5,8 +5,8 @@
 \title{S2_granule_naming}
 \usage{
 S2_naming(x, order = list("date", "utm", "orbit", Id = "granuleId"),
-  prefix = "GRANULE", suffix = ifelse(as.numeric(x$atmCorr) == 0, "L1C",
-  "L2A"), extension = NULL)
+  prefix = "GRANULE", suffix = ifelse(as.numeric(x$atmCorr) == 0,
+  "L1C", "L2A"), extension = NULL)
 }
 \arguments{
 \item{x}{is the returned data \code{S2_query_granule} or \code{S2_query_image}}

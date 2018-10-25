@@ -12,6 +12,8 @@
 #' @param orbitNo see wiki
 #' @param product see wiki
 #' @param productId see wiki
+#' @param regionId region of interest id (overrides the \code{geometry} parameter,
+#'   if \code{dateMin} or \code{dateMax}} are not specified, they are taken from the region of interest settings)
 #' @param retGeometry logical should product geometry be included in the response?
 #' @param utm see wiki
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
@@ -23,8 +25,8 @@
 S2_query_angle <- function(angleType    = NULL,
                            band         = NULL,
                            broken       = FALSE,
-                           dateMax      = Sys.Date(),
-                           dateMin      = '2000-01-01',
+                           dateMax      = NULL,
+                           dateMin      = NULL,
                            geometry     = NULL,
                            granule      = NULL,
                            granuleId    = NULL,
@@ -37,19 +39,21 @@ S2_query_angle <- function(angleType    = NULL,
                            ...){
 
   # check inputs ---------------------------------------------------------------
-  if (!is.null(dateSingle)){
+  if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    <- dateSingle
     dateMax    <- dateSingle
     dateSingle <- NULL
   }
 
-  if(check_date(dateMin) > check_date(dateMax)){
+  if (check_date(dateMin) > check_date(dateMax)) {
     stop("'dateMin' (", dateMin, ") larger than 'dateMax' (", dateMax, ")")
   }
 
   # prepare json geometry ------------------------------------------------------
-  if (!is.null(geometry)) geometry <- roi_to_jgeom(geometry)
+  if (!is.null(geometry)) {
+    geometry <- roi_to_jgeom(geometry)
+  }
 
   # make named query list ------------------------------------------------------
   query <- c(as.list(environment()), list(...))

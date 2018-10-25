@@ -5,7 +5,8 @@
 \title{Query database for 'roi'}
 \usage{
 S2_query_roi(dateMax = Sys.Date(), dateMin = "2000-01-01",
-  geometry = NULL, regionId = NULL, utm = NULL, dateSingle = NULL, ...)
+  geometry = NULL, regionId = NULL, utm = NULL, dateSingle = NULL,
+  ...)
 }
 \arguments{
 \item{dateMax}{character end date of format "YYYY-MM-DD".}

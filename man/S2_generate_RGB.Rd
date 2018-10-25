@@ -5,8 +5,9 @@
 \title{Generate RGB image and download}
 \usage{
 S2_generate_RGB(granuleId, destfile = NULL, resolution = c("highest",
-  "lowest"), atmCorr = TRUE, r = "B08", g = "B04", b = "B03", ra = 20,
-  ga = 20, ba = 20, rb = 20, gb = 20, bb = 20, overwrite = FALSE)
+  "lowest"), atmCorr = TRUE, r = "B08", g = "B04", b = "B03",
+  ra = 20, ga = 20, ba = 20, rb = 20, gb = 20, bb = 20,
+  overwrite = FALSE)
 }
 \arguments{
 \item{granuleId}{integer the granuleId for which to create the RGB composite}

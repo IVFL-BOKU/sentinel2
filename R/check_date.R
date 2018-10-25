@@ -11,7 +11,7 @@ check_date <- function(x){
   if (is.na(rtrn) | !grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", x)){
     stop("Invalid date '", x, "', please use 'YYYY-MM-DD' format!")
   } else {
-    return(invisible(rtrn))
+    return(rtrn)
   }
 }
 
