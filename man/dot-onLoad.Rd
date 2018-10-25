@@ -6,6 +6,11 @@
 \usage{
 .onLoad(libname, pkgname)
 }
+\arguments{
+\item{libname}{library name}
+
+\item{pkgname}{package name}
+}
 \description{
 Setup login credentials on package start, if not retrieved already (e.g. from
  .Rprofile).

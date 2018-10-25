@@ -36,6 +36,9 @@ SpatialPolygons object.}
 
 \item{productId}{integer internal metadata database product id.}
 
+\item{regionId}{region of interest id (overrides the \code{geometry} parameter,
+if \code{dateMin} or \code{dateMax} are not specified, they are taken from the region of interest settings)}
+
 \item{retGeometry}{logical should product geometry be included in the response?}
 
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single

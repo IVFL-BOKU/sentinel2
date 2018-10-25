@@ -16,7 +16,7 @@
 #' @param product chracter ESA product id.
 #' @param productId integer internal metadata database product id.
 #' @param regionId region of interest id (overrides the \code{geometry} parameter,
-#'   if \code{dateMin} or \code{dateMax}} are not specified, they are taken from the region of interest settings)
+#'   if \code{dateMin} or \code{dateMax} are not specified, they are taken from the region of interest settings)
 #' @param retGeometry logical should product geometry be included in the response?
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.

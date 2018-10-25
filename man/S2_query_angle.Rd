@@ -7,8 +7,8 @@
 S2_query_angle(angleType = NULL, band = NULL, broken = FALSE,
   dateMax = NULL, dateMin = NULL, geometry = NULL, granule = NULL,
   granuleId = NULL, orbitNo = NULL, product = NULL,
-  productId = NULL, retGeometry = FALSE, utm = NULL,
-  dateSingle = NULL, ...)
+  productId = NULL, regionId = NULL, retGeometry = FALSE,
+  utm = NULL, dateSingle = NULL, ...)
 }
 \arguments{
 \item{angleType}{see wiki}
@@ -32,6 +32,9 @@ S2_query_angle(angleType = NULL, band = NULL, broken = FALSE,
 \item{product}{see wiki}
 
 \item{productId}{see wiki}
+
+\item{regionId}{region of interest id (overrides the \code{geometry} parameter,
+if \code{dateMin} or \code{dateMax} are not specified, they are taken from the region of interest settings)}
 
 \item{retGeometry}{logical should product geometry be included in the response?}
 

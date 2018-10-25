@@ -6,7 +6,8 @@
 \usage{
 S2_query_product(atmCorr = NULL, dateMax = NULL, dateMin = NULL,
   geometry = NULL, orbitDir = NULL, orbitNo = NULL, product = NULL,
-  productId = NULL, retGeometry = FALSE, dateSingle = NULL, ...)
+  productId = NULL, regionId = NULL, retGeometry = FALSE,
+  dateSingle = NULL, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -28,6 +29,9 @@ SpatialPolygons object.}
 \item{product}{charactrer ESA product id.}
 
 \item{productId}{internal metadata database product id.}
+
+\item{regionId}{region of interest id (overrides the \code{geometry} parameter,
+if \code{dateMin} or \code{dateMax} are not specified, they are taken from the region of interest settings)}
 
 \item{retGeometry}{logical should product geometry be included in the response?}
 
