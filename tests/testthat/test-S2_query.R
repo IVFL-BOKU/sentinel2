@@ -39,6 +39,23 @@ test_that('S2_query_granule() works', {
   expect_true(all(data$utm == '33UXP'))
 })
 
+test_that('S2_query_granule() works', {
+  data = S2_query_granule(
+    cloudCovMin = 80,
+    dateMin = '2016-06-01',
+    dateMax = '2016-08-31',
+    utm = '33UXP'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("granuleId", "productId", "product", "granule", "date", "processDate", "utm", "orbit", "cloudCov", "atmCorr", "broken", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(data$cloudCov >= 80))
+  expect_true(all(data$date >= '2016-06-01'))
+  expect_true(all(data$date <= '2016-08-31'))
+  expect_true(all(data$utm == '33UXP'))
+})
+
 test_that('S2 downloads images', {
   if (file.exists('test.jp2')) {
     unlink('test.jp2')

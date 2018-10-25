@@ -7,6 +7,9 @@ r:
   - release
   - devel
 
+before_install:
+  - sudo apt-get install -y libgdal-dev
+
 after_success:
   - Rscript -e 'covr::coveralls(function_exclusions = c("\\.onLoad"))'
 
