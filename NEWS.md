@@ -1,5 +1,6 @@
-# 0.3.0 (2018-12-18)
+# 0.3.1 (2018-12-18)
 
+* It is now possible to abort the `S2_download()` function.
 * A `spatial` parameter of the `S2_query_granule()` and `S2_query_image()` is now
   a string and allows to choose between the `sp` package and the `sf` package spatial
   object representation.

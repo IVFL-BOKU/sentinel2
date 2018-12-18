@@ -17,7 +17,7 @@
 #' @examples
 #' \dontrun{
 #'   # find, download and unzip a full granule
-#'   granules <- S2_query_granule(
+#'   granules = S2_query_granule(
 #'     utm = '33UXP',
 #'     dateMin = '2016-06-01',
 #'     dateMax = '2016-06-30'
@@ -25,7 +25,7 @@
 #'   S2_download(granules$url, granules$date)
 #'
 #'   # find and download a bunch of images
-#'   images <- S2_query_image(
+#'   images = S2_query_image(
 #'     utm = '33UXP',
 #'     dateMin = '2016-06-01',
 #'     dateMax = '2016-06-30',
@@ -43,7 +43,7 @@
 #'   )
 #' }
 
-S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, ...){
+S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, ...){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
@@ -54,26 +54,26 @@ S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, progress
     length(url) == length(destfile)
   )
   filter = !is.na(url)
-  url <- url[filter]
-  destfile <- destfile[filter]
+  url = url[filter]
+  destfile = destfile[filter]
   stopifnot(all(!is.na(destfile)))
 
   addParam = list(...)
   if (zip) {
-    addParam[['format']] <- "application/zip"
+    addParam[['format']] = "application/zip"
   }
   if (length(addParam) > 0) {
     stopifnot(
       all(names(addParam) != ''),
       length(unique(names(addParam))) == length(addParam)
     )
-    addParamNames <- sapply(names(addParam), utils::URLencode)
-    addParamValues <- sapply(as.character(addParam), utils::URLencode)
-    addParam <- paste0(addParamNames, '=', addParamValues, collapse = '&')
-    url <- paste0(url, '?', addParam)
+    addParamNames = sapply(names(addParam), utils::URLencode)
+    addParamValues = sapply(as.character(addParam), utils::URLencode)
+    addParam = paste0(addParamNames, '=', addParamValues, collapse = '&')
+    url = paste0(url, '?', addParam)
   }
 
-  success <- rep(FALSE, length(url))
+  success = rep(FALSE, length(url))
   if (progressBar) {
     pb = txtProgressBar(0, length(url), style = 3)
   }
@@ -86,19 +86,26 @@ S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, progress
       setTxtProgressBar(pb, i)
     }
 
-    try({
-      curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
+    tryCatch(
+      {
+        curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
 
-      signature = readBin(destfile[i], 'raw', 4)
-      if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
-        destfile[i] = sub('[.]zip$', '', destfile[i])
-        zipfile = paste0(destfile[i], '.zip')
-        file.rename(destfile[i], zipfile)
-        utils::unzip(zipfile = zipfile, exdir = destfile[i])
+        signature = readBin(destfile[i], 'raw', 4)
+        if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
+          destfile[i] = sub('[.]zip$', '', destfile[i])
+          zipfile = paste0(destfile[i], '.zip')
+          file.rename(destfile[i], zipfile)
+          utils::unzip(zipfile = zipfile, exdir = destfile[i])
+        }
+
+        success[i] = TRUE
+      },
+      warning = function(w) {
+        if (all(w$message == 'Operation was aborted by an application callback')) {
+          break
+        }
       }
-
-      success[i] = TRUE
-    })
+    )
   }
 
   return(invisible(success))
