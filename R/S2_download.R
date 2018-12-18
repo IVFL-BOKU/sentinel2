@@ -75,7 +75,7 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
 
   success = rep(FALSE, length(url))
   if (progressBar) {
-    pb = txtProgressBar(0, length(url), style = 3)
+    pb = utils::txtProgressBar(0, length(url), style = 3)
   }
   for (i in seq_along(url)) {
     if (isTRUE(skipExisting) && file.exists(destfile[i])) {
@@ -83,9 +83,10 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
     }
 
     if (progressBar) {
-      setTxtProgressBar(pb, i)
+      utils::setTxtProgressBar(pb, i)
     }
 
+    breakLoop = FALSE
     tryCatch(
       {
         curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
@@ -102,10 +103,13 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
       },
       warning = function(w) {
         if (all(w$message == 'Operation was aborted by an application callback')) {
-          break
+          breakLoop <<- TRUE
         }
       }
     )
+    if (breakLoop) {
+      break
+    }
   }
 
   return(invisible(success))

@@ -33,7 +33,7 @@ Simple helper function to download data (granules, images, QI data)
 \examples{
 \dontrun{
   # find, download and unzip a full granule
-  granules <- S2_query_granule(
+  granules = S2_query_granule(
     utm = '33UXP',
     dateMin = '2016-06-01',
     dateMax = '2016-06-30'
@@ -41,7 +41,7 @@ Simple helper function to download data (granules, images, QI data)
   S2_download(granules$url, granules$date)
 
   # find and download a bunch of images
-  images <- S2_query_image(
+  images = S2_query_image(
     utm = '33UXP',
     dateMin = '2016-06-01',
     dateMax = '2016-06-30',
