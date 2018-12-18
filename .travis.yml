@@ -1,7 +1,8 @@
 # http://docs.travis-ci.com/user/languages/r/
 language: r
 
-cache: packages
+cache:
+  packages: true
 
 r:
   - release
@@ -12,6 +13,9 @@ addons:
     packages:
       - libgdal-dev
       - libudunits2-dev
+
+r_packages:
+  sf
 
 after_success:
   - Rscript -e 'covr::coveralls(function_exclusions = c("\\.onLoad"))'
