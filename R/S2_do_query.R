@@ -9,18 +9,21 @@
 #'   "job", "rgb".
 
 
-S2_do_query <- function(query, path){
-  user     <- getOption("S2user")
-  password <- getOption("S2password")
+S2_do_query = function(query, path){
+  user     = getOption("S2user")
+  password = getOption("S2password")
 
-  filter        <- sapply(query, is.logical)
-  query[filter] <- as.numeric(query[filter])
+  filter        = sapply(query, is.logical)
+  query[filter] = as.numeric(query[filter])
 
-  rtrn     <- httr::GET('https://s2.boku.eodc.eu',
-                         config = httr::authenticate(user, password),
-                         path   = path,
-                         query  = query)
-  rtrn     <- jsonlite::fromJSON(httr::content(rtrn, as = 'text'))
+  rtrn = httr::GET(
+    'https://s2.boku.eodc.eu',
+    config = httr::authenticate(user, password),
+    path   = path,
+    query  = query
+  )
+  rtrn = as.data.frame(jsonlite::fromJSON(httr::content(rtrn, as = 'text')))
+
   return(rtrn)
 }
 

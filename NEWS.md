@@ -1,3 +1,13 @@
+# 0.3.0 (2018-12-18)
+
+* A `spatial` parameter of the `S2_query_granule()` and `S2_query_image()` is now
+  a string and allows to choose between the `sp` package and the `sf` package spatial
+  object representation.
+* All `S2_query_...()` functions always return a data frame even when query fetches no
+  results. Returned data frame is guaranteed to have at least an `{objectType}Id` 
+  column (e.g. `granuleId` for granules, `regionId` for regions of interest, etc.).
+* The `S2_download()` can now display a progress bar.
+
 # 0.2.1 (2018-10-25)
 
 * A `regionId` parameter added to all `S2_query_...()` functions for which it's valid.

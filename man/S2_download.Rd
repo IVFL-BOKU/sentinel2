@@ -4,7 +4,8 @@
 \alias{S2_download}
 \title{S2_download helper function}
 \usage{
-S2_download(url, destfile, zip = TRUE, skipExisting = TRUE, ...)
+S2_download(url, destfile, zip = TRUE, skipExisting = TRUE,
+  progressBar = TRUE, ...)
 }
 \arguments{
 \item{url}{character (valid) url to download file from.}
@@ -16,6 +17,8 @@ and (automatically) unzipped in the parent directory of 'destfile'
 (plays any role only when downloading granules).}
 
 \item{skipExisting}{logical skip if file already exists.}
+
+\item{progressBar}{should a progress bar be displayed?}
 
 \item{...}{further arguments not implemented directly - see
 the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}

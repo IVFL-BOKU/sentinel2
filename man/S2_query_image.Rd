@@ -10,7 +10,7 @@ S2_query_image(atmCorr = NULL, band = NULL, broken = FALSE,
   granuleId = NULL, imageId = NULL, orbitNo = NULL, owned = FALSE,
   product = NULL, productId = NULL, regionId = NULL,
   resolution = NULL, retGeometry = FALSE, utm = NULL,
-  dateSingle = NULL, spatial = FALSE, ...)
+  dateSingle = NULL, spatial = NULL, ...)
 }
 \arguments{
 \item{atmCorr}{logical if TRUE only results for atmospherically corrected
@@ -63,10 +63,10 @@ they are taken from the region of interest settings)}
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
 date and will override \code{dateMin} and \code{dateMax}.}
 
-\item{spatial}{logical, if TRUE the geometry column will contain
-SpatialPolygonsDataFrame objects instead of GeoJSON strings.
-Be aware that such conversion may take quite some time for large number of
-returned granules.}
+\item{spatial}{character, R package name (\code{sp} or \code{sf}) to the
+format used by which granule geometries should be converted. Be aware that
+such conversion may take quite some time for large number of returned
+granules.}
 
 \item{...}{further arguments not implemented directly - see
 the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image}{API doc}.}

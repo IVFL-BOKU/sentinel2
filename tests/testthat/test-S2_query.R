@@ -117,13 +117,13 @@ test_that('S2_query_roi() works', {
   expect_true(all(data$userId == 'test@s2.boku.eodc.eu'))
 })
 
-test_that('S2_query_granule(spatial = TRUE) works', {
+test_that('S2_query_granule(spatial) works', {
   data = S2_query_granule(
     cloudCovMin = 80,
     dateMin = '2016-06-01',
     dateMax = '2016-06-15',
     utm = '33UXP',
-    spatial = TRUE
+    spatial = 'sp'
   )
   expect_is(data, 'data.frame')
   expect_gt(nrow(data), 0)
@@ -134,6 +134,23 @@ test_that('S2_query_granule(spatial = TRUE) works', {
   expect_true(all(data$date <= '2016-06-15 23:59:59.999'))
   expect_true(all(data$utm == '33UXP'))
   expect_true(all(unlist(lapply(data$geometry, function(x){'SpatialPolygonsDataFrame' %in% class(x)}))))
+
+  data = S2_query_granule(
+    cloudCovMin = 80,
+    dateMin = '2016-06-01',
+    dateMax = '2016-06-15',
+    utm = '33UXP',
+    spatial = 'sf'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("granuleId", "productId", "product", "granule", "date", "processDate", "utm", "orbit", "cloudCov", "atmCorr", "broken", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(data$cloudCov >= 80))
+  expect_true(all(data$date >= '2016-06-01 00:00:00.000'))
+  expect_true(all(data$date <= '2016-06-15 23:59:59.999'))
+  expect_true(all(data$utm == '33UXP'))
+  expect_true(all(unlist(lapply(data$geometry, function(x){'sf' %in% class(x)}))))
 })
 
 test_that('S2 downloads images', {
@@ -173,4 +190,34 @@ test_that('S2 downloads granules', {
       }
     }
   )
+})
+
+test_that('data frame is always returned', {
+  data = S2_query_product(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('productId' %in% names(data))
+
+  data = S2_query_granule(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('granuleId' %in% names(data))
+
+  data = S2_query_image(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('imageId' %in% names(data))
+
+  data = S2_query_angle(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('angleId' %in% names(data))
+
+  data = S2_query_job(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('jobId' %in% names(data))
+
+  data = S2_query_qiData(productId = -1)
+  expect_is(data, 'data.frame')
+  expect_true('qiDataId' %in% names(data))
+
+  data = S2_query_roi(regionId = '__hopefuly no such region exists__')
+  expect_is(data, 'data.frame')
+  expect_true('regionId' %in% names(data))
 })

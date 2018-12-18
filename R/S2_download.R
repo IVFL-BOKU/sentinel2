@@ -8,6 +8,7 @@
 #' @param zip logical if \code{TRUE}, the url will be downloaded as zip archive
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
+#' @param progressBar should a progress bar be displayed?
 #' @param ... further arguments not implemented directly - see
 #'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}
 #'   and the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}}{image API doc}.
@@ -42,13 +43,15 @@
 #'   )
 #' }
 
-S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, ...){
+S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, ...){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
     is.vector(url), length(url) > 0, is.vector(destfile),
-    is.logical(skipExisting), is.vector(zip), is.logical(zip), length(zip) == 1,
-    all(!is.na(zip)), length(url) == length(destfile)
+    is.logical(skipExisting),
+    is.vector(zip), is.logical(zip), length(zip) == 1, all(!is.na(zip)),
+    is.vector(progressBar), is.logical(progressBar), length(progressBar) == 1, all(!is.na(progressBar)),
+    length(url) == length(destfile)
   )
   filter = !is.na(url)
   url <- url[filter]
@@ -71,10 +74,16 @@ S2_download <- function(url, destfile, zip = TRUE, skipExisting = TRUE, ...){
   }
 
   success <- rep(FALSE, length(url))
+  if (progressBar) {
+    pb = txtProgressBar(0, length(url), style = 3)
+  }
   for (i in seq_along(url)) {
-
     if (isTRUE(skipExisting) && file.exists(destfile[i])) {
       next
+    }
+
+    if (progressBar) {
+      setTxtProgressBar(pb, i)
     }
 
     try({

@@ -24,28 +24,29 @@
 #' @return data.frame return of the database.
 #' @export
 
-S2_query_job <- function(dateMax      = NULL,
-                         dateMin      = NULL,
-                         started      = NULL,
-                         ended        = NULL,
-                         failed       = NULL,
-                         geometry     = NULL,
-                         jobId        = NULL,
-                         granule      = NULL,
-                         granuleId    = NULL,
-                         product      = NULL,
-                         productId    = NULL,
-                         regionId     = NULL,
-                         retGeometry  = FALSE,
-                         dateSingle   = NULL,
-                         ...){
-
+S2_query_job = function(
+  dateMax      = NULL,
+  dateMin      = NULL,
+  started      = NULL,
+  ended        = NULL,
+  failed       = NULL,
+  geometry     = NULL,
+  jobId        = NULL,
+  granule      = NULL,
+  granuleId    = NULL,
+  product      = NULL,
+  productId    = NULL,
+  regionId     = NULL,
+  retGeometry  = FALSE,
+  dateSingle   = NULL,
+  ...
+){
   # check inputs ---------------------------------------------------------------
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
-    dateMin    <- dateSingle
-    dateMax    <- dateSingle
-    dateSingle <- NULL
+    dateMin    = dateSingle
+    dateMax    = dateSingle
+    dateSingle = NULL
   }
 
   if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
@@ -53,14 +54,17 @@ S2_query_job <- function(dateMax      = NULL,
   }
 
   # prepare json geometry ------------------------------------------------------
-  if (!is.null(geometry)) geometry <- roi_to_jgeom(geometry)
+  if (!is.null(geometry)) geometry = roi_to_jgeom(geometry)
 
   # make named query list ------------------------------------------------------
-  query <- c(as.list(environment()), list(...))
-  query <- query[!sapply(query, is.null)]
+  query = c(as.list(environment()), list(...))
+  query = query[!sapply(query, is.null)]
 
   # return query list ----------------------------------------------------------
-  rtrn  <- S2_do_query(query = query, path = 'job')
+  rtrn  = S2_do_query(query = query, path = 'job')
+  if (nrow(rtrn) == 0) {
+    rtrn$jobId = integer()
+  }
   return(rtrn)
 }
 

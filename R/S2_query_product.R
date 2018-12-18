@@ -22,30 +22,30 @@
 #' @return data.frame return of the database.
 #' @export
 
-S2_query_product <- function(atmCorr      = NULL,
-                             dateMax      = NULL,
-                             dateMin      = NULL,
-                             geometry     = NULL,
-                             orbitDir     = NULL,
-                             orbitNo      = NULL,
-                             product      = NULL,
-                             productId    = NULL,
-                             regionId     = NULL,
-                             retGeometry  = FALSE,
-                             dateSingle   = NULL,
-                             ...){
-
-
+S2_query_product = function(
+  atmCorr      = NULL,
+  dateMax      = NULL,
+  dateMin      = NULL,
+  geometry     = NULL,
+  orbitDir     = NULL,
+  orbitNo      = NULL,
+  product      = NULL,
+  productId    = NULL,
+  regionId     = NULL,
+  retGeometry  = FALSE,
+  dateSingle   = NULL,
+  ...
+){
   # check inputs ---------------------------------------------------------------
   if (!is.null(orbitDir)) {
-    orbitDir <- match.arg(orbitDir)
+    orbitDir = match.arg(orbitDir)
   }
 
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
-    dateMin    <- dateSingle
-    dateMax    <- dateSingle
-    dateSingle <- NULL
+    dateMin    = dateSingle
+    dateMax    = dateSingle
+    dateSingle = NULL
   }
 
   if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
@@ -54,15 +54,18 @@ S2_query_product <- function(atmCorr      = NULL,
 
   # prepare json geometry ------------------------------------------------------
   if (!is.null(geometry)) {
-    geometry <- roi_to_jgeom(geometry)
+    geometry = roi_to_jgeom(geometry)
   }
 
   # make named query list ------------------------------------------------------
-  query <- c(as.list(environment()), list(...))
-  query <- query[!sapply(query, is.null)]
+  query = c(as.list(environment()), list(...))
+  query = query[!sapply(query, is.null)]
 
   # return query list ----------------------------------------------------------
-  rtrn  <- S2_do_query(query = query, path = 'product')
+  rtrn  = S2_do_query(query = query, path = 'product')
+  if (nrow(rtrn) == 0) {
+    rtrn$productId = integer()
+  }
   return(rtrn)
 }
 

@@ -26,45 +26,46 @@
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
-#' @param spatial logical, if TRUE the geometry column will contain
-#'   SpatialPolygonsDataFrame objects instead of GeoJSON strings.
-#'   Be aware that such conversion may take quite some time for large number of
-#'   returned granules.
+#' @param spatial character, R package name (\code{sp} or \code{sf}) to the
+#'   format used by which granule geometries should be converted. Be aware that
+#'   such conversion may take quite some time for large number of returned
+#'   granules.
 #' @param ... further arguments not implemented directly - see
 #'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule}{API doc}.
 #' @return data.frame describing matching granules.
 #' @export
 
-S2_query_granule <- function(atmCorr      = NULL,
-                             broken       = FALSE,
-                             cloudCovMin  = NULL,
-                             cloudCovMax  = NULL,
-                             dateMax      = NULL,
-                             dateMin      = NULL,
-                             geometry     = NULL,
-                             granule      = NULL,
-                             granuleId    = NULL,
-                             orbitNo      = NULL,
-                             owned        = FALSE,
-                             product      = NULL,
-                             productId    = NULL,
-                             regionId     = NULL,
-                             retGeometry  = FALSE,
-                             utm          = NULL,
-                             dateSingle   = NULL,
-                             spatial      = FALSE,
-                             ...){
-
+S2_query_granule = function(
+  atmCorr      = NULL,
+  broken       = FALSE,
+  cloudCovMin  = NULL,
+  cloudCovMax  = NULL,
+  dateMax      = NULL,
+  dateMin      = NULL,
+  geometry     = NULL,
+  granule      = NULL,
+  granuleId    = NULL,
+  orbitNo      = NULL,
+  owned        = FALSE,
+  product      = NULL,
+  productId    = NULL,
+  regionId     = NULL,
+  retGeometry  = FALSE,
+  utm          = NULL,
+  dateSingle   = NULL,
+  spatial      = NULL,
+  ...
+){
   # check inputs ---------------------------------------------------------------
-  if (isTRUE(spatial)) {
-    retGeometry <- TRUE
+  if (!is.null(spatial)) {
+    retGeometry = TRUE
   }
 
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
-    dateMin    <- dateSingle
-    dateMax    <- dateSingle
-    dateSingle <- NULL
+    dateMin    = dateSingle
+    dateMax    = dateSingle
+    dateSingle = NULL
   }
 
   if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
@@ -73,22 +74,21 @@ S2_query_granule <- function(atmCorr      = NULL,
 
   # prepare json geometry ------------------------------------------------------
   if (!is.null(geometry)) {
-    geometry <- roi_to_jgeom(geometry)
+    geometry = roi_to_jgeom(geometry)
   }
 
   # make named query list ------------------------------------------------------
-  query <- c(as.list(environment()), list(...))
-  query <- query[!sapply(query, is.null)]
+  query = c(as.list(environment()), list(...))
+  query = query[!sapply(query, is.null)]
 
   # return query list ----------------------------------------------------------
-  rtrn  <- S2_do_query(query = query, path = 'granule')
+  rtrn = S2_do_query(query = query, path = 'granule')
+  if (nrow(rtrn) == 0) {
+    rtrn$granuleId = integer()
+  }
 
-  if (isTRUE(spatial)) {
-    geometryJson = rtrn$geometry
-    rtrn$geometry = vector('list', length(geometryJson))
-    for (i in seq_along(geometryJson)) {
-      rtrn$geometry[[i]] = rgdal::readOGR(geometryJson[i], 'OGRGeoJSON', verbose = FALSE)
-    }
+  if (!is.null(spatial) & nrow(rtrn) > 0) {
+    rtrn$geometry = geojson2geometry(rtrn$geometry, spatial)
   }
 
   return(rtrn)

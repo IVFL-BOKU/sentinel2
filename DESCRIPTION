@@ -1,6 +1,6 @@
 Package: sentinel2
 Title: Tools to access Sentinel-2 data pre-processed by IVFL, BOKU Vienna
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: c(
     person("Sebastian", "Boeck",  email = "sebastian.boeck@boku.ac.at", role = c("aut", "cre")),
     person("Mateusz",   "Zoltak", email = "mateusz.zoltak@boku.ac.at",  role = c("ctb"))
@@ -23,7 +23,8 @@ Suggests:
     testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    sf
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

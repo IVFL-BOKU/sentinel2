@@ -16,20 +16,21 @@
 #' @return data.frame return of the database.
 #' @export
 
-S2_query_roi <- function(dateMax      = Sys.Date(),
-                         dateMin      = '2000-01-01',
-                         geometry     = NULL,
-                         regionId     = NULL,
-                         utm          = NULL,
-                         dateSingle   = NULL,
-                         ...){
-
+S2_query_roi = function(
+  dateMax      = Sys.Date(),
+  dateMin      = '2000-01-01',
+  geometry     = NULL,
+  regionId     = NULL,
+  utm          = NULL,
+  dateSingle   = NULL,
+  ...
+){
   # check inputs ---------------------------------------------------------------
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
-    dateMin    <- dateSingle
-    dateMax    <- dateSingle
-    dateSingle <- NULL
+    dateMin    = dateSingle
+    dateMax    = dateSingle
+    dateSingle = NULL
   }
 
   if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
@@ -38,15 +39,18 @@ S2_query_roi <- function(dateMax      = Sys.Date(),
 
   # prepare json geometry ------------------------------------------------------
   if (!is.null(geometry)) {
-    geometry <- roi_to_jgeom(geometry)
+    geometry = roi_to_jgeom(geometry)
   }
 
   # make named query list ------------------------------------------------------
-  query <- c(as.list(environment()), list(...))
-  query <- query[!sapply(query, is.null)]
+  query = c(as.list(environment()), list(...))
+  query = query[!sapply(query, is.null)]
 
   # return query list ----------------------------------------------------------
-  rtrn  <- S2_do_query(query = query, path = 'roi')
+  rtrn = S2_do_query(query = query, path = 'roi')
+  if (nrow(rtrn) == 0) {
+    rtrn$regionId = character()
+  }
   return(rtrn)
 }
 

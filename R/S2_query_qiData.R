@@ -32,32 +32,33 @@
 #' @return data.frame return of the database.
 #' @export
 
-S2_query_qiData <- function(atmCorr      = NULL,
-                            band         = NULL,
-                            broken       = FALSE,
-                            cloudCovMin  = NULL,
-                            cloudCovMax  = NULL,
-                            dateMax      = NULL,
-                            dateMin      = NULL,
-                            geometry     = NULL,
-                            granule      = NULL,
-                            granuleId    = NULL,
-                            orbitNo      = NULL,
-                            owned        = FALSE,
-                            product      = NULL,
-                            productId    = NULL,
-                            regionId     = NULL,
-                            retGeometry  = FALSE,
-                            utm          = NULL,
-                            dateSingle   = NULL,
-                            ...){
-
+S2_query_qiData = function(
+  atmCorr      = NULL,
+  band         = NULL,
+  broken       = FALSE,
+  cloudCovMin  = NULL,
+  cloudCovMax  = NULL,
+  dateMax      = NULL,
+  dateMin      = NULL,
+  geometry     = NULL,
+  granule      = NULL,
+  granuleId    = NULL,
+  orbitNo      = NULL,
+  owned        = FALSE,
+  product      = NULL,
+  productId    = NULL,
+  regionId     = NULL,
+  retGeometry  = FALSE,
+  utm          = NULL,
+  dateSingle   = NULL,
+  ...
+){
   # check inputs ---------------------------------------------------------------
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
-    dateMin    <- dateSingle
-    dateMax    <- dateSingle
-    dateSingle <- NULL
+    dateMin    = dateSingle
+    dateMax    = dateSingle
+    dateSingle = NULL
   }
 
   if (!is.null(dateMin) && !is.null(dateMax) && check_date(dateMin) > check_date(dateMax)) {
@@ -66,14 +67,17 @@ S2_query_qiData <- function(atmCorr      = NULL,
 
   # prepare json geometry ------------------------------------------------------
   if (!is.null(geometry)) {
-    geometry <- roi_to_jgeom(geometry)
+    geometry = roi_to_jgeom(geometry)
   }
 
   # make named query list ------------------------------------------------------
-  query <- c(as.list(environment()), list(...))
-  query <- query[!sapply(query, is.null)]
+  query = c(as.list(environment()), list(...))
+  query = query[!sapply(query, is.null)]
 
   # return query list ----------------------------------------------------------
-  rtrn  <- S2_do_query(query = query, path = 'qiData')
+  rtrn  = S2_do_query(query = query, path = 'qiData')
+  if (nrow(rtrn) == 0) {
+    rtrn$qiDataId = integer()
+  }
   return(rtrn)
 }
