@@ -29,98 +29,103 @@
 #' @return NULL
 #' @export
 
-S2_generate_RGB <- function(granuleId,
-                            destfile = NULL,
-                            resolution = c("highest", "lowest"),
-                            atmCorr = TRUE,
-                            r = "B08",
-                            g = "B04",
-                            b = "B03",
-                            ra = 20,
-                            ga = 20,
-                            ba = 20,
-                            rb = 20,
-                            gb = 20,
-                            bb = 20,
-                            overwrite = FALSE){
-
-  resolution <- match.arg(resolution)
-  resolution <- switch(resolution, "highest" = FALSE, "lowest" = TRUE)
-
-  query      <- S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
-
-  if (length(query) == 0 && !isTRUE(atmCorr)){
-
-    warning("Unable to process 'granuleId ", granuleId, "'. Not found in database!")
-    return(invisible(NULL))
-
-  } else if (length(query) == 0 && isTRUE(atmCorr)){
-
-    warning("Unable to process 'granuleId ", granuleId, "'. Maybe its not (yet) ",
-         "atmospherically corrected!\n")
-    return(invisible(NULL))
-
+S2_generate_RGB = function(
+  granuleId,
+  destfile = NULL,
+  resolution = c("highest", "lowest"),
+  atmCorr = TRUE,
+  r = "B08",
+  g = "B04",
+  b = "B03",
+  ra = 20,
+  ga = 20,
+  ba = 20,
+  rb = 20,
+  gb = 20,
+  bb = 20,
+  overwrite = FALSE
+){
+  if (length(granuleId) != 1) {
+    stop('granuleId has to be a vector of length one')
   }
 
-  imageIds       <- integer(3)
-  min_resolution <- Inf
+  resolution = match.arg(resolution)
+  resolution = switch(resolution, "highest" = FALSE, "lowest" = TRUE)
 
-  for (i in seq_len(3)){
-    sel            <- query[query$band == c(r, g, b)[i], , drop=FALSE]
-    sel            <- sel[order(sel$resolution, decreasing = resolution)[1], , drop=FALSE]
-    min_resolution <- min(c(min_resolution, sel$resolution))
+  query = S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
 
-    if (is.na(sel$url)){
+  if (length(query) == 0 && !isTRUE(atmCorr)) {
+    warning("Unable to process 'granuleId ", granuleId, "'. Not found in database!")
+    return(invisible(NULL))
+  } else if (length(query) == 0 && isTRUE(atmCorr)) {
+    warning(
+      "Unable to process 'granuleId ", granuleId, "'. Maybe its not (yet) ",
+      "atmospherically corrected!\n"
+    )
+    return(invisible(NULL))
+  }
+
+  imageIds       = integer(3)
+  min_resolution = Inf
+
+  for (i in seq_len(3)) {
+    sel            = query[query$band == c(r, g, b)[i], , drop = FALSE]
+    sel            = sel[order(sel$resolution, decreasing = resolution)[1], , drop = FALSE]
+    min_resolution = min(c(min_resolution, sel$resolution))
+
+    if (is.na(sel$url)) {
       warning("Access to image denied. You seem to lack permission to download file!")
       return(invisible(NULL))
     }
 
-    imageIds[i]   <- sel[, "imageId"]
+    imageIds[i] = sel[, "imageId"]
   }
   # Generate filename ----------------------------------------------------------
-  autoname <- sprintf("RGB_%s_%s_%s_%sm_%s_%s_%s_Id%s_%s.tif",
-                      r, g, b, min_resolution,
-                      unique(format_date(query$date)),
-                      unique(query$utm),
-                      unique(query$orbit),
-                      granuleId, ifelse(atmCorr, "L2A", "L1C"))
+  autoname = sprintf(
+    "RGB_%s_%s_%s_%sm_%s_%s_%s_Id%s_%s.tif",
+    r, g, b, min_resolution,
+    unique(format_date(query$date)),
+    unique(query$utm),
+    unique(query$orbit),
+    granuleId, ifelse(atmCorr, "L2A", "L1C")
+  )
 
+  query = list(
+    r = imageIds[1],
+    g = imageIds[2],
+    b = imageIds[3],
+    ra = ra,
+    ga = ga,
+    ba = ba,
+    rb = rb,
+    gb = gb,
+    bb = bb
+  )
 
-  query <- list(r = imageIds[1],
-                g = imageIds[2],
-                b = imageIds[3],
-                ra = ra,
-                ga = ga,
-                ba = ba,
-                rb = rb,
-                gb = gb,
-                bb = bb)
+  credentials = get_credentials()
+  rtrn = httr::modify_url(
+    'https://s2.boku.eodc.eu',
+    username = utils::URLencode(credentials['user'], reserved = TRUE),
+    password = utils::URLencode(credentials['password'], reserved = TRUE),
+    path     = "rgb",
+    query    = query
+  )
 
-  user     <- getOption("S2user")
-  password <- getOption("S2password")
-  rtrn     <- httr::modify_url('https://s2.boku.eodc.eu',
-                               username = utils::URLencode(user, reserved = TRUE),
-                               password = utils::URLencode(password, reserved = TRUE),
-                               path     = "rgb",
-                               query    = query)
-
-
-  if (is.null(destfile)){
-    destfile <- autoname
+  if (is.null(destfile)) {
+    destfile = autoname
   }
 
-  if (dir.exists(destfile)){
-    destfile <- sprintf("%s/%s", destfile, autoname)
+  if (dir.exists(destfile)) {
+    destfile = sprintf("%s/%s", destfile, autoname)
   }
 
-
-  if (file.exists(destfile) && !isTRUE(overwrite)){
+  if (file.exists(destfile) && !isTRUE(overwrite)) {
     warning(destfile, " already exists! Use 'overwrite = TRUE' to overwrite")
     return(invisible(NULL))
   }
 
   curl::curl_download(url = rtrn, destfile = destfile)
-  return(invisible(NULL))
+  return(destfile)
 }
 
 

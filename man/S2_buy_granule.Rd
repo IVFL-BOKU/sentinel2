@@ -4,14 +4,16 @@
 \alias{S2_buy_granule}
 \title{Buy a granule at 'https://s2.boku.eodc.eu'}
 \usage{
-S2_buy_granule(granuleId, mode = c("ask", "always"))
+S2_buy_granule(granuleId, mode = c("ask", "always", "force"))
 }
 \arguments{
 \item{granuleId}{character vector of one or more granuleId's to buy}
 
-\item{mode}{one of "ask" and "always". If "ask", the user is prompted for
-confirmation before spending coins ( - in interactive sessions only!).
-If "always", granules are bought anyway.}
+\item{mode}{one of 'ask', 'always' or 'force'. If 'ask', the user is prompted
+for confirmation before spending coins ( - in interactive sessions only!).
+If 'always', granules are bought without prompting but granule bought
+already are skipped. If 'force', granules are bought without prompting and
+also withoug checking if they are already bought.}
 }
 \description{
 Buy granule using granuleId

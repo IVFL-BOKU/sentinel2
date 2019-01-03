@@ -8,51 +8,37 @@
 #'   credentials seem to be valid, FALSE if 'anything' went wrong
 #' @export
 
-S2_check_access <- function(verbose = TRUE){
-  user     <- getOption("S2user")
-  password <- getOption("S2password")
-  srvrsp   <- httr::GET('https://s2.boku.eodc.eu/user/current',
-                        config = httr::authenticate(user, password))
+S2_check_access = function(verbose = TRUE){
+  credentials = get_credentials()
+  srvrsp =  httr::GET(
+    'https://s2.boku.eodc.eu/user/current',
+    config = httr::authenticate(credentials['user'], credentials['password'])
+  )
 
-  if (httr::status_code(srvrsp) == 200){
-    if (httr::content(srvrsp)$userId == user){
-
-      if (isTRUE(verbose)){
-        cat(sprintf("Logged in to 'https://s2.boku.eodc.eu' as %s\n", user))
+  if (httr::status_code(srvrsp) == 200) {
+    if (httr::content(srvrsp)$userId == credentials['user']) {
+      if (isTRUE(verbose)) {
+        cat(sprintf("Logged in to 'https://s2.boku.eodc.eu' as %s\n", credentials['user']))
       }
       return(TRUE)
-
-    } else if (httr::content(srvrsp)$userId == "public"){
-
-      if (user == "default" && password == "default"){
-        if (isTRUE(verbose)){
-          warning("Not logged in at 'https://s2.boku.eodc.eu' -> limited access to database:\n",
-                  "please supply 'user' and 'password' via 'S2_initialize_user()'\n",
-                  "see '?S2_intialize_user' for details!")
-        }
-        return(FALSE)
-
-      } else {
-
-        if (isTRUE(verbose)){
-          warning("Not logged in to s2.boku.eodc.eu -> access to database limited:\n",
-                  "please check credentials and use 'S2_initialize_user()' to\n",
-                  "supply a valid 'user' and 'password'\n",
-                  "see '?S2_intialize_user' or visit 'https://s2.boku.eodc.eu' for details!")
-        }
-        return(FALSE)
-
+    } else {
+      if (isTRUE(verbose)) {
+        warning(
+          "Not logged in to s2.boku.eodc.eu -> access to database limited:\n",
+          "please check credentials and use 'S2_initialize_user()' to\n",
+          "supply a valid 'user' and 'password'\n",
+          "see '?S2_intialize_user' or visit 'https://s2.boku.eodc.eu' for details!"
+        )
       }
+      return(FALSE)
     }
   } else {
-
-    if (isTRUE(verbose)){
-      warning(sprintf("Unable to access server! Status code %s returned",
-                   httr::status_code(srvrsp)))
+    if (isTRUE(verbose)) {
+      warning(
+        sprintf("Unable to access server! Status code %s returned",
+        httr::status_code(srvrsp))
+      )
     }
     return(FALSE)
-
   }
-
 }
-

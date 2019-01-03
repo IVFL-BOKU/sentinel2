@@ -10,15 +10,14 @@
 
 
 S2_do_query = function(query, path){
-  user     = getOption("S2user")
-  password = getOption("S2password")
+  credentials = get_credentials()
 
   filter        = sapply(query, is.logical)
   query[filter] = as.numeric(query[filter])
 
   rtrn = httr::GET(
     'https://s2.boku.eodc.eu',
-    config = httr::authenticate(user, password),
+    config = httr::authenticate(credentials['user'], credentials['password']),
     path   = path,
     query  = query
   )

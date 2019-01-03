@@ -15,14 +15,15 @@
 #' @export
 
 
-S2_put_ROI <- function(geometry,
-                       regionId    = NULL,
-                       cloudCovMax = 50,
-                       indicators  = NULL,
-                       dateMin     = NULL,
-                       dateMax     = NULL,
-                       srid        = 4326){
-
+S2_put_ROI = function(
+  geometry,
+  regionId    = NULL,
+  cloudCovMax = 50,
+  indicators  = NULL,
+  dateMin     = NULL,
+  dateMax     = NULL,
+  srid        = 4326
+){
   if (is.null(dateMin) || is.null(dateMax)) {
     stop("Please supply 'dateMin' and 'dateMax' in format 'YYYY-MM-DD")
   }
@@ -32,31 +33,33 @@ S2_put_ROI <- function(geometry,
   }
 
   if (is.null(regionId)) {
-    stop("'regionId' not specified!",
-         "\n-> If you want to update an existing 'roi', please supply valid 'regionId'",
-         "\n-> If you like to create a new 'regionId' enter desired name")
+    stop(
+      "'regionId' not specified!",
+      "\n-> If you want to update an existing 'roi', please supply valid 'regionId'",
+      "\n-> If you like to create a new 'regionId' enter desired name"
+    )
   }
 
-  geometry  <- roi_to_jgeom(geometry)
+  geometry  = roi_to_jgeom(geometry)
+  body_l    = list(
+    cloudCovMax  = cloudCovMax,
+    dateMin      = dateMin,
+    dateMax      = dateMax,
+    geometry     = geometry,
+    indicators   = indicators,
+    srid         = srid
+  )
+  body_l   = body_l[!sapply(body_l , is.null)]
 
-  body_l    <- list(cloudCovMax  = cloudCovMax,
-                    dateMin      = dateMin,
-                    dateMax      = dateMax,
-                    geometry     = geometry,
-                    indicators   = indicators,
-                    srid         = srid)
-
-  body_l   <- body_l[!sapply(body_l , is.null)]
-
-  user     <- getOption("S2user")
-  password <- getOption("S2password")
-  url      <- httr::modify_url('https://s2.boku.eodc.eu',
-                               username = utils::URLencode(user, reserved = TRUE),
-                               password = utils::URLencode(password, reserved = TRUE),
-                               path   = list("user", user, "roi", regionId))
-  rtrn     <- httr::PUT(url = url, body = body_l, encode = "form",
-                        httr::content_type('application/x-www-form-urlencoded'))
+  credentials = get_credentials()
+  url = httr::modify_url(
+    'https://s2.boku.eodc.eu',
+    path   = list("user", credentials['user'], "roi", regionId)
+  )
+  rtrn = httr::PUT(
+    url = url, body = body_l,
+    config = httr::authenticate(credentials['user'], credentials['password'])
+  )
 
   return(rtrn)
-
 }

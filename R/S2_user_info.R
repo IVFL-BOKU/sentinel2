@@ -8,15 +8,16 @@
 #'   database products
 #' @export
 
-S2_user_info <- function(){
-  user     <- getOption("S2user")
-  password <- getOption("S2password")
-  srvrsp   <- httr::GET('https://s2.boku.eodc.eu/user/current',
-                        config = httr::authenticate(user, password))
+S2_user_info = function(){
+  credentials = get_credentials()
+  srvrsp      = httr::GET(
+    'https://s2.boku.eodc.eu/user/current',
+    config = httr::authenticate(credentials['user'], credentials['password'])
+  )
 
-  srvrsp             <- httr::content(srvrsp)
-  srvrsp$coinsRemain <- srvrsp$coins - srvrsp$coinsUsed
-  srvrsp$admin       <- NULL
+  srvrsp             = httr::content(srvrsp)
+  srvrsp$coinsRemain = srvrsp$coins - srvrsp$coinsUsed
+  srvrsp$admin       = NULL
 
   return(srvrsp)
 }

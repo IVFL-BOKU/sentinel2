@@ -1,5 +1,4 @@
 context('S2_query')
-S2_initialize_user()
 
 test_that('S2_query_angle() works', {
   data = S2_query_angle(
@@ -152,45 +151,6 @@ test_that('S2_query_roi() works', {
 #   expect_true(all(data$utm == '33UXP'))
 #   expect_true(all(unlist(lapply(data$geometry, function(x){'sf' %in% class(x)}))))
 # })
-
-test_that('S2 downloads images', {
-  if (file.exists('test.jp2')) {
-    unlink('test.jp2')
-  }
-  on.exit({
-    if (file.exists('test.jp2')) {
-      unlink('test.jp2')
-    }
-  })
-
-  data = S2_query_image(imageId = 29392766)
-  S2_download(data$url, 'test.jp2')
-  expect_true(file.exists('test.jp2'))
-  expect_equal(file.info('test.jp2')$size, 3190469)
-})
-
-test_that('S2 downloads granules', {
-  if (file.exists('testDir.zip')) {
-    unlink('testDir.zip')
-  }
-  if (dir.exists('testDir')) {
-    system('rm -fR testDir')
-  }
-  tryCatch(
-    {
-      S2_download('https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/2920000', destfile = 'testDir', zip = TRUE, skipExisting = FALSE)
-      expect_true(file.exists('testDir/MTD_TL.xml'))
-    },
-    finally = {
-      if (file.exists('testDir.zip')) {
-        unlink('testDir.zip')
-      }
-      if (dir.exists('testDir')) {
-        system('rm -fR testDir')
-      }
-    }
-  )
-})
 
 test_that('data frame is always returned', {
   data = S2_query_product(productId = -1)

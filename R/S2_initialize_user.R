@@ -1,13 +1,13 @@
+cfgUser = 'test@s2.boku.eodc.eu'
+cfgPswd = 'test'
+
 #' Set login credentials for 's2.boku.eodc.eu'
 #'
 #' Set 'user' and 'password' login credentials for the current
 #'   R session
 #'
-#' \code{S2_initialize_user} store 'user' and 'password' in \code{options}.
-#'  If needed, functions in package 'sentinel2' will retrieve the credentials
-#'  using 'getOption()'. This will avoid passing login credentials multiple
-#'  times in a single session and allows users to permanentely configure their
-#'  login in a '.Rprofile' file.
+#' \code{S2_initialize_user} remembers user credentials allowing other package
+#' functions to retrieve them when needed.
 #'
 #' @note Requires a valid registration to 'https://s2.boku.eodc.eu' to gain
 #'    access to database functionality where authentication is mandatory.
@@ -15,8 +15,13 @@
 #'   'https://s2.boku.eodc.eu'
 #' @param password character password for 'https://s2.boku.eodc.eu'
 #' @export
+S2_initialize_user = function(user, password, permanent = TRUE) {
+  cfgUser <<- user
+  cfgPswd <<- password
+}
 
-S2_initialize_user <- function(user = "test@s2.boku.eodc.eu", password = "test"){
-  options("S2user" = user)
-  options("S2password" = password)
+#' Internal function getting user credentials
+#'
+get_credentials = function() {
+  return(c(user = cfgUser, password = cfgPswd))
 }
