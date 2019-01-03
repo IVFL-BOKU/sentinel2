@@ -1,6 +1,3 @@
-cfgUser = 'test@s2.boku.eodc.eu'
-cfgPswd = 'test'
-
 #' Set login credentials for 's2.boku.eodc.eu'
 #'
 #' Set 'user' and 'password' login credentials for the current
@@ -15,13 +12,22 @@ cfgPswd = 'test'
 #'   'https://s2.boku.eodc.eu'
 #' @param password character password for 'https://s2.boku.eodc.eu'
 #' @export
-S2_initialize_user = function(user, password, permanent = TRUE) {
-  cfgUser <<- user
-  cfgPswd <<- password
+S2_initialize_user = function(user, password) {
+  assign('cfgUser', user, parent.env(environment()))
+  assign('cfgPswd', password, parent.env(environment()))
 }
 
 #' Internal function getting user credentials
 #'
 get_credentials = function() {
-  return(c(user = cfgUser, password = cfgPswd))
+  try(
+    {
+      return(c(
+        user = get('cfgUser', parent.env(environment())),
+        password = get('cfgPswd', parent.env(environment()))
+      ))
+    },
+    silent = TRUE
+  )
+  return(c(user = 'test@s2.boku.eodc.eu', password = 'test'))
 }
