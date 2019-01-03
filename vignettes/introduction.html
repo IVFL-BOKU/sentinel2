@@ -95,10 +95,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Interaction with the data portal typically requires passing user credentials. Use <code>S2_initialize_user()</code> to store your user credentials for the active session, and subsequently use <code>S2_check_access()</code> to verify access to the data portal. The first lines of your code make look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sentinel2)
 
-<span class="kw">S2_initialize_user</span>(<span class="dt">user =</span> <span class="st">'test@s2.boku.eodc.eu'</span>, <span class="dt">password =</span> <span class="st">'test'</span>)
-<span class="kw">S2_check_access</span>()</code></pre></div>
-<pre><code>## Logged in to 'https://s2.boku.eodc.eu' as test@s2.boku.eodc.eu</code></pre>
-<pre><code>## [1] TRUE</code></pre>
+<span class="kw">S2_initialize_user</span>(<span class="dt">user =</span> <span class="st">'test@s2.boku.eodc.eu'</span>, <span class="dt">password =</span> <span class="st">'test'</span>)</code></pre></div>
 <p>Now we have access to the data portal! We might want to query for available data now.</p>
 </div>
 <div id="query-the-database-for-sentinel-2-data-products" class="section level2">
@@ -112,25 +109,35 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
                  <span class="dt">dateMin  =</span> <span class="st">'2016-09-15'</span>, 
                  <span class="dt">dateMax  =</span> <span class="st">'2016-09-30'</span>)</code></pre></div>
 <pre><code>##   granuleId productId
-## 1   1517446     82741
-## 2   1504951     81770
-## 3   1619390    129827
+## 1   4982609   3597773
+## 2   1619390    129827
+## 3   1504951     81770
+## 4   4982512   3597676
+## 5   1517446     82741
 ##                                                                          product
-## 1 S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
-## 2 S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
-## 3 S2A_OPER_PRD_MSIL1C_PDMC_20160930T165809_R079_V20160930T095022_20160930T095025
+## 1                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UWP_20160920T095223
+## 2 S2A_OPER_PRD_MSIL1C_PDMC_20160930T165809_R079_V20160930T095022_20160930T095025
+## 3 S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
+## 4                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UWP_20160923T100625
+## 5 S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
 ##                                                          granule
-## 1 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04
-## 2 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04
-## 3 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWP_N02.04
+## 1 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04
+## 2 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWP_N02.04
+## 3 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04
+## 4 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04
+## 5 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04
 ##                  date         processDate   utm orbit cloudCov atmCorr
-## 1 2016-09-23 10:06:25 2016-09-25 05:08:31 33UWP   122       49     2.3
-## 2 2016-09-20 09:52:23 2016-09-22 05:05:38 33UWP    79       46     2.3
-## 3 2016-09-30 09:50:25 2016-09-30 16:58:09 33UWP    79        0     2.3
+## 1 2016-09-20 09:52:23 2016-09-20 09:52:23 33UWP    79       46     2.5
+## 2 2016-09-30 09:50:25 2016-09-30 16:58:09 33UWP    79        0     2.5
+## 3 2016-09-20 09:52:23 2016-09-22 05:05:38 33UWP    79       46     2.4
+## 4 2016-09-23 10:06:25 2016-09-23 10:06:25 33UWP   122       49     2.5
+## 5 2016-09-23 10:06:25 2016-09-25 05:08:31 33UWP   122       49     2.4
 ##   broken url
 ## 1  FALSE  NA
 ## 2  FALSE  NA
-## 3  FALSE  NA</code></pre>
+## 3  FALSE  NA
+## 4  FALSE  NA
+## 5  FALSE  NA</code></pre>
 <p>The <code>data.frame</code> returned contains information about the granules found in the database, matching the requested criteria. There are several atmospherically corrected granules available, however, none are owned by the user, as the <code>NA</code>’s in the <code>url</code> column reveal.</p>
 <p><em>Coins</em> are used to gain access to individual granules using its <em>regionId</em> in <code>S2_buy_granule()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">S2_buy_granule</span>(<span class="dt">granuleId =</span> <span class="dv">1080943</span>)</code></pre></div>
@@ -144,90 +151,295 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
                <span class="dt">dateMin     =</span> <span class="st">'2016-09-15'</span>, 
                <span class="dt">dateMax     =</span> <span class="st">'2016-09-30'</span>)</code></pre></div>
 <pre><code>##     imageId productId granuleId
-## 1  41571000     80542   1488132
-## 2  45912152     82741   1517445
-## 3  40885133    120840   1610276
-## 4  41568675     81770   1504951
-## 5  41569130     81770   1504950
-## 6  40884753    120773   1610209
-## 7  40885248     82741   1517448
-## 8  41567465     82741   1517446
-## 9  41565338    130917   1620480
-## 10 40885020    121068   1610504
-## 11 41558428     82364   1512474
-## 12 41567708     82741   1517447
-## 13 49219299     80551   1488271
-## 14 40885590     80542   1488138
-## 15 41564708    129827   1619390
-## 16 41568021     82364   1512475
+## 1  81272731    129827   1619390
+## 2  54544260    120840   1610276
+## 3  54549205    121068   1610504
+## 4  54553430     82741   1517448
+## 5  54544257    120773   1610209
+## 6  54544261    130917   1620480
+## 7  54554643     82741   1517445
+## 8  54556068     81770   1504951
+## 9  54556069     81770   1504950
+## 10 54557230     80542   1488132
+## 11 54557684     80542   1488138
+## 12 54557810     80551   1488271
+## 13 65690407     83633   1529132
+## 14 84841423     80551   1488269
+## 15 79549596   3505218   4890204
+## 16 79569292   3597653   4982489
+## 17 79575459   3597679   4982515
+## 18 79596202   3597680   4982516
+## 19 79575463   3597684   4982520
+## 20 79618274   3597773   4982609
+## 21 79618534   3597767   4982544
+## 22 79623957   3597779   4982615
+## 23 79644773   3597796   4982632
+## 24 79644771   3597795   4982631
+## 25 79650252   3597801   4982637
+## 26 83044364    129609   1619172
+## 27 57364469     81770   1504949
+## 28 65690404     83637   1529196
+## 29 63474810     82364   1512472
+## 30 84841208     80551   1488272
+## 31 63474806     83637   1529195
+## 32 63134196    129886   1619449
+## 33 84815093     84163   1531487
+## 34 54553598     82364   1512474
+## 35 54553855     82364   1512475
+## 36 54553859     82741   1517446
+## 37 54554269     82741   1517447
+## 38 57364468    129092   1618655
+## 39 63474719    129956   1619519
+## 40 63474803     81802   1505402
+## 41 79551875   3505222   4890427
+## 42 79550861   3597356   4982192
+## 43 79550990   3597357   4982193
+## 44 79550860   3597367   4982203
+## 45 79550904   3597363   4982199
+## 46 79551075   3597366   4982202
+## 47 79557417   3597378   4982214
+## 48 79569386   3597650   4982486
+## 49 79569337   3597658   4982494
+## 50 79575462   3597671   4982507
+## 51 79591511   3597676   4982512
+## 52 79591557   3597677   4982513
+## 53 79618280   3597769   4982605
+## 54 79624042   3597774   4982610
+## 55 83044539   3853848   5226013
+## 56 63474814     81138   1496061
+## 57 63134201     81802   1505400
 ##                                                                           product
-## 1  S2A_OPER_PRD_MSIL1C_PDMC_20160918T034644_R022_V20160916T101022_20160916T101045
-## 2  S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
-## 3  S2A_OPER_PRD_MSIL1C_PDMC_20160929T185432_R065_V20160929T102022_20160929T102344
-## 4  S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
-## 5  S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
-## 6  S2A_OPER_PRD_MSIL1C_PDMC_20160929T190100_R065_V20160929T102022_20160929T102344
+## 1  S2A_OPER_PRD_MSIL1C_PDMC_20160930T165809_R079_V20160930T095022_20160930T095025
+## 2  S2A_OPER_PRD_MSIL1C_PDMC_20160929T185432_R065_V20160929T102022_20160929T102344
+## 3  S2A_OPER_PRD_MSIL1C_PDMC_20160929T184014_R065_V20160929T102022_20160929T102344
+## 4  S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
+## 5  S2A_OPER_PRD_MSIL1C_PDMC_20160929T190100_R065_V20160929T102022_20160929T102344
+## 6  S2A_OPER_PRD_MSIL1C_PDMC_20160930T164640_R079_V20160930T095022_20160930T095025
 ## 7  S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
-## 8  S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
-## 9  S2A_OPER_PRD_MSIL1C_PDMC_20160930T164640_R079_V20160930T095022_20160930T095025
-## 10 S2A_OPER_PRD_MSIL1C_PDMC_20160929T184014_R065_V20160929T102022_20160929T102344
-## 11 S2A_OPER_PRD_MSIL1C_PDMC_20160925T042701_R122_V20160923T100022_20160923T100625
-## 12 S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
-## 13 S2A_OPER_PRD_MSIL1C_PDMC_20160918T063428_R022_V20160916T101022_20160916T101045
-## 14 S2A_OPER_PRD_MSIL1C_PDMC_20160918T034644_R022_V20160916T101022_20160916T101045
-## 15 S2A_OPER_PRD_MSIL1C_PDMC_20160930T165809_R079_V20160930T095022_20160930T095025
-## 16 S2A_OPER_PRD_MSIL1C_PDMC_20160925T042701_R122_V20160923T100022_20160923T100625
+## 8  S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
+## 9  S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
+## 10 S2A_OPER_PRD_MSIL1C_PDMC_20160918T034644_R022_V20160916T101022_20160916T101045
+## 11 S2A_OPER_PRD_MSIL1C_PDMC_20160918T034644_R022_V20160916T101022_20160916T101045
+## 12 S2A_OPER_PRD_MSIL1C_PDMC_20160918T063428_R022_V20160916T101022_20160916T101045
+## 13 S2A_OPER_PRD_MSIL1C_PDMC_20160927T000035_R022_V20160926T101022_20160926T101019
+## 14 S2A_OPER_PRD_MSIL1C_PDMC_20160918T063428_R022_V20160916T101022_20160916T101045
+## 15                   S2A_MSIL1C_20160929T102022_N0204_R065_T33UUP_20160929T102344
+## 16                   S2A_MSIL1C_20160926T101022_N0204_R022_T33UVP_20160926T101019
+## 17                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UUP_20160923T100625
+## 18                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UVQ_20160923T100625
+## 19                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UVR_20160923T100625
+## 20                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UWP_20160920T095223
+## 21                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UWQ_20160920T095223
+## 22                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UXQ_20160920T095223
+## 23                   S2A_MSIL1C_20160916T101022_N0204_R022_T33UUR_20160916T101045
+## 24                   S2A_MSIL1C_20160916T101022_N0204_R022_T33UWR_20160916T101045
+## 25                   S2A_MSIL1C_20160916T101022_N0204_R022_T33UVP_20160916T101045
+## 26 S2A_OPER_PRD_MSIL1C_PDMC_20160930T170209_R079_V20160930T095022_20160930T095025
+## 27 S2A_OPER_PRD_MSIL1C_PDMC_20160922T050538_R079_V20160920T095022_20160920T095223
+## 28 S2A_OPER_PRD_MSIL1C_PDMC_20160926T235220_R022_V20160926T101022_20160926T101019
+## 29 S2A_OPER_PRD_MSIL1C_PDMC_20160925T042701_R122_V20160923T100022_20160923T100625
+## 30 S2A_OPER_PRD_MSIL1C_PDMC_20160918T063428_R022_V20160916T101022_20160916T101045
+## 31 S2A_OPER_PRD_MSIL1C_PDMC_20160926T235220_R022_V20160926T101022_20160926T101019
+## 32 S2A_OPER_PRD_MSIL1C_PDMC_20160930T164324_R079_V20160930T095022_20160930T095025
+## 33 S2A_OPER_PRD_MSIL1C_PDMC_20160927T153439_R036_V20160927T094032_20160927T094026
+## 34 S2A_OPER_PRD_MSIL1C_PDMC_20160925T042701_R122_V20160923T100022_20160923T100625
+## 35 S2A_OPER_PRD_MSIL1C_PDMC_20160925T042701_R122_V20160923T100022_20160923T100625
+## 36 S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
+## 37 S2A_OPER_PRD_MSIL1C_PDMC_20160925T050831_R122_V20160923T100022_20160923T100625
+## 38 S2A_OPER_PRD_MSIL1C_PDMC_20160930T164748_R079_V20160930T095022_20160930T095025
+## 39 S2A_OPER_PRD_MSIL1C_PDMC_20160930T165949_R079_V20160930T095022_20160930T095025
+## 40 S2A_OPER_PRD_MSIL1C_PDMC_20160922T025700_R079_V20160920T095022_20160920T095223
+## 41                   S2A_MSIL1C_20160929T102022_N0204_R065_T33UUQ_20160929T102344
+## 42                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UWP_20160930T095025
+## 43                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UXP_20160930T095025
+## 44                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UWQ_20160930T095025
+## 45                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UYP_20160930T095025
+## 46                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UXQ_20160930T095025
+## 47                   S2A_MSIL1C_20160929T102022_N0204_R065_T33UUR_20160929T102344
+## 48                   S2A_MSIL1C_20160926T101022_N0204_R022_T33UVQ_20160926T101019
+## 49                   S2A_MSIL1C_20160926T101022_N0204_R022_T33UUP_20160926T101019
+## 50                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UXP_20160923T100625
+## 51                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UWP_20160923T100625
+## 52                   S2A_MSIL1C_20160923T100022_N0204_R122_T33UVP_20160923T100625
+## 53                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UXP_20160920T095223
+## 54                   S2A_MSIL1C_20160920T095022_N0204_R079_T33UYP_20160920T095223
+## 55                   S2A_MSIL1C_20160930T095022_N0204_R079_T33UWR_20160930T095025
+## 56 S2A_OPER_PRD_MSIL1C_PDMC_20160918T061335_R022_V20160916T101022_20160916T101045
+## 57 S2A_OPER_PRD_MSIL1C_PDMC_20160922T025700_R079_V20160920T095022_20160920T095223
 ##                                                           granule   utm
-## 1  S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UWR_N02.04 33UWR
-## 2  S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UXP_N02.04 33UXP
-## 3  S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUQ_N02.04 33UUQ
-## 4  S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04 33UWP
-## 5  S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UXP_N02.04 33UXP
-## 6  S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUP_N02.04 33UUP
-## 7  S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UUP_N02.04 33UUP
-## 8  S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04 33UWP
-## 9  S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UXP_N02.04 33UXP
-## 10 S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUR_N02.04 33UUR
-## 11 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVR_N02.04 33UVR
-## 12 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVP_N02.04 33UVP
-## 13 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UVV_N02.04 33UVV
-## 14 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UUR_N02.04 33UUR
-## 15 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWP_N02.04 33UWP
-## 16 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVQ_N02.04 33UVQ
+## 1  S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWP_N02.04 33UWP
+## 2  S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUQ_N02.04 33UUQ
+## 3  S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUR_N02.04 33UUR
+## 4  S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UUP_N02.04 33UUP
+## 5  S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUP_N02.04 33UUP
+## 6  S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UXP_N02.04 33UXP
+## 7  S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UXP_N02.04 33UXP
+## 8  S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04 33UWP
+## 9  S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UXP_N02.04 33UXP
+## 10 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UWR_N02.04 33UWR
+## 11 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UUR_N02.04 33UUR
+## 12 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UVV_N02.04 33UVV
+## 13 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UVQ_N02.04 33UVQ
+## 14 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UWU_N02.04 33UWU
+## 15 S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUP_N02.04 33UUP
+## 16 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UVP_N02.04 33UVP
+## 17 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UUP_N02.04 33UUP
+## 18 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVQ_N02.04 33UVQ
+## 19 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVR_N02.04 33UVR
+## 20 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWP_N02.04 33UWP
+## 21 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWQ_N02.04 33UWQ
+## 22 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UXQ_N02.04 33UXQ
+## 23 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UUR_N02.04 33UUR
+## 24 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UWR_N02.04 33UWR
+## 25 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UVP_N02.04 33UVP
+## 26 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWR_N02.04 33UWR
+## 27 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UYP_N02.04 33UYP
+## 28 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UUP_N02.04 33UUP
+## 29 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWQ_N02.04 33UWQ
+## 30 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UVU_N02.04 33UVU
+## 31 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UVP_N02.04 33UVP
+## 32 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UXQ_N02.04 33UXQ
+## 33 S2A_OPER_MSI_L1C_TL_SGS__20160927T131745_A006611_T33UYS_N02.04 33UYS
+## 34 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVR_N02.04 33UVR
+## 35 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVQ_N02.04 33UVQ
+## 36 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04 33UWP
+## 37 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVP_N02.04 33UVP
+## 38 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UYP_N02.04 33UYP
+## 39 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWQ_N02.04 33UWQ
+## 40 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UWQ_N02.04 33UWQ
+## 41 S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUQ_N02.04 33UUQ
+## 42 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWP_N02.04 33UWP
+## 43 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UXP_N02.04 33UXP
+## 44 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWQ_N02.04 33UWQ
+## 45 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UYP_N02.04 33UYP
+## 46 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UXQ_N02.04 33UXQ
+## 47 S2A_OPER_MSI_L1C_TL_SGS__20160929T154211_A006640_T33UUR_N02.04 33UUR
+## 48 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UVQ_N02.04 33UVQ
+## 49 S2A_OPER_MSI_L1C_TL_SGS__20160926T153742_A006597_T33UUP_N02.04 33UUP
+## 50 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UXP_N02.04 33UXP
+## 51 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UWP_N02.04 33UWP
+## 52 S2A_OPER_MSI_L1C_TL_SGS__20160923T152926_A006554_T33UVP_N02.04 33UVP
+## 53 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UXP_N02.04 33UXP
+## 54 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UYP_N02.04 33UYP
+## 55 S2A_OPER_MSI_L1C_TL_SGS__20160930T133808_A006654_T33UWR_N02.04 33UWR
+## 56 S2A_OPER_MSI_L1C_TL_SGS__20160916T153615_A006454_T33UVP_N02.04 33UVP
+## 57 S2A_OPER_MSI_L1C_TL_MPS__20160920T133446_A006511_T33UXQ_N02.04 33UXQ
 ##    orbit band resolution cloudCov atmCorr                date format
-## 1     22  LAI         10       49     2.3 2016-09-16 10:10:45   tiff
-## 2    122  LAI         10       76     2.3 2016-09-23 10:06:25   tiff
-## 3     65  LAI         10        0     2.3 2016-09-29 10:23:44   tiff
-## 4     79  LAI         10       46     2.3 2016-09-20 09:52:23   tiff
-## 5     79  LAI         10        5     2.3 2016-09-20 09:52:23   tiff
-## 6     65  LAI         10        0     2.3 2016-09-29 10:23:44   tiff
-## 7    122  LAI         10       11     2.3 2016-09-23 10:06:25   tiff
-## 8    122  LAI         10       49     2.3 2016-09-23 10:06:25   tiff
-## 9     79  LAI         10        1     2.3 2016-09-30 09:50:25   tiff
-## 10    65  LAI         10        3     2.3 2016-09-29 10:23:44   tiff
-## 11   122  LAI         10       47     2.3 2016-09-23 10:06:25   tiff
-## 12   122  LAI         10        5     2.3 2016-09-23 10:06:25   tiff
-## 13    22  LAI         10        3     2.3 2016-09-16 10:10:45   tiff
-## 14    22  LAI         10       27     2.3 2016-09-16 10:10:45   tiff
-## 15    79  LAI         10        0     2.3 2016-09-30 09:50:25   tiff
-## 16   122  LAI         10       34     2.3 2016-09-23 10:06:25   tiff
+## 1     79  LAI         10        0     2.5 2016-09-30 09:50:25   tiff
+## 2     65  LAI         10        0     2.4 2016-09-29 10:23:44   tiff
+## 3     65  LAI         10        3     2.4 2016-09-29 10:23:44   tiff
+## 4    122  LAI         10       11     2.4 2016-09-23 10:06:25   tiff
+## 5     65  LAI         10        0     2.4 2016-09-29 10:23:44   tiff
+## 6     79  LAI         10        1     2.4 2016-09-30 09:50:25   tiff
+## 7    122  LAI         10       76     2.4 2016-09-23 10:06:25   tiff
+## 8     79  LAI         10       46     2.4 2016-09-20 09:52:23   tiff
+## 9     79  LAI         10        5     2.4 2016-09-20 09:52:23   tiff
+## 10    22  LAI         10       49     2.4 2016-09-16 10:10:45   tiff
+## 11    22  LAI         10       27     2.4 2016-09-16 10:10:45   tiff
+## 12    22  LAI         10        3     2.4 2016-09-16 10:10:45   tiff
+## 13    22  LAI         10       77     2.5 2016-09-26 10:10:19   tiff
+## 14    22  LAI         10        0     2.5 2016-09-16 10:10:45   tiff
+## 15    65  LAI         10        0     2.5 2016-09-29 10:23:44   tiff
+## 16    22  LAI         10       76     2.5 2016-09-26 10:10:19   tiff
+## 17   122  LAI         10       11     2.5 2016-09-23 10:06:25   tiff
+## 18   122  LAI         10       34     2.5 2016-09-23 10:06:25   tiff
+## 19   122  LAI         10       47     2.5 2016-09-23 10:06:25   tiff
+## 20    79  LAI         10       46     2.5 2016-09-20 09:52:23   tiff
+## 21    79  LAI         10       60     2.5 2016-09-20 09:52:23   tiff
+## 22    79  LAI         10       30     2.5 2016-09-20 09:52:23   tiff
+## 23    22  LAI         10       27     2.5 2016-09-16 10:10:45   tiff
+## 24    22  LAI         10       49     2.5 2016-09-16 10:10:45   tiff
+## 25    22  LAI         10       60     2.5 2016-09-16 10:10:45   tiff
+## 26    79  LAI         10        3     2.5 2016-09-30 09:50:25   tiff
+## 27    79  LAI         10       23     2.4 2016-09-20 09:52:23   tiff
+## 28    22  LAI         10       74     2.5 2016-09-26 10:10:19   tiff
+## 29   122  LAI         10       80     2.4 2016-09-23 10:06:25   tiff
+## 30    22  LAI         10        0     2.5 2016-09-16 10:10:45   tiff
+## 31    22  LAI         10       76     2.4 2016-09-26 10:10:19   tiff
+## 32    79  LAI         10        9     2.4 2016-09-30 09:50:25   tiff
+## 33    36  LAI         10        0     2.5 2016-09-27 09:40:26   tiff
+## 34   122  LAI         10       47     2.4 2016-09-23 10:06:25   tiff
+## 35   122  LAI         10       34     2.4 2016-09-23 10:06:25   tiff
+## 36   122  LAI         10       49     2.4 2016-09-23 10:06:25   tiff
+## 37   122  LAI         10        5     2.4 2016-09-23 10:06:25   tiff
+## 38    79  LAI         10        2     2.4 2016-09-30 09:50:25   tiff
+## 39    79  LAI         10        4     2.4 2016-09-30 09:50:25   tiff
+## 40    79  LAI         10       60     2.4 2016-09-20 09:52:23   tiff
+## 41    65  LAI         10        0     2.5 2016-09-29 10:23:44   tiff
+## 42    79  LAI         10        0     2.5 2016-09-30 09:50:25   tiff
+## 43    79  LAI         10        1     2.5 2016-09-30 09:50:25   tiff
+## 44    79  LAI         10        4     2.5 2016-09-30 09:50:25   tiff
+## 45    79  LAI         10        2     2.5 2016-09-30 09:50:25   tiff
+## 46    79  LAI         10        9     2.5 2016-09-30 09:50:25   tiff
+## 47    65  LAI         10        3     2.5 2016-09-29 10:23:44   tiff
+## 48    22  LAI         10       77     2.5 2016-09-26 10:10:19   tiff
+## 49    22  LAI         10       74     2.5 2016-09-26 10:10:19   tiff
+## 50   122  LAI         10       76     2.5 2016-09-23 10:06:25   tiff
+## 51   122  LAI         10       49     2.5 2016-09-23 10:06:25   tiff
+## 52   122  LAI         10        5     2.5 2016-09-23 10:06:25   tiff
+## 53    79  LAI         10        5     2.5 2016-09-20 09:52:23   tiff
+## 54    79  LAI         10       23     2.5 2016-09-20 09:52:23   tiff
+## 55    79  LAI         10        3     2.5 2016-09-30 09:50:25   tiff
+## 56    22  LAI         10       60     2.4 2016-09-16 10:10:45   tiff
+## 57    79  LAI         10       30     2.4 2016-09-20 09:52:23   tiff
 ##            processDate url
-## 1  2016-09-18 03:46:44  NA
-## 2  2016-09-25 05:08:31  NA
-## 3  2016-09-29 18:54:32  NA
-## 4  2016-09-22 05:05:38  NA
-## 5  2016-09-22 05:05:38  NA
-## 6  2016-09-29 19:01:00  NA
+## 1  2016-09-30 16:58:09  NA
+## 2  2016-09-29 18:54:32  NA
+## 3  2016-09-29 18:40:14  NA
+## 4  2016-09-25 05:08:31  NA
+## 5  2016-09-29 19:01:00  NA
+## 6  2016-09-30 16:46:40  NA
 ## 7  2016-09-25 05:08:31  NA
-## 8  2016-09-25 05:08:31  NA
-## 9  2016-09-30 16:46:40  NA
-## 10 2016-09-29 18:40:14  NA
-## 11 2016-09-25 04:27:01  NA
-## 12 2016-09-25 05:08:31  NA
-## 13 2016-09-18 06:34:28  NA
-## 14 2016-09-18 03:46:44  NA
-## 15 2016-09-30 16:58:09  NA
-## 16 2016-09-25 04:27:01  NA</code></pre>
+## 8  2016-09-22 05:05:38  NA
+## 9  2016-09-22 05:05:38  NA
+## 10 2016-09-18 03:46:44  NA
+## 11 2016-09-18 03:46:44  NA
+## 12 2016-09-18 06:34:28  NA
+## 13 2016-09-27 00:00:35  NA
+## 14 2016-09-18 06:34:28  NA
+## 15 2016-09-29 10:23:44  NA
+## 16 2016-09-26 10:10:19  NA
+## 17 2016-09-23 10:06:25  NA
+## 18 2016-09-23 10:06:25  NA
+## 19 2016-09-23 10:06:25  NA
+## 20 2016-09-20 09:52:23  NA
+## 21 2016-09-20 09:52:23  NA
+## 22 2016-09-20 09:52:23  NA
+## 23 2016-09-16 10:10:45  NA
+## 24 2016-09-16 10:10:45  NA
+## 25 2016-09-16 10:10:45  NA
+## 26 2016-09-30 17:02:09  NA
+## 27 2016-09-22 05:05:38  NA
+## 28 2016-09-26 23:52:20  NA
+## 29 2016-09-25 04:27:01  NA
+## 30 2016-09-18 06:34:28  NA
+## 31 2016-09-26 23:52:20  NA
+## 32 2016-09-30 16:43:24  NA
+## 33 2016-09-27 15:34:39  NA
+## 34 2016-09-25 04:27:01  NA
+## 35 2016-09-25 04:27:01  NA
+## 36 2016-09-25 05:08:31  NA
+## 37 2016-09-25 05:08:31  NA
+## 38 2016-09-30 16:47:48  NA
+## 39 2016-09-30 16:59:49  NA
+## 40 2016-09-22 02:57:00  NA
+## 41 2016-09-29 10:23:44  NA
+## 42 2016-09-30 09:50:25  NA
+## 43 2016-09-30 09:50:25  NA
+## 44 2016-09-30 09:50:25  NA
+## 45 2016-09-30 09:50:25  NA
+## 46 2016-09-30 09:50:25  NA
+## 47 2016-09-29 10:23:44  NA
+## 48 2016-09-26 10:10:19  NA
+## 49 2016-09-26 10:10:19  NA
+## 50 2016-09-23 10:06:25  NA
+## 51 2016-09-23 10:06:25  NA
+## 52 2016-09-23 10:06:25  NA
+## 53 2016-09-20 09:52:23  NA
+## 54 2016-09-20 09:52:23  NA
+## 55 2016-09-30 09:50:25  NA
+## 56 2016-09-18 06:13:35  NA
+## 57 2016-09-22 02:57:00  NA</code></pre>
 <p>Although we found processed data in this case (, because another user has previously requested processing of the desired area), we expect the returned <code>data.frame</code> to be empty. Data processing is done on request, so we will need to place an order first.</p>
 </div>
 </div>
@@ -251,11 +463,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## [1] 5
 ## 
 ## $coinsUsed
-## [1] 5
+## [1] 6
 ## 
 ## $coinsRemain
-## [1] 0</code></pre>
-<p>In this case, we used the <a href="mailto:'test@s2.boku.eodc.eu">'test@s2.boku.eodc.eu</a>’ user. As we can see, all the coins have already been used!</p>
+## [1] -1</code></pre>
+<p>In this case, we used the ‘<a href="mailto:test@s2.boku.eodc.eu">test@s2.boku.eodc.eu</a>’ user. As we can see, all the coins have already been used!</p>
 </div>
 <div id="download-data" class="section level2">
 <h2>Download data</h2>
@@ -272,6 +484,7 @@ granules_owned</code></pre></div>
 ## 4   1380347     72245
 ## 5   1372345     71629
 ## 6   1437243     76835
+## 7   2920000   1383381
 ##                                                                          product
 ## 1 S2A_OPER_PRD_MSIL1C_PDMC_20161020T180127_R079_V20161020T095022_20161020T095022
 ## 2 S2A_OPER_PRD_MSIL1C_PDMC_20161014T033021_R122_V20161013T100022_20161013T100022
@@ -279,6 +492,7 @@ granules_owned</code></pre></div>
 ## 4 S2A_OPER_PRD_MSIL1C_PDMC_20160825T053021_R079_V20160821T095032_20160821T095527
 ## 5 S2A_OPER_PRD_MSIL1C_PDMC_20160822T174410_R079_V20160821T095032_20160821T095527
 ## 6 S2A_OPER_PRD_MSIL1C_PDMC_20160908T064206_R021_V20160906T082602_20160906T083437
+## 7                   S2A_MSIL1C_20170526T105031_N0205_R051_T31UCS_20170526T105518
 ##                                                          granule
 ## 1 S2A_OPER_MSI_L1C_TL_SGS__20161020T151748_A006940_T33UXP_N02.04
 ## 2 S2A_OPER_MSI_L1C_TL_SGS__20161013T135219_A006840_T33UXP_N02.04
@@ -286,13 +500,15 @@ granules_owned</code></pre></div>
 ## 4 S2A_OPER_MSI_L1C_TL_MPS__20160821T133515_A006082_T33UXP_N02.04
 ## 5 S2A_OPER_MSI_L1C_TL_MPS__20160821T133515_A006082_T33UXP_N02.04
 ## 6 S2A_OPER_MSI_L1C_TL_MPS__20160906T121820_A006310_T37TDJ_N02.04
+## 7 S2A_OPER_MSI_L1C_TL_SGS__20170526T160940_A010058_T31UCS_N02.05
 ##                  date         processDate   utm orbit cloudCov atmCorr
-## 1 2016-10-20 09:50:24 2016-10-20 18:01:27 33UXP    79      100     2.3
-## 2 2016-10-13 10:00:22 2016-10-14 03:30:21 33UXP   122       91     2.3
-## 3 2016-10-10 09:55:14 2016-10-10 16:33:41 33UXP    79       86     2.3
-## 4 2016-08-21 09:55:27 2016-08-25 05:30:21 33UXP    79      100     2.3
-## 5 2016-08-21 09:55:27 2016-08-22 17:44:10 33UXP    79      100     2.3
-## 6 2016-09-06 08:34:37 2016-09-08 06:42:06 37TDJ    21        0     2.3
+## 1 2016-10-20 09:50:24 2016-10-20 18:01:27 33UXP    79      100     2.4
+## 2 2016-10-13 10:00:22 2016-10-14 03:30:21 33UXP   122       91     2.4
+## 3 2016-10-10 09:55:14 2016-10-10 16:33:41 33UXP    79       86     2.4
+## 4 2016-08-21 09:55:27 2016-08-25 05:30:21 33UXP    79      100     2.4
+## 5 2016-08-21 09:55:27 2016-08-22 17:44:10 33UXP    79      100     2.4
+## 6 2016-09-06 08:34:37 2016-09-08 06:42:06 37TDJ    21        0     2.4
+## 7 2017-05-26 10:55:18 2017-05-26 10:55:18 31UCS    51        0     2.5
 ##   broken
 ## 1  FALSE
 ## 2  FALSE
@@ -300,13 +516,15 @@ granules_owned</code></pre></div>
 ## 4  FALSE
 ## 5  FALSE
 ## 6  FALSE
+## 7  FALSE
 ##                                                                   url
 ## 1 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1663923
 ## 2 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1607624
 ## 3 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1695165
 ## 4 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1380347
 ## 5 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1372345
-## 6 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1437243</code></pre>
+## 6 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/1437243
+## 7 https://test%40s2.boku.eodc.eu:test@s2.boku.eodc.eu/granule/2920000</code></pre>
 <p>The column ‘granules_owned$url’ contains the path to the data we are aboeut to download. For each element we download we will have to specify a filename. You can either use your own naming scheme or use the convinience function <code>S2_generate_names()</code> to automatically create names from the ‘data.frame’ returned by the query:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">save_names &lt;-<span class="st"> </span><span class="kw">S2_generate_names</span>(<span class="dt">x =</span> granules_owned)
 save_names</code></pre></div>
@@ -315,18 +533,19 @@ save_names</code></pre></div>
 ## [3] &quot;GRANULE_2016-10-10_33UXP_79_Id1695165_L2A&quot; 
 ## [4] &quot;GRANULE_2016-08-21_33UXP_79_Id1380347_L2A&quot; 
 ## [5] &quot;GRANULE_2016-08-21_33UXP_79_Id1372345_L2A&quot; 
-## [6] &quot;GRANULE_2016-09-06_37TDJ_21_Id1437243_L2A&quot;</code></pre>
+## [6] &quot;GRANULE_2016-09-06_37TDJ_21_Id1437243_L2A&quot; 
+## [7] &quot;GRANULE_2017-05-26_31UCS_51_Id2920000_L2A&quot;</code></pre>
 <p>Now we can simply download the data (in this case to the current working directory) like so:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">S2_download</span>(<span class="dt">url =</span> granules_owned$url, <span class="dt">destfile =</span> save_names)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">S2_download</span>(<span class="dt">url =</span> granules_owned<span class="op">$</span>url, <span class="dt">destfile =</span> save_names)</code></pre></div>
 </div>
 <div id="downloading-images" class="section level3">
 <h3>Downloading images</h3>
 <p>Downloading individual images can be done similarly. First we must find some images we own. Let’s assume we are only interested in Band 8 and restrict the cloud coverage to be at most 85 percent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">images =<span class="st"> </span><span class="kw">S2_query_image</span>(<span class="dt">owned =</span> <span class="ot">TRUE</span>, <span class="dt">band =</span> <span class="st">'B08'</span>, <span class="dt">cloudCovMax =</span> <span class="dv">85</span>)</code></pre></div>
 <p>Then we need to create file names for them. Lets do that by simply pasting acquisition date and file format.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">save_names =<span class="st"> </span><span class="kw">paste0</span>(images$date, <span class="st">'.'</span>, images$format)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">save_names =<span class="st"> </span><span class="kw">paste0</span>(images<span class="op">$</span>date, <span class="st">'.'</span>, images<span class="op">$</span>format)</code></pre></div>
 <p>Finally we can download the images:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">S2_download</span>(images$url, save_names)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">S2_download</span>(images<span class="op">$</span>url, save_names)</code></pre></div>
 <div id="advanced-image-download" class="section level4">
 <h4>Advanced image download</h4>
 <p>The image API allows you to perform many transformations on the downloded image, e.g.:</p>
@@ -341,7 +560,7 @@ save_names</code></pre></div>
 <p>To apply a transformation you need to pass a corresponding API parameter to the <code>S2_download()</code> function call - see example below.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># find some images and prepare file names</span>
 images =<span class="st"> </span><span class="kw">S2_query_image</span>(<span class="dt">owned =</span> <span class="ot">TRUE</span>, <span class="dt">band =</span> <span class="st">'B08'</span>, <span class="dt">cloudCovMax =</span> <span class="dv">85</span>)
-file_names =<span class="st"> </span><span class="kw">paste0</span>(images$date, <span class="st">'.tif'</span>)
+file_names =<span class="st"> </span><span class="kw">paste0</span>(images<span class="op">$</span>date, <span class="st">'.tif'</span>)
 
 <span class="co"># read the geometry from file</span>
 geom =<span class="st"> </span><span class="kw">roi_to_jgeom</span>(<span class="st">'/my/path/my_geom_file.kml'</span>)
@@ -352,7 +571,7 @@ geom =<span class="st"> </span><span class="kw">roi_to_jgeom</span>(<span class=
 <span class="co"># - dividing all values by 20 so they will better fit the Byte range </span>
 <span class="co">#   (and setting max value to 254 so it will not overlap with the no data value)</span>
 <span class="co"># - cutting to the given geometry</span>
-<span class="kw">S2_download</span>(images$url, file_names, <span class="dt">srid =</span> <span class="dv">4326</span>, <span class="dt">dataType =</span> <span class="st">'Byte'</span>, <span class="dt">range =</span> <span class="dv">50</span>, <span class="dt">max =</span> <span class="dv">254</span>, <span class="dt">geometry =</span> geom)</code></pre></div>
+<span class="kw">S2_download</span>(images<span class="op">$</span>url, file_names, <span class="dt">srid =</span> <span class="dv">4326</span>, <span class="dt">dataType =</span> <span class="st">'Byte'</span>, <span class="dt">range =</span> <span class="dv">50</span>, <span class="dt">max =</span> <span class="dv">254</span>, <span class="dt">geometry =</span> geom)</code></pre></div>
 </div>
 </div>
 </div>

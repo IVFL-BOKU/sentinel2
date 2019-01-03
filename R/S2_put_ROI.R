@@ -13,8 +13,6 @@
 #' @return side effect of putting the roi supplied via 'geometry' to
 #'   's2.boku.eodc.eu'
 #' @export
-
-
 S2_put_ROI = function(
   geometry,
   regionId    = NULL,
@@ -23,7 +21,7 @@ S2_put_ROI = function(
   dateMin     = NULL,
   dateMax     = NULL,
   srid        = 4326
-){
+) {
   if (is.null(dateMin) || is.null(dateMax)) {
     stop("Please supply 'dateMin' and 'dateMax' in format 'YYYY-MM-DD")
   }

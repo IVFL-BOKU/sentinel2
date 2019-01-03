@@ -7,7 +7,6 @@
 #' @return logical \code{TRUE} if access to server was successfull and user
 #'   credentials seem to be valid, FALSE if 'anything' went wrong
 #' @export
-
 S2_check_access = function(verbose = TRUE){
   credentials = get_credentials()
   srvrsp =  httr::GET(

@@ -11,7 +11,7 @@
 #'   will be reprojected as necessary
 #' @return character, a json geometry string
 #' @export
-roi2jgeom = function(roi, projection = sp::CRS('+init=epsg:4326')){
+roi_to_jgeom = function(roi, projection = sp::CRS('+init=epsg:4326')){
   if (is.character(roi) && file.exists(roi)) {
     roi = gsub(pattern = '[\\]', replacement = '/', roi)
 
@@ -25,11 +25,14 @@ roi2jgeom = function(roi, projection = sp::CRS('+init=epsg:4326')){
   } else if (is.character(roi)) {
     roi = rgdal::readOGR(roi, 'OGRGeoJSON', verbose = FALSE)
   } else if (all(c("x", "y") %in% colnames(rbind(roi)))) {
-    roi_geom = sp::SpatialPoints(roi, projection)
+    if (is.vector(roi)) {
+      roi = matrix(roi, ncol = 2, byrow = TRUE)
+    }
+    roi = sp::SpatialPointsDataFrame(roi, data.frame(id = seq_along(roi[, 1])), proj4string = projection)
   }
 
   roi = sp::spTransform(roi, CRSobj = sp::CRS('+init=epsg:4326'))
-  roi_geom = spat2jgeom(spat = roi)
+  roi_geom = spat_to_jgeom(spat = roi)
 
   return(roi_geom)
 }

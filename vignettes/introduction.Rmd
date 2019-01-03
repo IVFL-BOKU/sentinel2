@@ -48,7 +48,6 @@ The first lines of your code make look like this:
 library(sentinel2)
 
 S2_initialize_user(user = 'test@s2.boku.eodc.eu', password = 'test')
-S2_check_access()
 ```
 
 Now we have access to the data portal! We might want to query for available data 

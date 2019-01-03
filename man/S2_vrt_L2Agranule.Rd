@@ -12,7 +12,7 @@ S2_vrt_L2Agranule(granule, verbose = FALSE)
 \item{verbose}{logical if \code{TRUE} show warnings}
 }
 \value{
-NULL, side effect of creating a '.vrt' file.
+path to the created file
 }
 \description{
 Creates a '.vrt' raster from a granule directory

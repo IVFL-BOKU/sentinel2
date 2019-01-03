@@ -7,7 +7,6 @@
 #'   used so far and 'coinsRemain' the number of coins available to acquire
 #'   database products
 #' @export
-
 S2_user_info = function(){
   credentials = get_credentials()
   srvrsp      = httr::GET(
@@ -21,4 +20,3 @@ S2_user_info = function(){
 
   return(srvrsp)
 }
-

@@ -9,8 +9,6 @@
 #'   already are skipped. If 'force', granules are bought without prompting and
 #'   also withoug checking if they are already bought.
 #' @export
-
-
 S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
   buy_mode = match.arg(mode)
 
@@ -58,4 +56,3 @@ S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
     )
   }
 }
-

@@ -4,7 +4,7 @@
 #'   \code{geojson} geometries should be coverted. Currently \code{sp} and
 #'   \code{sf} packages are supported
 #' @return a list of spatial objects
-geojson2geometry = function(geojson, package) {
+geojson_to_geometry = function(geojson, package) {
   stopifnot(
     is.vector(geojson), is.character(geojson), all(!is.na(geojson)),
     is.vector(package), is.character(package), length(package) == 1, all(!is.na(package))

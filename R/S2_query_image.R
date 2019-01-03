@@ -97,7 +97,7 @@ S2_query_image = function(
   }
 
   if (!is.null(spatial) & nrow(rtrn) > 0) {
-    rtrn$geometry = geojson2geometry(rtrn$geometry, spatial)
+    rtrn$geometry = geojson_to_geometry(rtrn$geometry, spatial)
   }
 
   return(rtrn)
