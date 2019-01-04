@@ -1,3 +1,34 @@
+# 0.4.0 (2019-01-04)
+
+Backward incompatible changes:
+
+* `S2_put_ROI()` renamed to `S2_put_roi()` to follow naming convention of other 
+  functions.
+* `S2_put_roi()` nor returns parsed REST API response object instead of the raw
+  `httr` package response object.
+* Default `dateMin` and `dateMax` values removed from `S2_query_roi()`.
+
+Enhancements:
+
+* `S2_query_roi()` supports the `spatial` parameter allowing to parse ROIs'
+  geometries into R spatial objects.
+* `S2_do_query()` casts returned data frames to `dplyr's` tibble if the `dplyr` 
+  package is installed.
+* `S2_do_query()` provides information useful for debugging if a request fails.
+* `roi_to_jgeom()` made more flexible (can handle all `sp's` package `*DataFrame` 
+  objects as well as reproject objects in non WGS-84 projections)
+* Tests coverage rised slightly.
+* Credentials are now stored in a little safer way (in a package's private environment
+  instead of global R options).
+
+Bugfixes:
+
+* Fixes to `S2_buy_granules()`.
+
+Other:
+
+* Obsolete internal functions removed
+
 # 0.3.1 (2018-12-18)
 
 * It is now possible to abort the `S2_download()` function.
