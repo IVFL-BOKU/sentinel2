@@ -8,6 +8,10 @@
 #'   If 'always', granules are bought without prompting but granule bought
 #'   already are skipped. If 'force', granules are bought without prompting and
 #'   also withoug checking if they are already bought.
+#' @return boolean logical vector indicating which granules were actually bought
+#'   (note that if \code{mode = 'force'}, there will be no \code{FALSE} values
+#'   in the returned vector). If the underlaying HTTP request failed, the value
+#'   is \code{NA}.
 #' @export
 S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
   buy_mode = match.arg(mode)
@@ -17,16 +21,16 @@ S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
   user_coins = S2_user_info()$'coinsRemain'
 
   # Check if number of granules to buy exceeds coin budget ---------------------
-  if (user_coins < sum(to_buy)) {
-    cat(sprintf(
-      "You try to buy %s granules, but you seem to have only %s coins left.\n",
-      sum(to_buy), user_coins)
+  if (user_coins < sum(to_buy) & sum(to_buy) > 0) {
+    stop(
+      "You try to buy ", sum(to_buy), " granules, but you seem to have only ", user_coins, " coins left.\n",
+      "Please check coin budget or reduce number of granules to buy."
     )
-    cat("Please check coin budget or reduce number of granules to buy.")
-    stop("Not enough coins to buy granules!")
-  } else if (sum(to_buy) == 0 | buy_mode == 'force') {
-    cat("Nothing to buy.")
-    return(invisible(NULL))
+  } else if (sum(to_buy) == 0 & buy_mode != 'force') {
+    if (interactive()) {
+      cat("Nothing to buy.")
+    }
+    return(invisible(rep(FALSE, length(granuleId))))
   }
 
   # Promt user for confirmation ------------------------------------------------
@@ -48,11 +52,16 @@ S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
   credentials = get_credentials()
   auth        = httr::authenticate(credentials['user'], credentials['password'])
 
+  rtrn = rep(FALSE, length(granuleId))
   for (i in seq_along(granuleId)) {
-    httr::PUT(
-      'https://s2.boku.eodc.eu',
-      config = auth,
-      path   = list('granule', granuleId[i])
-    )
+    if (to_buy[i] | mode == 'force') {
+      resp = httr::PUT(
+        'https://s2.boku.eodc.eu',
+        config = auth,
+        path   = list('granule', granuleId[i])
+      )
+      rtrn[i] = ifelse(httr::status_code(resp) == 200, TRUE, NA)
+    }
   }
+  return(invisible(rtrn))
 }

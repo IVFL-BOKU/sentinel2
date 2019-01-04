@@ -19,6 +19,7 @@ S2_do_query = function(query, path, baseUrl = 'https://s2.boku.eodc.eu'){
     path   = path,
     query  = query
   )
+
   if (!httr::status_code(rtrn) %in% c(200, 204)) {
     stop(
       httr::modify_url(baseUrl, path = path, query = query),
@@ -34,6 +35,10 @@ S2_do_query = function(query, path, baseUrl = 'https://s2.boku.eodc.eu'){
       )
     }
   )
+
+  if ('dplyr' %in% utils::installed.packages()) {
+    rtrn = dplyr::as.tbl(rtrn)
+  }
 
   return(rtrn)
 }

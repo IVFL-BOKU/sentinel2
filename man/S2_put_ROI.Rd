@@ -24,8 +24,7 @@ given region (e.g. \code{c("LAI", "FAPAR")})}
 \item{srid}{integer geometry projection SRID (e.g. 4326 for WGS-84)}
 }
 \value{
-side effect of putting the roi supplied via 'geometry' to
-  's2.boku.eodc.eu'
+object describing the created ROI (as returned by the REST API)
 }
 \description{
 Place/Update roi for processing Sentinel-2 data

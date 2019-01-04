@@ -12,17 +12,20 @@
 #' @param utm character UTM zone, e.g. 33U, 01C.
 #' @param dateSingle character date of format "YYYY-MM-DD", specifies a single
 #'   date and will override \code{dateMin} and \code{dateMax}.
+#' @param spatial character, R package name (\code{sp} or \code{sf}) to the
+#'   format used by which roi geometries should be converted.
 #' @param ... further arguments, none implemented.
 #' @return data.frame return of the database.
 #' @export
 
 S2_query_roi = function(
-  dateMax      = Sys.Date(),
-  dateMin      = '2000-01-01',
+  dateMax      = NULL,
+  dateMin      = NULL,
   geometry     = NULL,
   regionId     = NULL,
   utm          = NULL,
   dateSingle   = NULL,
+  spatial      = NULL,
   ...
 ){
   # check inputs ---------------------------------------------------------------
@@ -48,6 +51,9 @@ S2_query_roi = function(
 
   # return query list ----------------------------------------------------------
   rtrn = S2_do_query(query = query, path = 'roi')
+  if (!is.null(spatial) & nrow(rtrn) > 0) {
+    rtrn$geometry = geojson_to_geometry(rtrn$geometry, spatial)
+  }
   if (nrow(rtrn) == 0) {
     rtrn$regionId = character()
   }

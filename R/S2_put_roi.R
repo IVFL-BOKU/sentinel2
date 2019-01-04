@@ -10,10 +10,9 @@
 #' @param indicators character vector of indicator names to be computed for a
 #'   given region (e.g. \code{c("LAI", "FAPAR")})
 #' @param srid integer geometry projection SRID (e.g. 4326 for WGS-84)
-#' @return side effect of putting the roi supplied via 'geometry' to
-#'   's2.boku.eodc.eu'
+#' @return object describing the created ROI (as returned by the REST API)
 #' @export
-S2_put_ROI = function(
+S2_put_roi = function(
   geometry,
   regionId    = NULL,
   cloudCovMax = 50,
@@ -56,8 +55,9 @@ S2_put_ROI = function(
   )
   rtrn = httr::PUT(
     url = url, body = body_l,
+    encode = 'json',
     config = httr::authenticate(credentials['user'], credentials['password'])
   )
 
-  return(rtrn)
+  return(jsonlite::fromJSON(httr::content(rtrn, as = 'text')))
 }

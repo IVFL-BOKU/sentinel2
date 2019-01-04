@@ -4,8 +4,8 @@
 \alias{S2_query_roi}
 \title{Query database for 'roi'}
 \usage{
-S2_query_roi(dateMax = Sys.Date(), dateMin = "2000-01-01",
-  geometry = NULL, regionId = NULL, utm = NULL, dateSingle = NULL,
+S2_query_roi(dateMax = NULL, dateMin = NULL, geometry = NULL,
+  regionId = NULL, utm = NULL, dateSingle = NULL, spatial = NULL,
   ...)
 }
 \arguments{
@@ -24,6 +24,9 @@ SpatialPolygons object.}
 
 \item{dateSingle}{character date of format "YYYY-MM-DD", specifies a single
 date and will override \code{dateMin} and \code{dateMax}.}
+
+\item{spatial}{character, R package name (\code{sp} or \code{sf}) to the
+format used by which roi geometries should be converted.}
 
 \item{...}{further arguments, none implemented.}
 }

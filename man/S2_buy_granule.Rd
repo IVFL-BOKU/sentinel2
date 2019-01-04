@@ -15,6 +15,12 @@ If 'always', granules are bought without prompting but granule bought
 already are skipped. If 'force', granules are bought without prompting and
 also withoug checking if they are already bought.}
 }
+\value{
+boolean logical vector indicating which granules were actually bought
+  (note that if \code{mode = 'force'}, there will be no \code{FALSE} values
+  in the returned vector). If the underlaying HTTP request failed, the value
+  is \code{NA}.
+}
 \description{
 Buy granule using granuleId
 }

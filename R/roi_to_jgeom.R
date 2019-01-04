@@ -20,7 +20,7 @@ roi_to_jgeom = function(roi, projection = sp::CRS('+init=epsg:4326')){
       layer = sub('^.*/(.+)[.][sS][hH][pP]$', '\\1', roi)
       roi = rgdal::readOGR(dsn, layer, verbose = FALSE)
     } else {
-      roi = rgdal::readOGR(roi)
+      roi = rgdal::readOGR(roi, verbose = FALSE)
     }
   } else if (is.character(roi)) {
     roi = rgdal::readOGR(roi, 'OGRGeoJSON', verbose = FALSE)
@@ -31,6 +31,9 @@ roi_to_jgeom = function(roi, projection = sp::CRS('+init=epsg:4326')){
     roi = sp::SpatialPointsDataFrame(roi, data.frame(id = seq_along(roi[, 1])), proj4string = projection)
   }
 
+  if (is.na(sp::proj4string(roi))) {
+    sp::proj4string(roi) = sp::CRS('+init=epsg:4326')
+  }
   roi = sp::spTransform(roi, CRSobj = sp::CRS('+init=epsg:4326'))
   roi_geom = spat_to_jgeom(spat = roi)
 
