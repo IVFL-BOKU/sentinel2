@@ -4,15 +4,16 @@
 \alias{S2_do_query}
 \title{Send a query to 'https://s2.boku.eodc.eu'}
 \usage{
-S2_do_query(query, path)
+S2_do_query(query, path, baseUrl = "https://s2.boku.eodc.eu")
 }
 \arguments{
 \item{query}{list of named arguments 'known' to the database. Typically
 created using e.g. 'S2_query_granule'}
 
-\item{path}{character altering the query url with respect to the desired
-output. One of "product", "granule", "image", "qiData", "angle", "roi",
-"job", "rgb".}
+\item{path}{name of the rest API endpoint like "product", "granule", "image",
+"qiData", "angle", "roi", "job" or "rgb".}
+
+\item{baseUrl}{base REST API URL}
 }
 \description{
 Query database and return response as data.frame
