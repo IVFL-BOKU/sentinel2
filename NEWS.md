@@ -1,3 +1,7 @@
+# 0.4.1 (2019-01-29)
+
+* Make `geojson_to_geometry()` public.
+
 # 0.4.0 (2019-01-04)
 
 Backward incompatible changes:
