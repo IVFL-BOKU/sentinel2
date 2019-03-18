@@ -54,7 +54,7 @@ S2_buy_granule = function(granuleId, mode = c('ask', 'always', 'force')) {
 
   rtrn = rep(FALSE, length(granuleId))
   for (i in seq_along(granuleId)) {
-    if (to_buy[i] | mode == 'force') {
+    if (to_buy[i] | buy_mode == 'force') {
       resp = httr::PUT(
         'https://s2.boku.eodc.eu',
         config = auth,

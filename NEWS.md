@@ -1,3 +1,7 @@
+# 0.4.2 (2019-03-18)
+
+* A minor error generating warnings in `S2_buy_granule()` fixed.
+
 # 0.4.1 (2019-01-29)
 
 * Make `geojson_to_geometry()` public.
