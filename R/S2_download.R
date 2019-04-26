@@ -9,6 +9,7 @@
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
 #' @param progressBar should a progress bar be displayed?
+#' @param timeout single file download timeout in seconds (0 means no timeout)
 #' @param ... further arguments not implemented directly - see
 #'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}
 #'   and the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}}{image API doc}.
@@ -43,7 +44,7 @@
 #'   )
 #' }
 
-S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, ...){
+S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, timeout = 0, ...){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
@@ -51,6 +52,7 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
     is.logical(skipExisting),
     is.vector(zip), is.logical(zip), length(zip) == 1, all(!is.na(zip)),
     is.vector(progressBar), is.logical(progressBar), length(progressBar) == 1, all(!is.na(progressBar)),
+    is.vector(timeout), is.numeric(timeout), length(timeout) == 1, all(!is.na(timeout)),
     length(url) == length(destfile)
   )
   filter = !is.na(url)
@@ -73,42 +75,49 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
     url = paste0(url, '?', addParam)
   }
 
+  ch = curl::new_handle()
+  if (timeout > 0) {
+    curl::handle_setopt(ch, timeout = timeout)
+  }
+
   success = rep(FALSE, length(url))
   if (progressBar) {
     pb = utils::txtProgressBar(0, length(url), style = 3)
   }
   for (i in seq_along(url)) {
-    if (isTRUE(skipExisting) && file.exists(destfile[i])) {
-      next
-    }
+    if (isFALSE(skipExisting) | !file.exists(destfile[i])) {
+      breakLoop = FALSE
+      tryCatch(
+        {
+          curl::curl_download(url = url[i], destfile = destfile[i], handle = ch, quiet = TRUE)
 
+          signature = readBin(destfile[i], 'raw', 4)
+          if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
+            destfile[i] = sub('[.]zip$', '', destfile[i])
+            zipfile = paste0(destfile[i], '.zip')
+            file.rename(destfile[i], zipfile)
+            utils::unzip(zipfile = zipfile, exdir = destfile[i])
+          }
+
+          success[i] = TRUE
+        },
+        warning = function(w) {
+          if (all(w$message == 'Operation was aborted by an application callback')) {
+            breakLoop <<- TRUE
+          }
+        },
+        error = function(e) {
+          if (file.exists(destfile[i])) {
+            unlink(destfile[i])
+          }
+        }
+      )
+      if (breakLoop) {
+        break
+      }
+    }
     if (progressBar) {
       utils::setTxtProgressBar(pb, i)
-    }
-
-    breakLoop = FALSE
-    tryCatch(
-      {
-        curl::curl_download(url = url[i], destfile = destfile[i], quiet = TRUE)
-
-        signature = readBin(destfile[i], 'raw', 4)
-        if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
-          destfile[i] = sub('[.]zip$', '', destfile[i])
-          zipfile = paste0(destfile[i], '.zip')
-          file.rename(destfile[i], zipfile)
-          utils::unzip(zipfile = zipfile, exdir = destfile[i])
-        }
-
-        success[i] = TRUE
-      },
-      warning = function(w) {
-        if (all(w$message == 'Operation was aborted by an application callback')) {
-          breakLoop <<- TRUE
-        }
-      }
-    )
-    if (breakLoop) {
-      break
     }
   }
 

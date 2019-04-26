@@ -1,3 +1,10 @@
+# 0.4.3 (2019-04-26)
+
+* Fixes in `S2_download()`:
+    * progress bar is now updated after each file download
+    * progress bar is now properly updated no matter if a file exists locally or not
+    * a `timeout` parameter can be specified limiting single file download time
+
 # 0.4.2 (2019-03-18)
 
 * A minor error generating warnings in `S2_buy_granule()` fixed.
