@@ -102,10 +102,10 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
           success[i] = TRUE
         },
         warning = function(w) {
-          if (file.exists(destfile[i])) {
-            unlink(destfile[i])
-          }
           if (all(w$message == 'Operation was aborted by an application callback')) {
+            if (file.exists(destfile[i])) {
+              unlink(destfile[i])
+            }
             breakLoop <<- TRUE
           }
         },
