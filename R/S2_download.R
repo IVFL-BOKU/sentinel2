@@ -113,6 +113,7 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = 'samesize', pro
           resp = curl::curl_fetch_memory(url[i], chHead)$headers
           headers = curl::parse_headers(resp)
           contentLength = c(as.integer(sub('^.* ', '', grep('^content-length: [0-9]+$', headers, value = TRUE, ignore.case = TRUE))), -1L)[1]
+          contentType = c(sub('^.* ', '', grep('^content-type: [-_./a-zA-Z0-9]+$', headers, value = TRUE, ignore.case = TRUE)), '')[1]
 
           # when needed, perform a download
           if (!file.exists(destfile[i]) | skipExisting == 'never' | file.size(destfile[i]) != contentLength) {
@@ -125,7 +126,7 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = 'samesize', pro
 
             # unpacking zip files
             signature = readBin(destfile[i], 'raw', 4)
-            if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
+            if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip & contentType == 'application/zip') {
               destfile[i] = sub('[.]zip$', '', destfile[i])
               zipfile = paste0(destfile[i], '.zip')
               file.rename(destfile[i], zipfile)
