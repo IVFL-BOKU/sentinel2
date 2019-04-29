@@ -5,7 +5,7 @@
 \title{Query database for 'product'}
 \usage{
 S2_query_product(atmCorr = NULL, dateMax = NULL, dateMin = NULL,
-  geometry = NULL, orbitDir = NULL, orbitNo = NULL, product = NULL,
+  geometry = NULL, orbitNo = NULL, product = NULL,
   productId = NULL, regionId = NULL, retGeometry = FALSE,
   dateSingle = NULL, ...)
 }
@@ -21,8 +21,6 @@ data are returned.}
 geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
 the path to a Point/Polygon shapefile, a SpatialPoints object or a
 SpatialPolygons object.}
-
-\item{orbitDir}{character NULL or one of c("DESCENDING", "ASCENDING").}
 
 \item{orbitNo}{integer from 1 to 143.}
 
