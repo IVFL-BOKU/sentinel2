@@ -85,6 +85,24 @@ test_that('S2_query_image() works', {
   expect_true(all(data$date >= '2016-06-01'))
   expect_true(all(data$date <= '2016-08-31'))
   expect_true(all(data$utm == '33UXP'))
+
+  data = S2_query_image(
+    atmCorr = FALSE,
+    band = 'B10',
+    cloudCovMin = 80,
+    dateSingle = '2016-08-21',
+    utm = '33UXP'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("imageId", "productId", "granuleId", "product", "granule", "utm", "orbit", "band", "resolution", "cloudCov", "atmCorr", "date", "format", "processDate", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(as.numeric(data$atmCorr) == 0))
+  expect_true(all(data$band == 'B10'))
+  expect_true(all(data$cloudCov >= 80))
+  expect_true(all(data$date >= '2016-08-21'))
+  expect_true(all(data$date <= '2016-08-21 23:59:59'))
+  expect_true(all(data$utm == '33UXP'))
 })
 
 test_that('S2_query_job() works', {
@@ -151,6 +169,16 @@ test_that('S2_query_qiData() works', {
 test_that('S2_query_roi() works', {
   data = S2_query_roi(
     regionId = 'test%'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("userId", "regionId", "dateMin", "dateMax", "priority", "cloudCovMax", "jobTypes", "geometry", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(grepl('^test', data$regionId)))
+  expect_true(all(data$userId == 'test@s2.boku.eodc.eu'))
+
+  data = S2_query_roi(
+    dateSingle = '2016-06-30'
   )
   expect_is(data, 'data.frame')
   expect_gt(nrow(data), 0)
@@ -278,14 +306,21 @@ test_that('data frame is always returned', {
   expect_true('regionId' %in% names(data))
 })
 
-test_that('S2_query_granule() throws errors', {
+test_that('S2_query_*() throw date errors', {
   expect_error(
     S2_query_granule(dateMin = '2016-06-15',dateMax = '2016-06-14', utm = '33UXP'),
     "'dateMin' .* larger than 'dateMax'"
   )
-})
 
-test_that('S2_query_qiData() throws errors', {
+  expect_error(
+    S2_query_image(dateMin = '2016-06-15',dateMax = '2016-06-14', utm = '33UXP'),
+    "'dateMin' .* larger than 'dateMax'"
+  )
+  expect_error(
+    S2_query_roi(dateMin = '2016-06-15',dateMax = '2016-06-14'),
+    "'dateMin' .* larger than 'dateMax'"
+  )
+
   expect_error(
     S2_query_qiData(dateMin = '2016-06-15',dateMax = '2016-06-14', utm = '33UXP'),
     "'dateMin' .* larger than 'dateMax'"
