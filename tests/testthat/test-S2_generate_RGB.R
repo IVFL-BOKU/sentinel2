@@ -5,7 +5,7 @@ test_that('S2_generate_RGB() works', {
     dplyr::filter(band %in% c('B02', 'B03', 'B04')) %>%
     dplyr::arrange(date, band)
   file = tempfile()
-  S2_generate_RGB(imgs$granuleId[1], destfile = file, overwrite = TRUE)
+  S2_generate_RGB(imgs$granuleId[1], atmCorr = TRUE, resolution = 'lowest', destfile = file, overwrite = TRUE)
   expect_true(file.exists(file))
   expect_gt(file.size(file), 1000000)
   unlink(file)

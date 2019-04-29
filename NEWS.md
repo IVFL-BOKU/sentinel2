@@ -1,3 +1,17 @@
+# 0.5.0 (2019-04-29)
+
+* `S2_download()` enhancements:
+    * `tries` parameter added allowing automatic error handling
+    * `skipExisting` parameter is tri-state now:
+        * `always` downloads the data only if local copy doesn't exist 
+           (no matter its size)
+        * `samesize`  downlads the data if local copy doesn't exist or has different size
+          (be aware it doesn't work for full granule zip downloads, in such a case it's
+           equivalent to `never`)
+        * `never` downloads the data no matter if local copy exists
+    * `timeout` now defaults to 1800 (seconds) which seems to be big-enough and prevents
+      download jobs from getting stalled
+
 # 0.4.3 (2019-04-26)
 
 * Fixes in `S2_download()`:

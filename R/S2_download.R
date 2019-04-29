@@ -4,12 +4,15 @@
 #'
 #' @param url character (valid) url to download file from.
 #' @param destfile character download destination.
-#' @param skipExisting logical skip if file already exists.
+#' @param skipExisting character should locally existing files be skipped - one
+#'   of "always", "samesize" (only if remote and local file size matches),
+#'   "never".
 #' @param zip logical if \code{TRUE}, the url will be downloaded as zip archive
 #'   and (automatically) unzipped in the parent directory of 'destfile'
 #'   (plays any role only when downloading granules).
 #' @param progressBar should a progress bar be displayed?
 #' @param timeout single file download timeout in seconds (0 means no timeout)
+#' @param tries how many times try download in case of failures
 #' @param ... further arguments not implemented directly - see
 #'   the \href{https://s2.boku.eodc.eu/wiki/#!granule.md#GET_https://s2.boku.eodc.eu/granule/{granuleId}}{granule API doc}
 #'   and the \href{https://s2.boku.eodc.eu/wiki/#!image.md#GET_https://s2.boku.eodc.eu/image/{imageId}}{image API doc}.
@@ -44,15 +47,16 @@
 #'   )
 #' }
 
-S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressBar = TRUE, timeout = 0, ...){
+S2_download = function(url, destfile, zip = TRUE, skipExisting = 'samesize', progressBar = TRUE, timeout = 1800, tries = 1, ...){
   url = as.character(url)
   destfile = as.character(destfile)
   stopifnot(
     is.vector(url), length(url) > 0, is.vector(destfile),
-    is.logical(skipExisting),
+    is.vector(skipExisting), is.character(skipExisting), length(skipExisting) == 1, all(!is.na(skipExisting)),
     is.vector(zip), is.logical(zip), length(zip) == 1, all(!is.na(zip)),
     is.vector(progressBar), is.logical(progressBar), length(progressBar) == 1, all(!is.na(progressBar)),
     is.vector(timeout), is.numeric(timeout), length(timeout) == 1, all(!is.na(timeout)),
+    is.vector(tries), is.numeric(tries), length(tries) == 1, all(!is.na(tries) & tries > 0),
     length(url) == length(destfile)
   )
   filter = !is.na(url)
@@ -75,55 +79,75 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = TRUE, progressB
     url = paste0(url, '?', addParam)
   }
 
-  ch = curl::new_handle()
+  chGet = curl::new_handle()
+  chHead = curl::new_handle(nobody = TRUE)
   if (timeout > 0) {
-    curl::handle_setopt(ch, timeout = timeout)
+    curl::handle_setopt(chGet, timeout = timeout)
+    curl::handle_setopt(chHead, timeout = timeout)
   }
 
   success = rep(FALSE, length(url))
   if (progressBar) {
     pb = utils::txtProgressBar(0, length(url), style = 3)
   }
+  breakLoop = FALSE
   for (i in seq_along(url)) {
-    if (isFALSE(skipExisting) | !file.exists(destfile[i])) {
-      breakLoop = FALSE
+    # short tracks
+    if (breakLoop) {
+      break
+    }
+    if (file.exists(destfile[i]) & skipExisting == 'always') {
+      if (progressBar) {
+        utils::setTxtProgressBar(pb, i)
+      }
+      next
+    }
+    # full track
+    toGo = tries
+    while (toGo > 0 & !success[i] & !breakLoop) {
+      toGo = toGo - 1
       tryCatch(
         {
-          curl::curl_download(url = url[i], destfile = destfile[i], handle = ch, quiet = TRUE)
+          # get expected download length
+          resp = curl::curl_fetch_memory(url[i], chHead)$headers
+          headers = curl::parse_headers(resp)
+          contentLength = c(as.integer(sub('^.* ', '', grep('^content-length: [0-9]+$', headers, value = TRUE, ignore.case = TRUE))), -1L)[1]
 
-          signature = readBin(destfile[i], 'raw', 4)
-          if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
-            destfile[i] = sub('[.]zip$', '', destfile[i])
-            zipfile = paste0(destfile[i], '.zip')
-            file.rename(destfile[i], zipfile)
-            utils::unzip(zipfile = zipfile, exdir = destfile[i])
+          # when needed, perform a download
+          if (!file.exists(destfile[i]) | skipExisting == 'never' | file.size(destfile[i]) != contentLength) {
+            curl::curl_download(url = url[i], destfile = destfile[i], handle = chGet, quiet = TRUE)
+
+            if (file.size(destfile[i]) != contentLength & contentLength >= 0L) {
+              unlink(destfile[i])
+              stop('downloaded file size does not match remote file size')
+            }
+
+            # unpacking zip files
+            signature = readBin(destfile[i], 'raw', 4)
+            if (all(signature == as.raw(c(80L, 75L, 3L, 4L))) & zip) {
+              destfile[i] = sub('[.]zip$', '', destfile[i])
+              zipfile = paste0(destfile[i], '.zip')
+              file.rename(destfile[i], zipfile)
+              utils::unzip(zipfile = zipfile, exdir = destfile[i])
+            }
           }
 
           success[i] = TRUE
         },
         warning = function(w) {
+          # downloaded stopped by a keyboard interrupt
           if (all(w$message == 'Operation was aborted by an application callback')) {
-            if (file.exists(destfile[i])) {
-              unlink(destfile[i])
-            }
             breakLoop <<- TRUE
           }
         },
-        error = function(e) {
-          if (file.exists(destfile[i])) {
-            unlink(destfile[i])
-          }
-        }
+        error = function(e) {}
       )
-      if (breakLoop) {
-        break
-      }
     }
+
     if (progressBar) {
       utils::setTxtProgressBar(pb, i)
     }
   }
-
   return(invisible(success))
 }
 
