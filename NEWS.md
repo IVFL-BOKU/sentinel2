@@ -1,3 +1,9 @@
+# 0.5.1 (2019-04-29)
+
+* `S2_download()` fixes:
+    * `TRUE` is reported for local files skipped on `skipExisting = 'always'` condition
+    * zip extraction is performed only if the response content type suggests it's a zip
+
 # 0.5.0 (2019-04-29)
 
 * `S2_download()` enhancements:
