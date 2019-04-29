@@ -100,6 +100,7 @@ S2_download = function(url, destfile, zip = TRUE, skipExisting = 'samesize', pro
       if (progressBar) {
         utils::setTxtProgressBar(pb, i)
       }
+      success[i] = TRUE
       next
     }
     # full track
