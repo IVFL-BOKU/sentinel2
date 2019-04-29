@@ -17,6 +17,22 @@ test_that('S2_query_angle() works', {
   expect_true(all(data$utm == '33UXP'))
   expect_true(all(data$angleType == 'sun'))
   expect_true(all(data$band == 'all'))
+
+  data = S2_query_angle(
+    cloudCovMin = 80,
+    dateSingle = '2016-01-07',
+    utm = '33UXP',
+    angleType = 'sun'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("angleId", "productId", "granuleId", "product", "granule", "date", "processDate", "utm", "orbit", "angleType", "band", "zenithAngle", "azimuthAngle", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(data$date >= '2016-01-07 00:00:00.000'))
+  expect_true(all(data$date <= '2016-01-07 23:59:59.999 '))
+  expect_true(all(data$utm == '33UXP'))
+  expect_true(all(data$angleType == 'sun'))
+  expect_true(all(data$band == 'all'))
 })
 
 test_that('S2_query_granule() works', {
@@ -33,6 +49,20 @@ test_that('S2_query_granule() works', {
   expect_true(all(data$cloudCov >= 80))
   expect_true(all(data$date >= '2016-06-01'))
   expect_true(all(data$date <= '2016-08-31'))
+  expect_true(all(data$utm == '33UXP'))
+
+  data = S2_query_granule(
+    cloudCovMin = 80,
+    dateSingle = '2016-06-15',
+    utm = '33UXP'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("granuleId", "productId", "product", "granule", "date", "processDate", "utm", "orbit", "cloudCov", "atmCorr", "broken", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(data$cloudCov >= 80))
+  expect_true(all(data$date >= '2016-06-15'))
+  expect_true(all(data$date <= '2016-06-15 23:59:59'))
   expect_true(all(data$utm == '33UXP'))
 })
 
@@ -97,8 +127,22 @@ test_that('S2_query_qiData() works', {
   expect_gt(nrow(data), 0)
   cols = c("qiDataId", "productId", "granuleId", "product", "granule", "date", "processDate", "utm", "orbit", "qiType", "band", "url")
   expect_equal(intersect(names(data), cols), cols)
-  expect_true(all(data$cloudCov >= 80))
   expect_true(all(data$date >= '2016-06-01 00:00:00.000'))
+  expect_true(all(data$date <= '2016-06-15 23:59:59.999'))
+  expect_true(all(data$utm == '33UXP'))
+  expect_true(all(data$qiType == 'satura'))
+
+  data = S2_query_qiData(
+    cloudCovMin = 80,
+    dateSingle = '2016-06-15',
+    utm = '33UXP',
+    qiType = 'satura'
+  )
+  expect_is(data, 'data.frame')
+  expect_gt(nrow(data), 0)
+  cols = c("qiDataId", "productId", "granuleId", "product", "granule", "date", "processDate", "utm", "orbit", "qiType", "band", "url")
+  expect_equal(intersect(names(data), cols), cols)
+  expect_true(all(data$date >= '2016-06-15 00:00:00.000'))
   expect_true(all(data$date <= '2016-06-15 23:59:59.999'))
   expect_true(all(data$utm == '33UXP'))
   expect_true(all(data$qiType == 'satura'))
@@ -232,4 +276,18 @@ test_that('data frame is always returned', {
   data = S2_query_roi(regionId = '__hopefuly no such region exists__')
   expect_is(data, 'data.frame')
   expect_true('regionId' %in% names(data))
+})
+
+test_that('S2_query_granule() throws errors', {
+  expect_error(
+    S2_query_granule(dateMin = '2016-06-15',dateMax = '2016-06-14', utm = '33UXP'),
+    "'dateMin' .* larger than 'dateMax'"
+  )
+})
+
+test_that('S2_query_qiData() throws errors', {
+  expect_error(
+    S2_query_qiData(dateMin = '2016-06-15',dateMax = '2016-06-14', utm = '33UXP'),
+    "'dateMin' .* larger than 'dateMax'"
+  )
 })

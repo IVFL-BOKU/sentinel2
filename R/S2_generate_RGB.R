@@ -54,10 +54,10 @@ S2_generate_RGB = function(
 
   query = S2_query_image(granuleId = granuleId, atmCorr = atmCorr)
 
-  if (length(query) == 0 && !isTRUE(atmCorr)) {
+  if (nrow(query) == 0 && !isTRUE(atmCorr)) {
     warning("Unable to process 'granuleId ", granuleId, "'. Not found in database!")
     return(invisible(NULL))
-  } else if (length(query) == 0 && isTRUE(atmCorr)) {
+  } else if (nrow(query) == 0 && isTRUE(atmCorr)) {
     warning(
       "Unable to process 'granuleId ", granuleId, "'. Maybe its not (yet) ",
       "atmospherically corrected!\n"
