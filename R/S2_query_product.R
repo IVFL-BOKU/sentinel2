@@ -9,7 +9,6 @@
 #'   geoJSON geometry string (e.g. {"type":"Point","coordinates":[16.5,48.5]}),
 #'   the path to a Point/Polygon shapefile, a SpatialPoints object or a
 #'   SpatialPolygons object.
-#' @param orbitDir character NULL or one of c("DESCENDING", "ASCENDING").
 #' @param orbitNo integer from 1 to 143.
 #' @param product charactrer ESA product id.
 #' @param productId internal metadata database product id.
@@ -27,7 +26,6 @@ S2_query_product = function(
   dateMax      = NULL,
   dateMin      = NULL,
   geometry     = NULL,
-  orbitDir     = NULL,
   orbitNo      = NULL,
   product      = NULL,
   productId    = NULL,
@@ -37,10 +35,6 @@ S2_query_product = function(
   ...
 ){
   # check inputs ---------------------------------------------------------------
-  if (!is.null(orbitDir)) {
-    orbitDir = match.arg(orbitDir)
-  }
-
   if (!is.null(dateSingle)) {
     check_date(dateSingle)
     dateMin    = dateSingle

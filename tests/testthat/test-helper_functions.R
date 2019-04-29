@@ -10,13 +10,18 @@ test_that('S2_generate_names() works', {
   expect_true(grepl('^someDir/GRANULE_2016-08-21_33UXP_79_Id1380347_L2A$', nms))
 })
 
-test_that('S2_generate_names() works', {
+test_that('S2_granule_naming() works', {
   data = S2_query_granule(granuleId = 1380347)
   nms = S2_granule_naming(data)
   expect_true(grepl('^GRANULE_2016-08-21_33UXP_79_Id1380347_L2A$', nms))
+
+  expect_error(
+    S2_granule_naming(data, order = 'aaa'),
+    "Invalid 'granule' naming."
+  )
 })
 
-test_that('S2_generate_names() works', {
+test_that('S2_naming() works', {
   data = S2_query_granule(granuleId = 1380347)
   nms = S2_naming(data)
   expect_true(grepl('^GRANULE_2016-08-21_33UXP_79_Id1380347_L2A$', nms))
