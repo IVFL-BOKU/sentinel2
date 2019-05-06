@@ -15,8 +15,8 @@ credentialsEnv = new.env()
 #' @param password character password for 'https://s2.boku.eodc.eu'
 #' @export
 S2_initialize_user = function(user, password) {
-  assign('cfgUser', user, credentialsEnv)
-  assign('cfgPswd', password, credentialsEnv)
+  assign('cfgUser', as.character(user), credentialsEnv)
+  assign('cfgPswd', as.character(password), credentialsEnv)
 }
 
 #' Internal function getting user credentials

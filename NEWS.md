@@ -1,3 +1,7 @@
+# 0.5.2 (2019-05-06)
+
+* make `S2_initialize_user()` work with `user` and/or `password` being named vectors
+
 # 0.5.1 (2019-04-29)
 
 * `S2_download()` fixes:
