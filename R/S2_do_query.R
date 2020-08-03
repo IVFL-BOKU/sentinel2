@@ -37,7 +37,7 @@ S2_do_query = function(query, path, baseUrl = 'https://s2.boku.eodc.eu'){
   )
 
   if ('dplyr' %in% utils::installed.packages()) {
-    rtrn = dplyr::as.tbl(rtrn)
+    rtrn = tibble::as_tibble(rtrn)
   }
 
   return(rtrn)
