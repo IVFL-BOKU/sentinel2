@@ -1,3 +1,7 @@
+# 0.5.3 (2020-08-03)
+
+* fixed dplyr 1.0.0 deprecation notes
+
 # 0.5.2 (2019-05-06)
 
 * make `S2_initialize_user()` work with `user` and/or `password` being named vectors
