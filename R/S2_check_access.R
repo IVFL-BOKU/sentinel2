@@ -8,6 +8,7 @@
 #'   credentials seem to be valid, FALSE if 'anything' went wrong
 #' @export
 S2_check_access = function(verbose = TRUE){
+  return(warning('This repository has been deprecated.\nPlease use alternatives like EO-Browser or AWS.'))
   credentials = get_credentials()
   srvrsp =  httr::GET(
     'https://s2.boku.eodc.eu/user/current',
