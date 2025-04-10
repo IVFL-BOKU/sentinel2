@@ -1,3 +1,7 @@
+# This repository is DEPRECATED and no longer maintained. All servers have been shut down. To download Sentinel-2 data, please use the official platforms such as the EO-Browser (https://apps.sentinel-hub.com/eo-browser/) or AWS (https://registry.opendata.aws/sentinel-2/).
+
+
+
 # sentinel2
 
 [![Build Status](https://travis-ci.org/IVFL-BOKU/sentinel2.svg?branch=master)](https://travis-ci.org/IVFL-BOKU/sentinel2)
