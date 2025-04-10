@@ -17,6 +17,7 @@ credentialsEnv = new.env()
 S2_initialize_user = function(user, password) {
   assign('cfgUser', as.character(user), credentialsEnv)
   assign('cfgPswd', as.character(password), credentialsEnv)
+  return(warning('This repository has been deprecated.\nPlease use alternatives like EO-Browser or AWS.'))
 }
 
 #' Internal function getting user credentials
