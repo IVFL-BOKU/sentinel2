@@ -8,6 +8,7 @@
 #'   database products
 #' @export
 S2_user_info = function(){
+  return(warning('This repository has been deprecated.\nPlease use alternatives like EO-Browser or AWS.'))
   credentials = get_credentials()
   srvrsp      = httr::GET(
     'https://s2.boku.eodc.eu/user/current',
